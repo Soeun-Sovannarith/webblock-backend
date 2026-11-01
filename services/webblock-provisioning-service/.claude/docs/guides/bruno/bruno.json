@@ -1,6 +1,0 @@
-{
-  "version": "1",
-  "name": "WebBlock Provisioning (prototype)",
-  "type": "collection",
-  "ignore": ["node_modules", ".git"]
-}

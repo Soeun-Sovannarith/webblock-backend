@@ -28,14 +28,16 @@ __pycache__/
 .venv/
 venv/
 
-# Logs
+# Runtime PIDs & Logs
+.pids/
+logs/
 *.log
+.venv
 
-# IDE
+# IDE & OS
 .idea/
 .vscode/
 *.iml
-
-# OS
 .DS_Store
 Thumbs.db
+

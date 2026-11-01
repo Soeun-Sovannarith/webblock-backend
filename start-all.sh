@@ -119,19 +119,67 @@ export RABBITMQ_USERNAME="webblock"
 export REDIS_HOST="localhost"
 export REDIS_PORT="6379"
 
-export MAIL_HOST="localhost"
-export MAIL_PORT="1025"
+# Mail & Keycloak: safely load properties from services/webblock-user-service/.env if present
+if [ -f "$ROOT_DIR/services/webblock-user-service/.env" ]; then
+    while IFS='=' read -r key val || [ -n "$key" ]; do
+        [[ "$key" =~ ^#.*$ ]] && continue
+        [ -z "$key" ] && continue
+        if [[ "$key" =~ ^(MAIL_|EMAIL|GOOGLE_APP_PASSWORD|KEYCLOAK_) ]]; then
+            val="${val%\"}"
+            val="${val#\"}"
+            export "$key=$val"
+        fi
+    done < "$ROOT_DIR/services/webblock-user-service/.env"
+fi
+export MAIL_HOST="${MAIL_HOST:-localhost}"
+export MAIL_PORT="${MAIL_PORT:-1025}"
+export MAIL_SMTP_AUTH="${MAIL_SMTP_AUTH:-false}"
+export MAIL_STARTTLS="${MAIL_STARTTLS:-false}"
 
-export KEYCLOAK_SERVER_URL="http://localhost:8180"
-export KEYCLOAK_ISSUER_URI="http://localhost:8180/realms/webblock"
-export EUREKA_CLIENT_ENABLED="false"
+# Notification: safely load knock / alertmanager properties from services/webblock-notification-service/.env
+if [ -f "$ROOT_DIR/services/webblock-notification-service/.env" ]; then
+    while IFS='=' read -r key val || [ -n "$key" ]; do
+        [[ "$key" =~ ^#.*$ ]] && continue
+        [ -z "$key" ] && continue
+        if [[ "$key" =~ ^(KNOCK_|ALERTMANAGER_) ]]; then
+            val="${val%\"}"
+            val="${val#\"}"
+            export "$key=$val"
+        fi
+    done < "$ROOT_DIR/services/webblock-notification-service/.env"
+fi
+
+# Load root .env if present (overrides service-level defaults)
+if [ -f "$ROOT_DIR/.env" ]; then
+    while IFS='=' read -r key val || [ -n "$key" ]; do
+        [[ "$key" =~ ^#.*$ ]] && continue
+        [ -z "$key" ] && continue
+        val="${val%\"}"
+        val="${val#\"}"
+        export "$key=$val"
+    done < "$ROOT_DIR/.env"
+fi
+
+export KEYCLOAK_SERVER_URL="${KEYCLOAK_SERVER_URL:-http://localhost:8180}"
+export KEYCLOAK_ISSUER_URI="${KEYCLOAK_ISSUER_URI:-http://localhost:8180/realms/webblock}"
+export KEYCLOAK_ADMIN_URL="${KEYCLOAK_ADMIN_URL:-http://localhost:8180}"
+export KEYCLOAK_ADMIN_CLIENT_ID="${KEYCLOAK_ADMIN_CLIENT_ID:-webblock-auth-admin}"
+export KEYCLOAK_ADMIN_CLIENT_SECRET="${KEYCLOAK_ADMIN_CLIENT_SECRET:-}"
+export KEYCLOAK_ADMIN_CF_CLIENT_ID="${KEYCLOAK_ADMIN_CF_CLIENT_ID:-}"
+export KEYCLOAK_ADMIN_CF_CLIENT_SECRET="${KEYCLOAK_ADMIN_CF_CLIENT_SECRET:-}"
+export KEYCLOAK_PASSWORD_CHECK_CLIENT_ID="${KEYCLOAK_PASSWORD_CHECK_CLIENT_ID:-webblock-password-check}"
+export KEYCLOAK_PASSWORD_CHECK_CLIENT_SECRET="${KEYCLOAK_PASSWORD_CHECK_CLIENT_SECRET:-}"
+export KEYCLOAK_AUDIENCE="${KEYCLOAK_AUDIENCE:-webblock-account}"
+export EUREKA_CLIENT_ENABLED="${EUREKA_CLIENT_ENABLED:-false}"
 
 export PROJECT_SERVICE_URL="http://localhost:8080"
 export PROJECT_MANAGEMENT_PORT="8089"
 export SERVER_PORT_USER="8081"
 export SERVER_PORT_NOTIFICATION="8085"
 
-# Prototype profile stand-ins for project-service
+# Security & token validation for project-service
+export PROJECT_JWT_ISSUER_URI="http://localhost:8180/realms/webblock"
+export PROJECT_IDENTITY_MODE="jwt"
 export SPRING_PROFILES_ACTIVE="prototype"
 export PROJECT_DEV_TOKENS_FILE="$ROOT_DIR/services/webblock-project-service/dev-tokens.json"
 export PROJECT_PAYMENT_STAND_IN_FILE="$ROOT_DIR/services/webblock-project-service/payment-stand-in.json"
@@ -165,6 +213,7 @@ start_service() {
 
 # 1. User Service (Spring Boot 4, Port 8081)
 if [ -d "services/webblock-user-service" ]; then
+    chmod +x services/webblock-user-service/gradlew 2>/dev/null || true
     start_service "user-service" "services/webblock-user-service" "./gradlew bootRun"
 fi
 
@@ -196,7 +245,8 @@ fi
 
 # 5. Notification Service (Spring Boot 4, Port 8085)
 if [ -d "services/webblock-notification-service" ]; then
-    start_service "notification-service" "services/webblock-notification-service" "./gradlew bootRun"
+    chmod +x services/webblock-notification-service/gradlew 2>/dev/null || true
+    start_service "notification-service" "services/webblock-notification-service" "SPRING_PROFILES_ACTIVE=local-stub SERVER_PORT=8085 ./gradlew bootRun"
 fi
 
 # 6. Combined Swagger / OpenAPI Portal (Port 8088)

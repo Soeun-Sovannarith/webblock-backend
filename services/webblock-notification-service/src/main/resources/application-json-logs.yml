@@ -1,7 +1,0 @@
-# Structured logs: one JSON object per line on stdout, with the MDC fields (trace_id, span_id, request_id, messageId).
-# Opt-in: SPRING_PROFILES_ACTIVE=json-logs (add it next to "k8s" when the deployment is approved to use it).
-# Local development keeps the readable console format. observability.md: JSON logs to stdout in uat/prod.
-logging:
-  structured:
-    format:
-      console: logstash

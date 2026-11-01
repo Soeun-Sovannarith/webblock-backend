@@ -295,13 +295,18 @@ def resolve_proxy_target(full_path):
     if path_only.startswith("/api/user/"):
         return f"{SERVICES['user-service']['base_url']}{full_path}"
 
+    # Notification Service: /api/notification/**, /api/notifications/**, /notifications/**, /internal/v1/alertmanager/**
+    if (
+        path_only.startswith("/api/notification/")
+        or path_only.startswith("/api/notifications/")
+        or path_only.startswith("/notifications/")
+        or path_only.startswith("/internal/v1/alertmanager/")
+    ):
+        return f"{SERVICES['notification-service']['base_url']}{full_path}"
+
     # Project Service: /api/v1/** or /internal/**
     if path_only.startswith("/api/v1/") or path_only.startswith("/internal/"):
         return f"{SERVICES['project-service']['base_url']}{full_path}"
-
-    # Notification Service: /api/notifications/** or /notifications/**
-    if path_only.startswith("/api/notifications/") or path_only.startswith("/notifications/"):
-        return f"{SERVICES['notification-service']['base_url']}{full_path}"
 
     # Provisioning Service: /v1/releases**, /v1/commands**, /v1/admin**, /mcp**
     if (

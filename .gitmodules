@@ -1,0 +1,15 @@
+[submodule "services/webblock-user-service"]
+	path = services/webblock-user-service
+	url = https://github.com/14th-Generation-Advanced-Course/webblock-user-service.git
+[submodule "services/webblock-project-service"]
+	path = services/webblock-project-service
+	url = https://github.com/14th-Generation-Advanced-Course/webblock-project-service.git
+[submodule "services/webblock-aicode-service"]
+	path = services/webblock-aicode-service
+	url = https://github.com/14th-Generation-Advanced-Course/webblock-aicode-service.git
+[submodule "services/webblock-notification-service"]
+	path = services/webblock-notification-service
+	url = https://github.com/14th-Generation-Advanced-Course/webblock-notification-service.git
+[submodule "services/webblock-provisioning-service"]
+	path = services/webblock-provisioning-service
+	url = https://github.com/14th-Generation-Advanced-Course/webblock-provisioning-service.git
