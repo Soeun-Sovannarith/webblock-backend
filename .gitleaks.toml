@@ -1,0 +1,17 @@
+# Secret scanning config for gitleaks (used by CI and the local secret-scan hook).
+title = "webblock gitleaks config"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Documentation placeholders and obviously fake test values"
+regexes = [
+  '''<[a-z0-9_-]+>''',
+  '''changeme''',
+  '''user@example\.test''',
+]
+paths = [
+  '''\.env\.example$''',
+  '''docs/.*\.md$''',
+]

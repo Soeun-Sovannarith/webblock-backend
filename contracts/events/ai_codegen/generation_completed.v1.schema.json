@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://webblock.invalid/contracts/events/ai_codegen/generation_completed.v1.schema.json",
+  "title": "AI Codegen: generation completed v1",
+  "description": "Owner: ai_codegen. Emitted when a generation run finishes (succeeded or failed). Consumed by Project Service.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "message_id",
+    "message_type",
+    "occurred_at",
+    "correlation_id",
+    "project_id",
+    "generation_request_id",
+    "generation_run_id",
+    "outcome"
+  ],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "message_id": {
+      "type": "string",
+      "format": "uuid",
+      "minLength": 36,
+      "maxLength": 36,
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+      "not": { "enum": ["00000000-0000-0000-0000-000000000000"] }
+    },
+    "message_type": { "const": "ai_codegen.generation_completed.v1" },
+    "occurred_at": { "type": "string", "format": "date-time", "maxLength": 40 },
+    "correlation_id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[A-Za-z0-9._:-]{1,128}$" },
+    "project_id": {
+      "type": "string",
+      "format": "uuid",
+      "minLength": 36,
+      "maxLength": 36,
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+      "not": { "enum": ["00000000-0000-0000-0000-000000000000"] }
+    },
+    "generation_request_id": {
+      "type": "string",
+      "format": "uuid",
+      "minLength": 36,
+      "maxLength": 36,
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+      "not": { "enum": ["00000000-0000-0000-0000-000000000000"] }
+    },
+    "generation_run_id": {
+      "type": "string",
+      "format": "uuid",
+      "minLength": 36,
+      "maxLength": 36,
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+      "not": { "enum": ["00000000-0000-0000-0000-000000000000"] }
+    },
+    "outcome": {
+      "type": "string",
+      "enum": ["succeeded", "failed"]
+    }
+  }
+}

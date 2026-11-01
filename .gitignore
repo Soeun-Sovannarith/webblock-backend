@@ -1,0 +1,41 @@
+# Claude Code personal files
+CLAUDE.local.md
+**/CLAUDE.local.md
+.claude/settings.local.json
+**/.claude/settings.local.json
+
+# Secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.jks
+application-prod*.yml
+application-prod*.yaml
+application-prod*.properties
+
+# Build output
+build/
+.gradle/
+out/
+bin/
+target/
+dist/
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Logs
+*.log
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db

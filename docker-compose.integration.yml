@@ -1,0 +1,91 @@
+# WebBlock Local Multi-Service Integration Stack
+# Spins up shared infrastructure for User Service, Project Service, AI Code Service, and Provisioning Service.
+#
+# Usage:
+#   docker compose -f docker-compose.integration.yml up -d
+#
+name: webblock-integration
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: webblock-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgrespassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./tooling/docker/init-databases.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+      - pgdata-integration:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  rabbitmq:
+    image: rabbitmq:4.3.6-management-alpine
+    container_name: webblock-rabbitmq
+    restart: unless-stopped
+    environment:
+      RABBITMQ_DEFAULT_USER: webblock
+      RABBITMQ_DEFAULT_PASS: webblock
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: ["CMD-SHELL", "rabbitmq-diagnostics -q ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    container_name: webblock-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: webblock-mailpit
+    restart: unless-stopped
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.1.0
+    container_name: webblock-keycloak
+    restart: unless-stopped
+    command: ["start-dev", "--import-realm"]
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: adminpassword
+      KC_HEALTH_ENABLED: "true"
+      KC_HTTP_PORT: "8080"
+    volumes:
+      - ./services/webblock-user-service/keycloak/webblock-realm.local.json:/opt/keycloak/data/import/webblock-realm.json:ro
+    ports:
+      - "8180:8080"
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >-
+          exec 3<>/dev/tcp/127.0.0.1/9000 &&
+          printf 'GET /health/ready HTTP/1.1\r\nHost: localhost\r\nConnection: close\r\n\r\n' >&3 &&
+          grep -q '"status": "UP"' <&3
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+
+volumes:
+  pgdata-integration:

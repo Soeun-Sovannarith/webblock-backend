@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "example-readonly-db": {
+      "command": "npx",
+      "args": ["-y", "<verified-postgres-mcp-package>", "${DEV_DB_READONLY_URL}"],
+      "env": {}
+    },
+    "example-remote-docs": {
+      "type": "http",
+      "url": "https://<verified-mcp-endpoint>/mcp",
+      "headers": {
+        "Authorization": "Bearer ${EXAMPLE_MCP_TOKEN}"
+      }
+    }
+  }
+}

@@ -1,0 +1,35 @@
+# Replace the @handles with real GitHub usernames or teams, then enable
+# "Require review from Code Owners" in branch protection.
+
+# Default owner for anything not listed
+*                                              @TODO-tech-lead
+
+# Services (owners from docs/service-map.md)
+/services/webblock-user-service/               @TODO-vannda
+/services/webblock-aicode-service/             @TODO-sovannarith
+/services/webblock-project-service/            @TODO-devid
+/services/webblock-provissioning-service/      @TODO-chamreun
+/services/webblock-payment-service/            @TODO-endy
+/services/webblock-notification-service/       @TODO-lina
+/services/api-gateway/                         @TODO-tech-lead
+/services/discovery-service/                   @TODO-tech-lead
+/services/config-server/                       @TODO-tech-lead
+
+# Contracts: provider owns its file; keep the tech lead on all of them
+/contracts/                                    @TODO-tech-lead
+/contracts/openapi/user.*                      @TODO-vannda
+/contracts/openapi/project.*                   @TODO-devid
+/contracts/openapi/payment.*                   @TODO-endy
+/contracts/openapi/notification.*              @TODO-lina
+/contracts/openapi/aicode.*                    @TODO-sovannarith
+/contracts/openapi/provisioning.*              @TODO-chamreun
+
+# Guardrails: changes need the tech lead
+/.claude/                                      @TODO-tech-lead
+/services/*/.claude/                           @TODO-tech-lead
+/tooling/                                      @TODO-tech-lead
+/.mcp.json                                     @TODO-tech-lead
+/.github/                                      @TODO-tech-lead
+
+# Applied database migrations: service owner AND tech lead
+**/db/migration/                               @TODO-tech-lead

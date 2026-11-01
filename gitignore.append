@@ -1,0 +1,19 @@
+# --- add these lines to your root .gitignore ---
+
+# Claude Code personal files
+CLAUDE.local.md
+**/CLAUDE.local.md
+.claude/settings.local.json
+**/.claude/settings.local.json
+
+# Secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.jks
+application-prod*.yml
+application-prod*.yaml
+application-prod*.properties
