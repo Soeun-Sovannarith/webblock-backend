@@ -1,0 +1,22 @@
+# Parameters of the per-site admission policies (decision 0014 section 21 ruling 1, TR-35): the values
+# that differ between the prototype and production, kept in one ConfigMap so that a move changes
+# configuration only (decision 0016 section 5). deploy/kind/proto-policy.sh fills the placeholders and
+# applies it before the policies. A missing ConfigMap refuses every worker write the image and route
+# policies match (parameterNotFoundAction: Deny); it never lets one through.
+#   imageRepositoryPrefix  a site image is exactly <prefix><projectId>@sha256:<64 hex>
+#                          prototype: webblock-proto-registry.test:5000/webblock/sites/
+#                          production (TR-46): <Gitea registry>/webblock/sites/
+#   siteDomain             the platform suffix: route-<projectId> serves <subdomain>.<siteDomain>,
+#                          preview-<projectId> serves <subdomain>-preview.<siteDomain>; the
+#                          subdomain is the tenant namespace's label
+#                          websites.webblock.internal/subdomain (decision 0023 G18a)
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: webblock-site-policy
+  namespace: webblock
+  labels:
+    app.kubernetes.io/part-of: webblock-provisioning
+data:
+  imageRepositoryPrefix: "@IMAGE_REPOSITORY_PREFIX@"
+  siteDomain: "@SITE_DOMAIN@"

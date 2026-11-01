@@ -1,0 +1,83 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Values of the Provisioning chart (task PK)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["image", "standins", "nodeSelector", "tolerations", "api", "worker", "buildWorker", "bootstrap", "migrate", "networkPolicy"],
+  "properties": {
+    "image": {"type": "string", "pattern": "^[a-z0-9.-]+(:[0-9]+)?(/[a-z0-9._-]+)+@sha256:[0-9a-f]{64}$"},
+    "standins": {"type": "boolean"},
+    "nodeSelector": {"type": "object", "additionalProperties": {"type": "string"}},
+    "tolerations": {"type": "array", "items": {"type": "object"}},
+    "api": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["replicas", "service", "env", "secretEnv", "memory", "cpu"],
+      "properties": {
+        "replicas": {"$ref": "#/definitions/replicas"},
+        "service": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "annotations"],
+          "properties": {
+            "type": {"enum": ["ClusterIP", "LoadBalancer"]},
+            "annotations": {"type": "object", "additionalProperties": {"type": "string"}}
+          }
+        },
+        "env": {"$ref": "#/definitions/env"},
+        "secretEnv": {"$ref": "#/definitions/secretEnv"},
+        "memory": {"$ref": "#/definitions/quantity"},
+        "cpu": {"$ref": "#/definitions/quantity"}
+      }
+    },
+    "worker": {"$ref": "#/definitions/scaled"},
+    "buildWorker": {"$ref": "#/definitions/scaled"},
+    "bootstrap": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["env", "secretEnv", "memory", "cpu"],
+      "properties": {
+        "env": {"$ref": "#/definitions/env"},
+        "secretEnv": {"$ref": "#/definitions/secretEnv"},
+        "memory": {"$ref": "#/definitions/quantity"},
+        "cpu": {"$ref": "#/definitions/quantity"}
+      }
+    },
+    "migrate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["memory", "cpu"],
+      "properties": {"memory": {"$ref": "#/definitions/quantity"}, "cpu": {"$ref": "#/definitions/quantity"}}
+    },
+    "networkPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["database", "broker", "jenkins", "catalog"],
+      "properties": {
+        "database": {"$ref": "#/definitions/address"},
+        "broker": {"$ref": "#/definitions/address"},
+        "jenkins": {"$ref": "#/definitions/address"},
+        "catalog": {"$ref": "#/definitions/address"}
+      }
+    }
+  },
+  "definitions": {
+    "replicas": {"type": "integer", "minimum": 1},
+    "env": {"type": "object", "additionalProperties": {"type": "string"}, "propertyNames": {"pattern": "^[A-Z][A-Z0-9_]*$", "not": {"enum": ["PG_PASS", "PG_HOSTING_INTAKE_PASS", "PG_INTAKE_PASS", "PG_BUILD_PASS", "CATALOG_ADMIN_PASS", "RABBITMQ_URL", "JENKINS_API_TOKEN", "PREVIEW_PROBE_TOKEN", "GOOSE_DBSTRING"]}}},
+    "secretEnv": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"}},
+    "quantity": {"type": "string", "pattern": "^[0-9]+(m|Mi|Gi)?$"},
+    "address": {"type": "string", "pattern": "^$|^[0-9]{1,3}(\\.[0-9]{1,3}){3}/32$"},
+    "scaled": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["replicas", "env", "secretEnv", "memory", "cpu"],
+      "properties": {
+        "replicas": {"$ref": "#/definitions/replicas"},
+        "env": {"$ref": "#/definitions/env"},
+        "secretEnv": {"$ref": "#/definitions/secretEnv"},
+        "memory": {"$ref": "#/definitions/quantity"},
+        "cpu": {"$ref": "#/definitions/quantity"}
+      }
+    }
+  }
+}

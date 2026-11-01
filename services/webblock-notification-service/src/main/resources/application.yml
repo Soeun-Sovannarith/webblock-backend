@@ -1,0 +1,113 @@
+spring:
+  application:
+    name: notification-service
+  config:
+    # Local dev only: read KEY=VALUE pairs from .env in the project folder
+    import: optional:file:.env[.properties]
+  profiles:
+    # Local / tests only: no real ProjectOwnerClient / UserContactClient exists yet (project-service and user-service
+    # do not serve their gRPC calls). Used ONLY when no profile is set; Kubernetes sets SPRING_PROFILES_ACTIVE=k8s,
+    # which replaces it. Remove this line when the real clients exist.
+    default: local-stub
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+    virtual-host: ${RABBITMQ_VHOST:/}
+    listener:
+      simple:
+        # Each message is handled inside a Micrometer observation: the trace context (traceparent, x-request-id) is set for
+        # the logs while it is processed, and Spring AMQP records its spring.rabbit.listener timer.
+        observation-enabled: true
+        acknowledge-mode: auto
+        default-requeue-rejected: false
+        retry:
+          enabled: true
+          initial-interval: 1000ms
+          # Spring Boot 4 renamed max-attempts to max-retries (the old key is ignored): 4 retries = 5 tries in total.
+          max-retries: 4
+          multiplier: 2.0
+          max-interval: 10000ms
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          # Keycloak realm URL, e.g. http://localhost:8180/realms/webblock (keys are fetched on first request)
+          issuer-uri: ${KEYCLOAK_ISSUER_URI:https://kc-admin.roa-dev.digital/realms/master}
+  cloud:
+    openfeign:
+      client:
+        config:
+          # Applies to every @FeignClient; override per client name if needed
+          default:
+            connect-timeout: 2000
+            read-timeout: 5000
+
+server:
+  port: ${SERVER_PORT:8085}
+
+# Local / dev: find other services through discovery-service (Eureka).
+# On Kubernetes the "k8s" profile turns this off (see application-k8s.yml).
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_URL:http://localhost:8761/eureka/}
+  instance:
+    prefer-ip-address: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+
+knock:
+  api-key: ${KNOCK_API_KEY:sk_test_placeholder}
+
+webblock:
+  notification:
+    # Knock workflow keys: create a workflow with each key in the Knock dashboard (channels are set there).
+    workflows:
+      generation-completed: ${KNOCK_WF_GENERATION_COMPLETED:generation-completed}
+      deployment-succeeded: ${KNOCK_WF_DEPLOYMENT_SUCCEEDED:deployment-succeeded}
+      deployment-failed-owner: ${KNOCK_WF_DEPLOYMENT_FAILED_OWNER:deployment-failed-owner}
+      deployment-failed-admin: ${KNOCK_WF_DEPLOYMENT_FAILED_ADMIN:deployment-failed-admin}
+      subscription-expired-admin: ${KNOCK_WF_SUBSCRIPTION_EXPIRED_ADMIN:subscription-expired-admin}
+      subscription-activated-admin: ${KNOCK_WF_SUBSCRIPTION_ACTIVATED_ADMIN:subscription-activated-admin}
+      # Sent from Alertmanager alerts (POST /internal/v1/alertmanager/alerts)
+      generation-stuck-admin: ${KNOCK_WF_GENERATION_STUCK_ADMIN:generation-stuck-admin}
+      website-crashed-owner: ${KNOCK_WF_WEBSITE_CRASHED_OWNER:website-crashed-owner}
+      website-crashed-admin: ${KNOCK_WF_WEBSITE_CRASHED_ADMIN:website-crashed-admin}
+      resource-limit-exceeded-owner: ${KNOCK_WF_RESOURCE_LIMIT_EXCEEDED_OWNER:resource-limit-exceeded}
+      resource-limit-exceeded-admin: ${KNOCK_WF_RESOURCE_LIMIT_EXCEEDED_ADMIN:resource-limit-exceeded-admin}
+      platform-service-down-admin: ${KNOCK_WF_PLATFORM_SERVICE_DOWN_ADMIN:platform-service-down-admin}
+      # Sent when the payment team's "payment due" event arrives (7 days before the due date)
+      payment-due-owner: ${KNOCK_WF_PAYMENT_DUE_OWNER:payment-due-owner}
+    rabbitmq:
+      # false: only our own queues and bindings are declared; the sender exchanges (project.events, provisioning.events,
+      # payment.events) belong to the sending services. Set NOTIFICATION_DECLARE_SENDER_EXCHANGES=true only on a fresh LOCAL broker
+      # where no sender has started yet. Never in uat/prod (needs "configure" on other services' exchanges).
+      declare-sender-exchanges: ${NOTIFICATION_DECLARE_SENDER_EXCHANGES:false}
+      # With false, how often we check that the sender exchanges exist (they are bound to once they do). Gauge:
+      # webblock_notification_sender_exchange_missing{exchange} is 1 while one is missing.
+      sender-exchange-check-interval: 15s
+    alertmanager:
+      # Shared secret; Alertmanager sends it as "Authorization: Bearer <token>". Env var only. Empty = webhook refuses all calls.
+      webhook-token: ${ALERTMANAGER_WEBHOOK_TOKEN:}
+    knock:
+      # Private key (PKCS#8 PEM or its base64) of the Knock signing key. Env var only, never committed.
+      signing-key: ${KNOCK_SIGNING_KEY:}
+      token-ttl: ${KNOCK_TOKEN_TTL:1h}
+    # Temporary admin list until the Keycloak lookup exists, e.g. env WEBBLOCK_NOTIFICATION_ADMINS_0_ID / _NAME / _EMAIL.
+    # Stub owner/contact for the "local-stub" profile: WEBBLOCK_NOTIFICATION_STUB_CONTACTEMAIL, ..._OWNERUSERID.

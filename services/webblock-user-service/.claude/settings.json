@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Read(./docs/**)",
+      "Bash(git status *)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(git branch *)",
+      "Bash(git show *)",
+      "Bash(./gradlew test *)",
+      "Bash(./gradlew build *)",
+      "Bash(./gradlew compileJava *)",
+      "Bash(./gradlew spotlessApply *)",
+      "Bash(docker compose ps *)",
+      "Bash(docker compose logs *)",
+      "Bash(docker compose config *)",
+      "Bash(kubectl get *)",
+      "Bash(kubectl describe *)",
+      "Bash(kubectl logs *)",
+      "Bash(kubectl apply --dry-run=client *)",
+      "Bash(./gradlew.bat test *)",
+      "Bash(./gradlew.bat build *)",
+      "Bash(./gradlew.bat compileJava *)"
+    ],
+    "ask": [
+      "Bash(git commit *)",
+      "Bash(git push *)",
+      "Bash(git merge *)",
+      "Bash(git rebase *)",
+      "Bash(docker compose up *)",
+      "Bash(docker compose down *)",
+      "Bash(kubectl apply *)",
+      "Bash(kubectl delete *)",
+      "Bash(helm *)",
+      "Bash(curl *)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./**/.env)",
+      "Read(./**/.env.*)",
+      "Read(./**/*.pem)",
+      "Read(./**/*.key)",
+      "Read(./**/secrets/**)",
+      "Read(./**/*.p12)",
+      "Read(./**/*.jks)",
+      "Read(./**/*.keystore)",
+      "Read(./**/realm-export*.json)",
+      "Read(./**/*credentials*.json)",
+      "Read(./**/service-account*.json)",
+      "Edit(./.env)",
+      "Edit(./**/.env)",
+      "Edit(./**/*.pem)",
+      "Edit(./**/*.key)",
+      "Edit(./**/secrets/**)",
+      "Edit(./**/realm-export*.json)",
+      "Bash(git push --force *)",
+      "Bash(git push -f *)",
+      "Read(./**/kubeconfig*)",
+      "Read(./**/*.kubeconfig)",
+      "Read(./**/*.tfstate)",
+      "Read(./**/id_rsa*)",
+      "Read(./**/id_ed25519*)",
+      "Read(./**/*.pfx)",
+      "Edit(./.git/**)",
+      "Edit(./**/*.pfx)",
+      "Edit(./**/kubeconfig*)"
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-context.mjs\"",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/protect-files.mjs\"",
+            "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/secret-scan.mjs\"",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-bash.mjs\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/check-yaml.mjs\"",
+            "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/log-guard.mjs\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

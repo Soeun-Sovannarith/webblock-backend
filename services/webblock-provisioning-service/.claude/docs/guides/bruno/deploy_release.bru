@@ -1,0 +1,66 @@
+meta {
+  name: deploy_release
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/v1/projects/:projectId/releases/:releaseId/deploy
+  body: none
+  auth: bearer
+}
+
+params:path {
+  projectId: 
+  releaseId: 
+}
+
+headers {
+  Idempotency-Key: deploy-1
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  Accept private candidate deployment. Contract: src/contracts/openapi.yaml, operation deploy_release.
+
+  Current behaviour: a caller (the owner or an admin) requests the deploy of a built release. Automatic deploy after
+  a successful build is specified (FR-47) and not built yet; until then this request is how a release is deployed.
+
+  Example answer (202, application/json). Field names are camelCase; data is the result, meta describes the answer:
+
+  ```json
+  {
+    "success": true,
+    "data": {
+      "commandId": "0190a1b2-0000-7000-8000-00000000000c",
+      "status": "accepted",
+      "statusUrl": "/v1/projects/0190a1b2-0000-7000-8000-00000000000a/commands/0190a1b2-0000-7000-8000-00000000000c"
+    },
+    "meta": {
+      "requestId": "0199c3a2-7d10-7c1e-9b3a-5f0e2d4c6a81",
+      "timestamp": "2026-10-25T09:30:00.123Z",
+      "path": "/v1/projects/0190a1b2-0000-7000-8000-00000000000a/releases/0190a1b2-0000-7000-8000-00000000000b/deploy",
+      "status": 202,
+      "page": null
+    }
+  }
+  ```
+
+  An error is a Problem (application/problem+json), for example 409:
+
+  ```json
+  {
+    "type": "urn:webblock:problem:command-in-progress",
+    "title": "Another command of the project is in progress.",
+    "status": 409,
+    "instance": "/v1/projects/0190a1b2-0000-7000-8000-00000000000a/releases/0190a1b2-0000-7000-8000-00000000000b/deploy",
+    "code": "COMMAND_IN_PROGRESS",
+    "requestId": "0199c3a2-7d10-7c1e-9b3a-5f0e2d4c6a81",
+    "errors": [],
+    "commandId": "0190a1b2-0000-7000-8000-0000000000c9"
+  }
+  ```
+}

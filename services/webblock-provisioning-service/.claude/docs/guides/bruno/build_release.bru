@@ -1,0 +1,56 @@
+meta {
+  name: build_release
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{baseUrl}}/v1/projects/:projectId/releases/:releaseId/build
+  body: none
+  auth: bearer
+}
+
+params:path {
+  projectId: 
+  releaseId: 
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  Start or retry the build of a release (prototype). Contract: src/contracts/openapi.yaml, operation build_release.
+
+  Example answer (202, application/json). Field names are camelCase; data is the result, meta describes the answer:
+
+  ```json
+  {
+    "success": true,
+    "data": {
+      "releaseId": "0190a1b2-0000-7000-8000-00000000000b",
+      "projectId": "0190a1b2-0000-7000-8000-00000000000a",
+      "generationRequestId": "0190a1b2-0000-7000-8000-00000000000f",
+      "repositoryId": 4242,
+      "gitCommitSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "status": "accepted",
+      "steps": [
+        {
+          "stepName": "build",
+          "attempt": 1,
+          "status": "pending"
+        }
+      ],
+      "createdAt": "2026-10-08T12:00:00.123456Z",
+      "updatedAt": "2026-10-08T12:00:05Z"
+    },
+    "meta": {
+      "requestId": "0199c3a2-7d10-7c1e-9b3a-5f0e2d4c6a81",
+      "timestamp": "2026-10-25T09:30:00.123Z",
+      "path": "/v1/projects/0190a1b2-0000-7000-8000-00000000000a/releases/0190a1b2-0000-7000-8000-00000000000b/build",
+      "status": 202,
+      "page": null
+    }
+  }
+  ```
+}

@@ -1,0 +1,20 @@
+// DRAFT, proposed by provisioning, waits for project. Owner: project.
+syntax = "proto3";
+package webblock.project.v1;
+
+// Called by Provisioning's build worker. Deadline 2 s. Safe to retry on UNAVAILABLE, at most 2 times.
+service RepositoryService {
+  // NOT_FOUND with ErrorInfo.reason REPOSITORY_NOT_FOUND when the project has no repository.
+  rpc GetRepository(GetRepositoryRequest) returns (GetRepositoryResponse);
+}
+
+message GetRepositoryRequest {
+  string project_id = 1;      // UUID
+}
+
+message GetRepositoryResponse {
+  int64 repository_id = 1;    // Gitea repository ID, 1 to 2^53-1
+  string clone_url = 2;       // what the build system clones
+  string full_name = 3;       // "<owner>/<repo>", for logs only
+  string subdomain = 4;       // DNS label, 1 to 63
+}

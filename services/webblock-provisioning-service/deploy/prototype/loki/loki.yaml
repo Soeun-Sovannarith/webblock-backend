@@ -1,0 +1,57 @@
+# Loki of the prototype stack (decision 0014 section 23 item 5): one single-binary process with
+# filesystem storage, no authentication (it listens on the kind Docker network and on 127.0.0.1 of the
+# host only), no ruler, no usage reporting. It stores the JSON log lines of the Provisioning processes
+# that the shipper (fluent-bit.yaml) sends, so the live tests can find audit events (audit=true).
+# deploy/kind/proto-loki.sh mounts this file read-only and the data folder bin/kind-state/proto/loki-data.
+# Production's Loki is the platform's, not this one (.claude/docs/architecture/prototype-stand-ins.md).
+auth_enabled: false
+
+server:
+  http_listen_port: 3100
+  grpc_listen_port: 9095
+  log_level: warn
+
+common:
+  instance_addr: 127.0.0.1
+  path_prefix: /loki
+  replication_factor: 1
+  ring:
+    kvstore:
+      store: inmemory
+  storage:
+    filesystem:
+      chunks_directory: /loki/chunks
+      rules_directory: /loki/rules
+
+schema_config:
+  configs:
+    - from: "2026-01-01"
+      store: tsdb
+      object_store: filesystem
+      schema: v13
+      index:
+        prefix: index_
+        period: 24h
+
+limits_config:
+  # Test runs write lines with their own timestamps; a stack lives for hours, not weeks.
+  reject_old_samples: false
+  retention_period: 168h
+
+query_range:
+  results_cache:
+    cache:
+      embedded_cache:
+        enabled: true
+        max_size_mb: 16
+
+ingester:
+  # Small chunks flushed early: the stack is short-lived and memory is shared with Kind.
+  chunk_idle_period: 5m
+  max_chunk_age: 30m
+
+ruler:
+  enable_api: false
+
+analytics:
+  reporting_enabled: false

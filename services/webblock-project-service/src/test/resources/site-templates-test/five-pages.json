@@ -1,0 +1,13 @@
+{
+  "templates": [
+    { "templateCode": "too_many", "name": "Too many", "version": "1.0.0", "businessTypeCodes": ["*"],
+      "componentCatalogVersion": "test-1",
+      "pages": [
+        { "name": "Home", "path": "/", "sortOrder": 0, "seoTitle": null, "seoDescription": null, "puckTree": { "root": { "props": {} }, "content": [] } },
+        { "name": "A", "path": "/a", "sortOrder": 1, "seoTitle": null, "seoDescription": null, "puckTree": { "root": { "props": {} }, "content": [] } },
+        { "name": "B", "path": "/b", "sortOrder": 2, "seoTitle": null, "seoDescription": null, "puckTree": { "root": { "props": {} }, "content": [] } },
+        { "name": "C", "path": "/c", "sortOrder": 3, "seoTitle": null, "seoDescription": null, "puckTree": { "root": { "props": {} }, "content": [] } },
+        { "name": "D", "path": "/d", "sortOrder": 4, "seoTitle": null, "seoDescription": null, "puckTree": { "root": { "props": {} }, "content": [] } }
+      ] }
+  ]
+}

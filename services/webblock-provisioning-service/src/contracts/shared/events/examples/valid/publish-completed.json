@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "message_id": "60718293-a4b5-4a2b-9c3d-4e5f60718293",
+  "message_type": "provisioning.publish_completed.v1",
+  "occurred_at": "2026-10-24T09:30:00Z",
+  "correlation_id": "3c4d5e6f-7a8b-4c9d-8e0f-1a2b3c4d5e6f",
+  "project_id": "5f0c2a8e-7c1b-4d2e-9a3f-1b2c3d4e5f60",
+  "event_key": "publish-completed-3c4d5e6f-7a8b-4c9d-8e0f-1a2b3c4d5e6f",
+  "release_id": "3c4d5e6f-7a8b-4c9d-8e0f-1a2b3c4d5e6f"
+}

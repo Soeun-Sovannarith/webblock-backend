@@ -1,0 +1,59 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<!-- Job webblock-site-build (decision 0014). proto-ci.sh replaces the placeholder in <script> with the
+     XML-escaped text of deploy/prototype/jenkins/Jenkinsfile, and the image puts the result in
+     $JENKINS_HOME/jobs/webblock-site-build/config.xml. Parameters are not trimmed: a value with
+     surrounding white space fails the pipeline's validation instead of being silently changed. -->
+<flow-definition plugin="workflow-job">
+  <description>Builds one release attempt of a WebBlock website at one exact commit with BuildKit, pushes the image to the local registry and archives result.json. Triggered and polled by Provisioning.</description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <jenkins.model.BuildDiscarderProperty>
+      <strategy class="hudson.tasks.LogRotator">
+        <daysToKeep>-1</daysToKeep>
+        <numToKeep>500</numToKeep>
+        <artifactDaysToKeep>-1</artifactDaysToKeep>
+        <artifactNumToKeep>-1</artifactNumToKeep>
+      </strategy>
+    </jenkins.model.BuildDiscarderProperty>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>PROJECT_ID</name>
+          <description>Project UUID (lowercase).</description>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>RELEASE_ID</name>
+          <description>Release UUID (lowercase).</description>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>ATTEMPT</name>
+          <description>Build attempt number, from 1.</description>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>REPOSITORY_URL</name>
+          <description>http(s) URL of the Git repository.</description>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>COMMIT_SHA</name>
+          <description>Full 40-character lowercase commit SHA to build.</description>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>IMAGE_REPOSITORY</name>
+          <description>Target image repository: &lt;registry&gt;/webblock/sites/&lt;PROJECT_ID&gt;.</description>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps">
+    <script>@PIPELINE_SCRIPT@</script>
+    <sandbox>true</sandbox>
+  </definition>
+  <triggers/>
+  <disabled>false</disabled>
+</flow-definition>

@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "message_id": "3f0c2a52-6a7b-4c8e-9d11-0a1b2c3d4e01",
+  "occurred_at": "2026-10-06T08:30:00Z",
+  "correlation_id": "corr-0001",
+  "project_id": "6b1f3a52-0d7e-4b7c-8a21-5c3d9e0f1a02",
+  "fencing_generation": 4,
+  "message_type": "provisioning.command_job",
+  "command_id": "c4a5d674-2f90-4d9e-8c43-7e5f1a2b3c04",
+  "kind": "deploy"
+}

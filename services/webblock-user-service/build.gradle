@@ -1,0 +1,72 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '4.1.1'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'org.kshrd.webblock'
+version = '0.0.1-SNAPSHOT'
+description = 'user-service'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    // Spring Cloud 2025.1.x is the release train for Spring Boot 4.0.x - 4.1.x
+    set('springCloudVersion', "2025.1.3")
+    // Not managed by the Spring Boot BOM: springdoc 3.x targets Boot 4.x
+    set('springdocVersion', "3.1.1")
+    // Not managed by the Spring Boot BOM: Keycloak Admin REST client (create users, set passwords)
+    set('keycloakAdminClientVersion', "26.0.12")
+}
+
+dependencies {
+    // Web + API docs
+    implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    // Security: every service validates the Keycloak JWT itself (no call to user-service)
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdocVersion}"
+    // Database: JPA + PostgreSQL, schema owned by Flyway migrations (src/main/resources/db/migration)
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-flyway'
+    implementation 'org.flywaydb:flyway-database-postgresql'
+    runtimeOnly 'org.postgresql:postgresql'
+    // Keycloak Admin API: user-service only (registration, password reset)
+    implementation "org.keycloak:keycloak-admin-client:${keycloakAdminClientVersion}"
+    // Health + service discovery (Eureka locally, off in k8s) + calls to other services
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-security-test'
+    // Tests start a real PostgreSQL in Docker
+    testImplementation 'org.springframework.boot:spring-boot-testcontainers'
+    testImplementation 'org.testcontainers:testcontainers-junit-jupiter'
+    testImplementation 'org.testcontainers:testcontainers-postgresql'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    // Redis: OTP codes (team decision: no OTP table)
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    // Send the OTP email
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

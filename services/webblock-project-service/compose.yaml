@@ -1,0 +1,51 @@
+# Local development only: one PostgreSQL 18 holding the project database and the shared catalog database, and a
+# RabbitMQ broker, for the prototype profile. Every value comes from `.env` (copy of `.env.example`), which Docker
+# Compose reads from this folder. Start: `docker compose up -d`. Reset: `docker compose down -v`.
+name: webblock-project
+
+services:
+  postgres:
+    image: postgres:18
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      PROJECT_DB_APP_USER: ${PROJECT_DB_APP_USER:-project_app_login}
+      PROJECT_DB_APP_PASSWORD: ${PROJECT_DB_APP_PASSWORD:?set PROJECT_DB_APP_PASSWORD in .env}
+      PROJECT_DB_MIGRATOR_USER: ${PROJECT_DB_MIGRATOR_USER:-project_migrator_login}
+      PROJECT_DB_MIGRATOR_PASSWORD: ${PROJECT_DB_MIGRATOR_PASSWORD:?set PROJECT_DB_MIGRATOR_PASSWORD in .env}
+      CATALOG_DB_PLATFORM_USER: ${CATALOG_DB_PLATFORM_USER:-catalog_platform_login}
+      CATALOG_DB_PLATFORM_PASSWORD: ${CATALOG_DB_PLATFORM_PASSWORD:?set CATALOG_DB_PLATFORM_PASSWORD in .env}
+      CATALOG_DB_MIGRATOR_USER: ${CATALOG_DB_MIGRATOR_USER:-catalog_migrator_login}
+      CATALOG_DB_MIGRATOR_PASSWORD: ${CATALOG_DB_MIGRATOR_PASSWORD:?set CATALOG_DB_MIGRATOR_PASSWORD in .env}
+    ports:
+      - "${POSTGRES_HOST_PORT:-5433}:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql
+      # Run once, on an empty volume, in name order: the group roles, then the logins and the two databases.
+      - ./scripts/db/bootstrap-roles.sql:/docker-entrypoint-initdb.d/01-bootstrap-roles.sql:ro
+      - ./scripts/db/catalog-bootstrap-roles.sql:/docker-entrypoint-initdb.d/02-catalog-bootstrap-roles.sql:ro
+      - ./scripts/db/local/03-logins-and-databases.sh:/docker-entrypoint-initdb.d/03-logins-and-databases.sh:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d catalog"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  rabbitmq:
+    image: rabbitmq:4.3.6-management-alpine
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:-project}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:?set RABBITMQ_PASSWORD in .env}
+    ports:
+      - "${RABBITMQ_PORT:-5672}:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+volumes:
+  postgres-data:
+  rabbitmq-data:

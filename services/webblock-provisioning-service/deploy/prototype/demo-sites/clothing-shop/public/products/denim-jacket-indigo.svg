@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000" role="img" aria-labelledby="t">
+<title id="t">Illustration of an indigo selvedge denim jacket with contrast stitching</title>
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f5efe4"/><stop offset="1" stop-color="#efe6d6"/></linearGradient>
+<filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur in="SourceAlpha" stdDeviation="14"/><feOffset dy="18" result="b"/><feComponentTransfer><feFuncA type="linear" slope="0.18"/></feComponentTransfer><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<rect width="800" height="1000" fill="url(#bg)"/>
+<g filter="url(#shadow)" stroke-linejoin="round" stroke-linecap="round">
+<path d="M340 215 L245 250 L190 305 L140 690 L205 702 L245 450 L245 720 L555 720 L555 450 L595 702 L660 690 L610 305 L555 250 L460 215 Z" fill="#3d5a87" stroke="#283a58" stroke-width="5"/>
+<path d="M140 690 L205 702 L200 742 L135 730 Z M660 690 L595 702 L600 742 L665 730 Z" fill="#37517a" stroke="#283a58" stroke-width="5"/>
+<path d="M245 680 L555 680 L555 720 L245 720 Z" fill="#37517a" stroke="#283a58" stroke-width="4"/>
+<path d="M340 215 L400 300 L300 312 L300 250 Z" fill="#506a93" stroke="#283a58" stroke-width="4"/>
+<path d="M460 215 L400 300 L500 312 L500 250 Z" fill="#506a93" stroke="#283a58" stroke-width="4"/>
+<path d="M400 300 L400 720" stroke="#283a58" stroke-width="4"/>
+<path d="M412 300 L412 720" stroke="#d98a3a" stroke-width="2.5" stroke-dasharray="6 5"/>
+<path d="M270 360 L370 360 L370 400 L320 412 L270 400 Z" fill="#47628d" stroke="#283a58" stroke-width="4"/>
+<path d="M430 360 L530 360 L530 400 L480 412 L430 400 Z" fill="#47628d" stroke="#283a58" stroke-width="4"/>
+<path d="M276 368 L364 368 M436 368 L524 368" stroke="#d98a3a" stroke-width="2.5" stroke-dasharray="6 5"/>
+<path d="M285 412 L285 470 L355 470 L355 412 M445 412 L445 470 L515 470 L515 412" fill="none" stroke="#d98a3a" stroke-width="2.5" stroke-dasharray="6 5"/>
+<path d="M320 470 L320 680 M480 470 L480 680" stroke="#283a58" stroke-width="3"/>
+<path d="M330 470 L330 680 M490 470 L490 680" stroke="#d98a3a" stroke-width="2.5" stroke-dasharray="6 5"/>
+<path d="M252 688 L548 688" stroke="#d98a3a" stroke-width="2.5" stroke-dasharray="6 5"/>
+<circle cx="320" cy="395" r="9" fill="#b8b2a6" stroke="#6e6a62" stroke-width="3"/><circle cx="480" cy="395" r="9" fill="#b8b2a6" stroke="#6e6a62" stroke-width="3"/><circle cx="400" cy="340" r="9" fill="#b8b2a6" stroke="#6e6a62" stroke-width="3"/><circle cx="400" cy="430" r="9" fill="#b8b2a6" stroke="#6e6a62" stroke-width="3"/><circle cx="400" cy="520" r="9" fill="#b8b2a6" stroke="#6e6a62" stroke-width="3"/><circle cx="400" cy="610" r="9" fill="#b8b2a6" stroke="#6e6a62" stroke-width="3"/><circle cx="400" cy="700" r="9" fill="#b8b2a6" stroke="#6e6a62" stroke-width="3"/><circle cx="270" cy="700" r="9" fill="#b8b2a6" stroke="#6e6a62" stroke-width="3"/><circle cx="530" cy="700" r="9" fill="#b8b2a6" stroke="#6e6a62" stroke-width="3"/>
+<path d="M190 305 L245 450 M610 305 L555 450" stroke="#283a58" stroke-width="3" opacity="0.5" fill="none"/>
+<path d="M150 600 Q170 640 160 680 M650 600 Q630 640 640 680" stroke="#ffffff" stroke-width="6" opacity="0.18" fill="none"/>
+</g>
+</svg>

@@ -1,0 +1,50 @@
+# The shared public Gateway of the prototype stack on the k3d engine (spike design
+# .claude/docs/designs/k3s-site-cluster-spike.md G6), applied by proto-up instead of 20-gateway.yaml
+# when the engine is k3d. It is 20-gateway.yaml with two differences only, both Traefik's:
+#   gatewayClassName traefik  (k3s's packaged Traefik, deploy/kind/k3d/traefik-config.yaml)
+#   ports 8000 and 8443       (Traefik's rule: a listener's port must equal an entry point's port; the
+#                              Traefik Service exposes them as 80 and 443)
+# The name webblock-gateway/webblock-public, the listener names, the hostnames *.sites.webblock.test
+# (which cover <subdomain>-preview.sites.webblock.test, FR-20), the TLS Secret sites-wildcard-tls and
+# allowedRoutes (tenant namespaces only) are the same, so the worker's routes attach unchanged.
+# tests/unit/deploy/test_gateway_variants.py keeps the two files equal apart from those fields.
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: webblock-public
+  namespace: webblock-gateway
+spec:
+  gatewayClassName: traefik
+  listeners:
+    - name: http-sites
+      protocol: HTTP
+      port: 8000
+      hostname: "*.sites.webblock.test"
+      allowedRoutes:
+        kinds:
+          - group: gateway.networking.k8s.io
+            kind: HTTPRoute
+        namespaces:
+          from: Selector
+          selector:
+            matchLabels:
+              websites.webblock.internal/tenant: "true"
+    - name: https-sites
+      protocol: HTTPS
+      port: 8443
+      hostname: "*.sites.webblock.test"
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - group: ""
+            kind: Secret
+            name: sites-wildcard-tls
+      allowedRoutes:
+        kinds:
+          - group: gateway.networking.k8s.io
+            kind: HTTPRoute
+        namespaces:
+          from: Selector
+          selector:
+            matchLabels:
+              websites.webblock.internal/tenant: "true"

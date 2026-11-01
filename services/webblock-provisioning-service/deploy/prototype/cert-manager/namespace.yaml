@@ -1,0 +1,13 @@
+# The cert-manager namespace (task T1), created before the chart so it carries Pod Security
+# restricted: the chart's pods run as non-root with a read-only root file system and no capabilities.
+# It also holds the local CA's key pair, Secret webblock-local-ca (a ClusterIssuer's CA Secret lives
+# in cert-manager's cluster resource namespace, which is this one).
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: cert-manager
+  labels:
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/enforce-version: v1.36
+    pod-security.kubernetes.io/warn: restricted
+    pod-security.kubernetes.io/warn-version: v1.36

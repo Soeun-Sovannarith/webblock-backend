@@ -1,0 +1,24 @@
+Vendored skill: differential-review
+
+Repository: https://github.com/trailofbits/skills
+Path: plugins/differential-review/skills/differential-review/
+Commit: 82fe8226252622fa807643bdca1710901198553a (committed 28 September 2026)
+Last upstream change to this path at that commit: 123037e (16 September 2026)
+Licence: CC-BY-SA-4.0 (Creative Commons Attribution-ShareAlike 4.0 International,
+  https://creativecommons.org/licenses/by-sa/4.0/). Made by Trail of Bits (https://www.trailofbits.com/).
+  LICENSE here is the repository LICENSE from the same commit. Share changes under the same licence.
+Copied from the Provisioning service's vendored copy; `diff -r` against the upstream folder at that
+  commit shows no difference. Nothing in it runs a script or calls a cluster.
+
+Files removed or changed:
+Local edit: em and en dashes replaced (docs-style rule).
+
+Notes for this repo:
+- SKILL.md names the agent differential-review:adversarial-modeler. It comes only with the Trail of Bits
+  differential-review plugin, which is not vendored. Without it, follow adversarial.md by hand.
+- methodology.md says `git checkout <baseline_commit>`. In this repo never switch the shared tree: use
+  `git show <commit>:<file>` or a separate worktree under .claude/worktrees/.
+- reporting.md saves the report in the working folder, the Desktop or ~/.claude. In this repo save it under
+  ai/reviews/, without emoji.
+
+This copy does not update itself. Re-vendor on purpose, from a commit at least 14 days old.

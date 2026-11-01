@@ -1,0 +1,1117 @@
+{
+  "templates": [
+    {
+      "templateCode": "everyday_store",
+      "name": "Everyday store",
+      "description": "Products, categories and clear prices",
+      "badge": "Popular",
+      "thumbnailUrl": "/mock/templates/everyday-store.png",
+      "styleKey": "everyday-store",
+      "version": "1.0.0",
+      "businessTypeCodes": [
+        "*"
+      ],
+      "componentCatalogVersion": "0.1.0",
+      "pages": [
+        {
+          "name": "Home",
+          "path": "/",
+          "sortOrder": 0,
+          "seoTitle": null,
+          "seoDescription": null,
+          "puckTree": {
+            "root": {
+              "props": {
+                "templateId": "everyday-store",
+                "businessName": "Petal & Stem",
+                "statusText": "Open now · until 18:00",
+                "hours": "9:00 – 18:00",
+                "hoursDetail": "Mon – Fri 9:00 – 18:00 · Sat 9:00 – 13:00 · Sun closed",
+                "address": "18 Garden Lane, Phnom Penh",
+                "email": "hello@petalandstem.com",
+                "telegram": "petalandstem",
+                "facebookUrl": "https://facebook.com/petalandstem",
+                "instagramUrl": "https://instagram.com/petalandstem",
+                "buttonStyle": "rounded",
+                "phones": [
+                  {
+                    "number": "012 345 678"
+                  }
+                ],
+                "currency": "USD",
+                "palette": "original",
+                "accentColor": null,
+                "backgroundColor": null,
+                "textColor": null,
+                "font": "original"
+              }
+            },
+            "content": [
+              {
+                "type": "Hero",
+                "props": {
+                  "id": "everyday-store-hero",
+                  "eyebrow": "",
+                  "heading": "Fresh flowers for\nevery moment.",
+                  "description": "Hand-tied bouquets, single stems and event flowers, arranged in our studio and delivered across town.",
+                  "primaryLabel": "Shop flowers",
+                  "primaryAction": "shop",
+                  "secondaryLabel": "Visit the studio",
+                  "secondaryAction": "visit",
+                  "imageUrl": "/mock/templates/everyday-store/hero.webp",
+                  "sideImages": [],
+                  "highlights": [],
+                  "badge": "",
+                  "align": "left",
+                  "spacing": "normal"
+                }
+              },
+              {
+                "type": "ProductCards",
+                "props": {
+                  "id": "everyday-store-product-cards",
+                  "eyebrow": "",
+                  "heading": "Fresh picks, hand-tied today",
+                  "viewAllLabel": "View all products",
+                  "products": [
+                    {
+                      "name": "Blue lily stem",
+                      "description": "Single, long-stemmed",
+                      "price": "6.00",
+                      "category": "Flowers",
+                      "imageUrl": "/mock/templates/everyday-store/hero.webp"
+                    },
+                    {
+                      "name": "Gift bouquet",
+                      "description": "Wrapped and ready to give",
+                      "price": "38.00",
+                      "category": "Gifts",
+                      "imageUrl": "/mock/templates/everyday-store/gift-bouquet.webp"
+                    },
+                    {
+                      "name": "Stone vase",
+                      "description": "Handmade ceramic",
+                      "price": "24.00",
+                      "category": "Gifts",
+                      "imageUrl": "/mock/templates/everyday-store/stone-vase.webp"
+                    },
+                    {
+                      "name": "Lily bunch",
+                      "description": "Three stems, hand-tied",
+                      "price": "16.00",
+                      "category": "Bouquets",
+                      "imageUrl": "/mock/templates/everyday-store/lily-bunch.webp"
+                    }
+                  ],
+                  "columns": "4",
+                  "align": "left",
+                  "spacing": "normal"
+                }
+              },
+              {
+                "type": "AllProducts",
+                "props": {
+                  "id": "everyday-store-all-products",
+                  "eyebrow": "",
+                  "heading": "Everything in the studio",
+                  "searchPlaceholder": "Search flowers, bouquets, gifts…",
+                  "categories": [
+                    {
+                      "name": "Flowers"
+                    },
+                    {
+                      "name": "Bouquets"
+                    },
+                    {
+                      "name": "Gifts"
+                    },
+                    {
+                      "name": "Events"
+                    }
+                  ],
+                  "products": [
+                    {
+                      "name": "Blue lily stem",
+                      "description": "Single, long-stemmed",
+                      "price": "6.00",
+                      "category": "Flowers",
+                      "imageUrl": "/mock/templates/everyday-store/hero.webp"
+                    },
+                    {
+                      "name": "Gift bouquet",
+                      "description": "Wrapped and ready to give",
+                      "price": "38.00",
+                      "category": "Gifts",
+                      "imageUrl": "/mock/templates/everyday-store/gift-bouquet.webp"
+                    },
+                    {
+                      "name": "Lily bunch",
+                      "description": "Three stems, hand-tied",
+                      "price": "16.00",
+                      "category": "Bouquets",
+                      "imageUrl": "/mock/templates/everyday-store/lily-bunch.webp"
+                    },
+                    {
+                      "name": "Stone vase",
+                      "description": "Handmade ceramic",
+                      "price": "24.00",
+                      "category": "Gifts",
+                      "imageUrl": "/mock/templates/everyday-store/stone-vase.webp"
+                    },
+                    {
+                      "name": "Table arrangement",
+                      "description": "For home or events",
+                      "price": "45.00",
+                      "category": "Events",
+                      "imageUrl": "/mock/templates/everyday-store/table-arrangement.webp"
+                    },
+                    {
+                      "name": "Spring tulip bunch",
+                      "description": "This week's special",
+                      "price": "14.00",
+                      "category": "Bouquets",
+                      "imageUrl": "/mock/templates/everyday-store/spring-tulip-bunch.webp"
+                    },
+                    {
+                      "name": "Peony bouquet",
+                      "description": "Soft pink, seasonal",
+                      "price": "32.00",
+                      "category": "Bouquets",
+                      "imageUrl": "/mock/templates/everyday-store/table-arrangement.webp"
+                    },
+                    {
+                      "name": "Dried grass bunch",
+                      "description": "Lasts for months",
+                      "price": "18.00",
+                      "category": "Flowers",
+                      "imageUrl": "/mock/templates/everyday-store/spring-tulip-bunch.webp"
+                    },
+                    {
+                      "name": "Ceramic bud vase",
+                      "description": "Hand-thrown, matte glaze",
+                      "price": "22.00",
+                      "category": "Gifts",
+                      "imageUrl": "/mock/templates/everyday-store/stone-vase.webp"
+                    },
+                    {
+                      "name": "Pampas stem",
+                      "description": "Dried, long-lasting",
+                      "price": "12.00",
+                      "category": "Flowers",
+                      "imageUrl": "/mock/templates/everyday-store/hero.webp"
+                    },
+                    {
+                      "name": "Petal candle",
+                      "description": "Hand-poured soy wax",
+                      "price": "26.00",
+                      "category": "Gifts",
+                      "imageUrl": "/mock/templates/everyday-store/gift-bouquet.webp"
+                    },
+                    {
+                      "name": "Bud vase",
+                      "description": "Small, hand-glazed",
+                      "price": "18.00",
+                      "category": "Gifts",
+                      "imageUrl": "/mock/templates/everyday-store/stone-vase.webp"
+                    },
+                    {
+                      "name": "Wedding arch garland with seasonal roses, eucalyptus and trailing jasmine",
+                      "description": "Made to measure for ceremonies",
+                      "price": "180.00",
+                      "category": "Events",
+                      "imageUrl": null
+                    },
+                    {
+                      "name": "Sunflower single stem",
+                      "description": "Bright, cheerful, one stem",
+                      "price": "4.50",
+                      "category": "Flowers",
+                      "imageUrl": null
+                    }
+                  ],
+                  "pageSize": 12,
+                  "columns": "4",
+                  "align": "left",
+                  "spacing": "normal"
+                }
+              },
+              {
+                "type": "About",
+                "props": {
+                  "id": "everyday-store-about",
+                  "eyebrow": "",
+                  "heading": "About the studio",
+                  "body": "We’re a two-person flower studio on Garden Lane. Every bouquet is arranged by hand the morning it goes out, with seasonal stems from local growers.",
+                  "imageUrl": "/mock/templates/everyday-store/table-arrangement.webp",
+                  "caption": "",
+                  "stats": [],
+                  "align": "left",
+                  "spacing": "normal"
+                }
+              },
+              {
+                "type": "VisitUs",
+                "props": {
+                  "id": "everyday-store-visit-us",
+                  "eyebrow": "Visit us",
+                  "heading": "Come and see the studio",
+                  "align": "center",
+                  "spacing": "normal"
+                }
+              },
+              {
+                "type": "Footer",
+                "props": {
+                  "id": "everyday-store-footer",
+                  "tagline": "",
+                  "align": "center",
+                  "spacing": "normal"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "templateCode": "sweet_pastel",
+      "name": "Sweet pastel",
+      "description": "Round photos, stickers, candy colours",
+      "badge": null,
+      "thumbnailUrl": "/mock/templates/sweet-pastel.png",
+      "styleKey": "sweet-pastel",
+      "version": "1.0.0",
+      "businessTypeCodes": [
+        "*"
+      ],
+      "componentCatalogVersion": "0.1.0",
+      "pages": [
+        {
+          "name": "Home",
+          "path": "/",
+          "sortOrder": 0,
+          "seoTitle": null,
+          "seoDescription": null,
+          "puckTree": {
+            "root": {
+              "props": {
+                "templateId": "sweet-pastel",
+                "businessName": "Sugar & Crumb",
+                "statusText": "Open now · until 19:00",
+                "hours": "7:00 – 19:00",
+                "hoursDetail": "Mon – Sun 7:00 – 19:00",
+                "address": "22 Street 240, Phnom Penh",
+                "email": "hello@sugarandcrumb.com",
+                "telegram": "sugarandcrumb",
+                "facebookUrl": "https://facebook.com/sugarandcrumb",
+                "instagramUrl": "https://instagram.com/sugarandcrumb",
+                "buttonStyle": "pill",
+                "phones": [
+                  {
+                    "number": "012 345 678"
+                  }
+                ],
+                "currency": "USD",
+                "palette": "original",
+                "accentColor": null,
+                "backgroundColor": null,
+                "textColor": null,
+                "font": "original"
+              }
+            },
+            "content": [
+              {
+                "type": "Hero",
+                "props": {
+                  "id": "sweet-pastel-hero",
+                  "eyebrow": "fresh from the oven, every single day",
+                  "heading": "Baked fresh,\nevery morning.",
+                  "description": "Cupcakes, cakes and small treats from our kitchen on Street 240. Come in early, the good ones go first.",
+                  "primaryLabel": "See the treats",
+                  "primaryAction": "shop",
+                  "secondaryLabel": "Visit the bakery",
+                  "secondaryAction": "visit",
+                  "imageUrl": "/mock/templates/sweet-pastel/cupcake-stand.webp",
+                  "sideImages": [
+                    {
+                      "imageUrl": "/mock/templates/sweet-pastel/strawberry-cupcake.webp"
+                    },
+                    {
+                      "imageUrl": "/mock/templates/sweet-pastel/lemon-tart.webp"
+                    }
+                  ],
+                  "highlights": [
+                    {
+                      "text": "open from 7 am!"
+                    },
+                    {
+                      "text": "100% real butter"
+                    }
+                  ],
+                  "badge": "",
+                  "align": "center",
+                  "spacing": "normal"
+                }
+              },
+              {
+                "type": "ProductCards",
+                "props": {
+                  "id": "sweet-pastel-product-cards",
+                  "columns": "3",
+                  "eyebrow": "popular this week",
+                  "heading": "This week's favourites",
+                  "viewAllLabel": "View all products",
+                  "products": [
+                    {
+                      "name": "Strawberry cupcake",
+                      "description": "Fresh berry, vanilla sponge",
+                      "price": "2.50",
+                      "category": "Cupcakes",
+                      "imageUrl": "/mock/templates/sweet-pastel/strawberry-cupcake.webp"
+                    },
+                    {
+                      "name": "Chocolate fudge cake",
+                      "description": "By the slice or whole",
+                      "price": "4.00",
+                      "category": "Cakes",
+                      "imageUrl": "/mock/templates/sweet-pastel/chocolate-fudge-cake.webp"
+                    },
+                    {
+                      "name": "Lemon tart",
+                      "description": "Toasted meringue top",
+                      "price": "3.50",
+                      "category": "Pastries",
+                      "imageUrl": "/mock/templates/sweet-pastel/lemon-tart.webp"
+                    }
+                  ],
+                  "align": "center",
+                  "spacing": "normal"
+                }
+              },
+              {
+                "type": "AllProducts",
+                "props": {
+                  "id": "sweet-pastel-all-products",
+                  "columns": "4",
+                  "eyebrow": "everything we bake",
+                  "heading": "Everything in the bakery",
+                  "searchPlaceholder": "Search cupcakes, cakes, boxes…",
+                  "categories": [
+                    {
+                      "name": "Cupcakes"
+                    },
+                    {
+                      "name": "Cakes"
+                    },
+                    {
+                      "name": "Pastries"
+                    },
+                    {
+                      "name": "Gift boxes"
+                    }
+                  ],
+                  "products": [
+                    {
+                      "name": "Strawberry cupcake",
+                      "description": "Fresh berry, vanilla sponge",
+                      "price": "2.50",
+                      "category": "Cupcakes",
+                      "imageUrl": "/mock/templates/sweet-pastel/strawberry-cupcake.webp"
+                    },
+                    {
+                      "name": "Chocolate fudge cake",
+                      "description": "By the slice or whole",
+                      "price": "4.00",
+                      "category": "Cakes",
+                      "imageUrl": "/mock/templates/sweet-pastel/chocolate-fudge-cake.webp"
+                    },
+                    {
+                      "name": "Lemon tart",
+                      "description": "Toasted meringue top",
+                      "price": "3.50",
+                      "category": "Pastries",
+                      "imageUrl": "/mock/templates/sweet-pastel/lemon-tart.webp"
+                    },
+                    {
+                      "name": "Birthday box of six",
+                      "description": "Mix any flavours",
+                      "price": "14.00",
+                      "category": "Gift boxes",
+                      "imageUrl": "/mock/templates/sweet-pastel/birthday-box.webp"
+                    },
+                    {
+                      "name": "Cinnamon roll",
+                      "description": "Baked every morning",
+                      "price": "3.00",
+                      "category": "Pastries",
+                      "imageUrl": "/mock/templates/sweet-pastel/cinnamon-roll.webp"
+                    },
+                    {
+                      "name": "Vanilla bean cupcake",
+                      "description": "Classic buttercream",
+                      "price": "2.50",
+                      "category": "Cupcakes",
+                      "imageUrl": "/mock/templates/sweet-pastel/strawberry-cupcake.webp"
+                    },
+                    {
+                      "name": "Red velvet slice",
+                      "description": "Cream cheese frosting",
+                      "price": "4.00",
+                      "category": "Cakes",
+                      "imageUrl": "/mock/templates/sweet-pastel/chocolate-fudge-cake.webp"
+                    },
+                    {
+                      "name": "Mini tart trio",
+                      "description": "Lemon, berry, chocolate",
+                      "price": "9.00",
+                      "category": "Pastries",
+                      "imageUrl": "/mock/templates/sweet-pastel/lemon-tart.webp"
+                    },
+                    {
+                      "name": "Salted caramel cupcake",
+                      "description": "Caramel centre, sea salt flakes",
+                      "price": "2.75",
+                      "category": "Cupcakes",
+                      "imageUrl": null
+                    },
+                    {
+                      "name": "Triple chocolate celebration layer cake with salted caramel drizzle",
+                      "description": "Serves 10 to 12 · two days' notice",
+                      "price": "28.00",
+                      "category": "Cakes",
+                      "imageUrl": "/mock/templates/sweet-pastel/chocolate-fudge-cake.webp"
+                    },
+                    {
+                      "name": "Afternoon tea box",
+                      "description": "Four cupcakes and two tarts",
+                      "price": "16.00",
+                      "category": "Gift boxes",
+                      "imageUrl": "/mock/templates/sweet-pastel/birthday-box.webp"
+                    },
+                    {
+                      "name": "Pistachio cupcake",
+                      "description": "Pistachio cream, rose petals",
+                      "price": "2.75",
+                      "category": "Cupcakes",
+                      "imageUrl": "/mock/templates/sweet-pastel/strawberry-cupcake.webp"
+                    }
+                  ],
+                  "pageSize": 8,
+                  "align": "left",
+                  "spacing": "normal"
+                }
+              },
+              {
+                "type": "About",
+                "props": {
+                  "id": "sweet-pastel-about",
+                  "eyebrow": "our story",
+                  "heading": "About the bakery",
+                  "body": "We're a family bakery on Street 240. Everything is mixed, baked and iced in our own kitchen each morning — no mixes, no shortcuts. Come in for a coffee and watch the next batch come out of the oven.",
+                  "imageUrl": "/mock/templates/sweet-pastel/about-baker.webp",
+                  "caption": "",
+                  "stats": [
+                    {
+                      "value": "40+",
+                      "label": "treats daily"
+                    },
+                    {
+                      "value": "6 am",
+                      "label": "first batch"
+                    },
+                    {
+                      "value": "100%",
+                      "label": "real butter"
+                    }
+                  ],
+                  "align": "left",
+                  "spacing": "normal"
+                }
+              },
+              {
+                "type": "VisitUs",
+                "props": {
+                  "id": "sweet-pastel-visit-us",
+                  "eyebrow": "come say hi",
+                  "heading": "Come and see the bakery",
+                  "align": "center",
+                  "spacing": "normal"
+                }
+              },
+              {
+                "type": "Footer",
+                "props": {
+                  "id": "sweet-pastel-footer",
+                  "tagline": "",
+                  "align": "center",
+                  "spacing": "normal"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "templateCode": "warm_bold",
+      "name": "Warm & bold",
+      "description": "Full-bleed hero, serif, menu-board grid",
+      "badge": null,
+      "thumbnailUrl": "/mock/templates/warm-bold.png",
+      "styleKey": "warm-bold",
+      "version": "1.0.0",
+      "businessTypeCodes": [
+        "*"
+      ],
+      "componentCatalogVersion": "0.1.0",
+      "pages": [
+        {
+          "name": "Home",
+          "path": "/",
+          "sortOrder": 0,
+          "seoTitle": null,
+          "seoDescription": null,
+          "puckTree": {
+            "root": {
+              "props": {
+                "templateId": "warm-bold",
+                "businessName": "Kiln Coffee",
+                "statusText": "Open now · until 17:00",
+                "hours": "6:30 – 17:00",
+                "hoursDetail": "Mon – Sun · 6:30 – 17:00",
+                "address": "8 Street 308, Phnom Penh",
+                "email": "hello@kilncoffee.com",
+                "telegram": "kilncoffee",
+                "facebookUrl": "https://facebook.com/kilncoffee",
+                "instagramUrl": "https://instagram.com/kilncoffee",
+                "buttonStyle": "square",
+                "phones": [
+                  {
+                    "number": "012 345 678"
+                  }
+                ],
+                "currency": "USD",
+                "palette": "original",
+                "accentColor": null,
+                "backgroundColor": null,
+                "textColor": null,
+                "font": "original"
+              }
+            },
+            "content": [
+              {
+                "type": "Hero",
+                "props": {
+                  "id": "warm-bold-hero",
+                  "eyebrow": "EST. 2019 — STREET 308, PHNOM PENH",
+                  "heading": "Roasted this week,\nbrewed for you.",
+                  "description": "Small-batch beans roasted in our shop on Street 308, and a bar that pours them properly.",
+                  "primaryLabel": "See the menu",
+                  "primaryAction": "shop",
+                  "secondaryLabel": "Visit the roastery",
+                  "secondaryAction": "visit",
+                  "imageUrl": "/mock/templates/warm-bold/hero-espresso.webp",
+                  "sideImages": [],
+                  "highlights": [
+                    {
+                      "text": "Small batch, roasted here"
+                    },
+                    {
+                      "text": "Beans from farms we visited"
+                    },
+                    {
+                      "text": "Bar open 6:30 – 17:00 daily"
+                    }
+                  ],
+                  "badge": "SMALL BATCH · 2× WEEKLY",
+                  "align": "left",
+                  "spacing": "normal"
+                }
+              },
+              {
+                "type": "ProductCards",
+                "props": {
+                  "id": "warm-bold-product-cards",
+                  "eyebrow": "№ 01 — POPULAR THIS WEEK",
+                  "heading": "What's pouring this week",
+                  "viewAllLabel": "View all products →",
+                  "products": [
+                    {
+                      "name": "House espresso 250 g",
+                      "description": "Chocolate, hazelnut",
+                      "price": "9.00",
+                      "category": "Beans",
+                      "imageUrl": "/mock/templates/warm-bold/espresso-bag.webp"
+                    },
+                    {
+                      "name": "Cold brew bottle",
+                      "description": "330 ml, slow-steeped",
+                      "price": "4.00",
+                      "category": "Drinks",
+                      "imageUrl": "/mock/templates/warm-bold/cold-brew.webp"
+                    },
+                    {
+                      "name": "Flat white",
+                      "description": "Double shot, oat or dairy",
+                      "price": "2.75",
+                      "category": "Drinks",
+                      "imageUrl": "/mock/templates/warm-bold/flat-white.webp"
+                    }
+                  ],
+                  "columns": "3",
+                  "align": "left",
+                  "spacing": "normal"
+                }
+              },
+              {
+                "type": "AllProducts",
+                "props": {
+                  "id": "warm-bold-all-products",
+                  "eyebrow": "№ 02 — ALL PRODUCTS",
+                  "heading": "Beans, drinks and more",
+                  "searchPlaceholder": "Search beans, drinks, merch…",
+                  "categories": [
+                    {
+                      "name": "Beans"
+                    },
+                    {
+                      "name": "Drinks"
+                    },
+                    {
+                      "name": "Food"
+                    },
+                    {
+                      "name": "Merch"
+                    }
+                  ],
+                  "products": [
+                    {
+                      "name": "House espresso 250 g",
+                      "description": "Chocolate, hazelnut",
+                      "price": "9.00",
+                      "category": "Beans",
+                      "imageUrl": "/mock/templates/warm-bold/espresso-bag.webp"
+                    },
+                    {
+                      "name": "Cold brew bottle",
+                      "description": "330 ml, slow-steeped",
+                      "price": "4.00",
+                      "category": "Drinks",
+                      "imageUrl": "/mock/templates/warm-bold/cold-brew.webp"
+                    },
+                    {
+                      "name": "Flat white",
+                      "description": "Double shot, oat or dairy",
+                      "price": "2.75",
+                      "category": "Drinks",
+                      "imageUrl": "/mock/templates/warm-bold/flat-white.webp"
+                    },
+                    {
+                      "name": "Cinnamon bun",
+                      "description": "Baked at 7 am",
+                      "price": "2.50",
+                      "category": "Food",
+                      "imageUrl": "/mock/templates/warm-bold/cinnamon-bun.webp"
+                    },
+                    {
+                      "name": "Ceramic cup",
+                      "description": "Rust glaze, 250 ml",
+                      "price": "12.00",
+                      "category": "Merch",
+                      "imageUrl": "/mock/templates/warm-bold/ceramic-cup.webp"
+                    },
+                    {
+                      "name": "Ethiopia Guji 250 g",
+                      "description": "Floral, bright",
+                      "price": "12.00",
+                      "category": "Beans",
+                      "imageUrl": "/mock/templates/warm-bold/espresso-bag.webp"
+                    },
+                    {
+                      "name": "Iced latte",
+                      "description": "With house syrup",
+                      "price": "3.00",
+                      "category": "Drinks",
+                      "imageUrl": "/mock/templates/warm-bold/cold-brew.webp"
+                    },
+                    {
+                      "name": "Cappuccino",
+                      "description": "Classic, dry foam",
+                      "price": "2.75",
+                      "category": "Drinks",
+                      "imageUrl": "/mock/templates/warm-bold/flat-white.webp"
+                    },
+                    {
+                      "name": "Banana bread slice",
+                      "description": "Brown butter, walnuts",
+                      "price": "2.25",
+                      "category": "Food",
+                      "imageUrl": null
+                    },
+                    {
+                      "name": "Mondulkiri single-origin washed filter roast, limited harvest 250 g",
+                      "description": "Stone fruit, cane sugar",
+                      "price": "11.00",
+                      "category": "Beans",
+                      "imageUrl": "/mock/templates/warm-bold/espresso-bag.webp"
+                    },
+                    {
+                      "name": "Kampot pepper cookie",
+                      "description": "Dark chocolate, sea salt",
+                      "price": "1.75",
+                      "category": "Food",
+                      "imageUrl": "/mock/templates/warm-bold/cinnamon-bun.webp"
+                    },
+                    {
+                      "name": "Enamel travel mug",
+                      "description": "Keeps it hot, 350 ml",
+                      "price": "10.00",
+                      "category": "Merch",
+                      "imageUrl": "/mock/templates/warm-bold/ceramic-cup.webp"
+                    }
+                  ],
+                  "pageSize": 8,
+                  "columns": "4",
+                  "align": "left",
+                  "spacing": "normal"
+                }
+              },
+              {
+                "type": "About",
+                "props": {
+                  "id": "warm-bold-about",
+                  "eyebrow": "№ 03 — ABOUT THE ROASTERY",
+                  "heading": "",
+                  "body": "We roast twice a week on a 5 kg drum at the back of the shop. Every bean comes direct from farms we've visited ourselves.",
+                  "imageUrl": "/mock/templates/warm-bold/roaster.webp",
+                  "caption": "Sok Dara, head roaster",
+                  "stats": [],
+                  "align": "left",
+                  "spacing": "normal"
+                }
+              },
+              {
+                "type": "VisitUs",
+                "props": {
+                  "id": "warm-bold-visit-us",
+                  "eyebrow": "№ 04 — VISIT US",
+                  "heading": "Come and see the roastery",
+                  "align": "center",
+                  "spacing": "normal"
+                }
+              },
+              {
+                "type": "Footer",
+                "props": {
+                  "id": "warm-bold-footer",
+                  "tagline": "Small-batch roastery & bar on Street 308.",
+                  "align": "left",
+                  "spacing": "normal"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "templateCode": "clean_mono",
+      "name": "Clean mono",
+      "description": "Hairlines, big type, catalogue layout",
+      "badge": null,
+      "thumbnailUrl": "/mock/templates/clean-mono.png",
+      "styleKey": "clean-mono",
+      "version": "1.0.0",
+      "businessTypeCodes": [
+        "*"
+      ],
+      "componentCatalogVersion": "0.1.0",
+      "pages": [
+        {
+          "name": "Home",
+          "path": "/",
+          "sortOrder": 0,
+          "seoTitle": null,
+          "seoDescription": null,
+          "puckTree": {
+            "root": {
+              "props": {
+                "templateId": "clean-mono",
+                "businessName": "Northpoint Audio",
+                "statusText": "Open now · until 20:00",
+                "hours": "10:00 – 20:00",
+                "hoursDetail": "Mon – Sun · 10:00 – 20:00",
+                "address": "Floor 2, Sorya Center, Phnom Penh",
+                "email": "hello@northpointaudio.com",
+                "telegram": "northpointaudio",
+                "facebookUrl": "https://facebook.com/northpointaudio",
+                "instagramUrl": "https://instagram.com/northpointaudio",
+                "buttonStyle": "square",
+                "phones": [
+                  {
+                    "number": "012 345 678"
+                  }
+                ],
+                "currency": "USD",
+                "palette": "original",
+                "accentColor": null,
+                "backgroundColor": null,
+                "textColor": null,
+                "font": "original"
+              }
+            },
+            "content": [
+              {
+                "type": "Hero",
+                "props": {
+                  "id": "clean-mono-hero",
+                  "eyebrow": "NP-01 — OVER-EAR WIRELESS",
+                  "heading": "Sound you can feel.",
+                  "description": "Headphones, earbuds and speakers you can try before you decide. Second floor, Sorya Center — bring your own music.",
+                  "primaryLabel": "See the gear",
+                  "primaryAction": "shop",
+                  "secondaryLabel": "Visit the store",
+                  "secondaryAction": "visit",
+                  "imageUrl": "/mock/templates/clean-mono/hero-headphones-white.webp",
+                  "sideImages": [],
+                  "highlights": [
+                    {
+                      "text": "ANC"
+                    },
+                    {
+                      "text": "40 H BATTERY"
+                    },
+                    {
+                      "text": "BT 5.3"
+                    }
+                  ],
+                  "badge": "$89.00",
+                  "align": "left",
+                  "spacing": "normal"
+                }
+              },
+              {
+                "type": "ProductCards",
+                "props": {
+                  "id": "clean-mono-product-cards",
+                  "columns": "3",
+                  "eyebrow": "02 — POPULAR THIS WEEK",
+                  "heading": "Most listened this week",
+                  "viewAllLabel": "View all products",
+                  "products": [
+                    {
+                      "name": "Over-ear wireless",
+                      "description": "40 h battery, ANC",
+                      "price": "89.00",
+                      "category": "Headphones",
+                      "imageUrl": "/mock/templates/clean-mono/over-ear-wireless.webp"
+                    },
+                    {
+                      "name": "True wireless earbuds",
+                      "description": "Case gives 24 h",
+                      "price": "39.00",
+                      "category": "Earbuds",
+                      "imageUrl": "/mock/templates/clean-mono/true-wireless-earbuds.webp"
+                    },
+                    {
+                      "name": "Pocket speaker",
+                      "description": "IPX7, 12 h play",
+                      "price": "59.00",
+                      "category": "Speakers",
+                      "imageUrl": "/mock/templates/clean-mono/pocket-speaker.webp"
+                    }
+                  ],
+                  "align": "left",
+                  "spacing": "normal"
+                }
+              },
+              {
+                "type": "AllProducts",
+                "props": {
+                  "id": "clean-mono-all-products",
+                  "columns": "4",
+                  "eyebrow": "03 — ALL PRODUCTS",
+                  "heading": "Everything in the store",
+                  "searchPlaceholder": "Search headphones, speakers…",
+                  "categories": [
+                    {
+                      "name": "Headphones"
+                    },
+                    {
+                      "name": "Earbuds"
+                    },
+                    {
+                      "name": "Speakers"
+                    },
+                    {
+                      "name": "Accessories"
+                    }
+                  ],
+                  "products": [
+                    {
+                      "name": "Over-ear wireless",
+                      "description": "40 h battery, ANC",
+                      "price": "89.00",
+                      "category": "Headphones",
+                      "imageUrl": "/mock/templates/clean-mono/over-ear-wireless.webp"
+                    },
+                    {
+                      "name": "True wireless earbuds",
+                      "description": "Case gives 24 h",
+                      "price": "39.00",
+                      "category": "Earbuds",
+                      "imageUrl": "/mock/templates/clean-mono/true-wireless-earbuds.webp"
+                    },
+                    {
+                      "name": "Pocket speaker",
+                      "description": "IPX7, 12 h play",
+                      "price": "59.00",
+                      "category": "Speakers",
+                      "imageUrl": "/mock/templates/clean-mono/pocket-speaker.webp"
+                    },
+                    {
+                      "name": "Studio monitor headphones",
+                      "description": "Wired, flat response",
+                      "price": "129.00",
+                      "category": "Headphones",
+                      "imageUrl": "/mock/templates/clean-mono/over-ear-wireless.webp"
+                    },
+                    {
+                      "name": "USB-C cable 1 m",
+                      "description": "Braided, 100 W",
+                      "price": "9.00",
+                      "category": "Accessories",
+                      "imageUrl": "/mock/templates/clean-mono/usb-c-cable.webp"
+                    },
+                    {
+                      "name": "Over-ear wireless · white",
+                      "description": "40 h battery, ANC",
+                      "price": "89.00",
+                      "category": "Headphones",
+                      "imageUrl": "/mock/templates/clean-mono/hero-headphones-white.webp"
+                    },
+                    {
+                      "name": "Sport earbuds",
+                      "description": "Ear hooks, sweat-proof",
+                      "price": "45.00",
+                      "category": "Earbuds",
+                      "imageUrl": "/mock/templates/clean-mono/true-wireless-earbuds.webp"
+                    },
+                    {
+                      "name": "Home speaker",
+                      "description": "Stereo-pair ready",
+                      "price": "119.00",
+                      "category": "Speakers",
+                      "imageUrl": "/mock/templates/clean-mono/pocket-speaker.webp"
+                    },
+                    {
+                      "name": "Noise-cancelling travel headphones with foldable hinge and hard case",
+                      "description": "30 h battery, airplane adapter",
+                      "price": "149.00",
+                      "category": "Headphones",
+                      "imageUrl": "/mock/templates/clean-mono/hero-headphones-white.webp"
+                    },
+                    {
+                      "name": "Walnut headphone stand",
+                      "description": "Solid wood, fits any size",
+                      "price": "25.00",
+                      "category": "Accessories",
+                      "imageUrl": null
+                    },
+                    {
+                      "name": "Kids volume-limited headphones",
+                      "description": "85 dB cap, bendable band",
+                      "price": "29.00",
+                      "category": "Headphones",
+                      "imageUrl": "/mock/templates/clean-mono/over-ear-wireless.webp"
+                    },
+                    {
+                      "name": "Bookshelf speakers (pair)",
+                      "description": "Bluetooth + optical in",
+                      "price": "199.00",
+                      "category": "Speakers",
+                      "imageUrl": "/mock/templates/clean-mono/pocket-speaker.webp"
+                    }
+                  ],
+                  "pageSize": 8,
+                  "align": "left",
+                  "spacing": "normal"
+                }
+              },
+              {
+                "type": "About",
+                "props": {
+                  "id": "clean-mono-about",
+                  "eyebrow": "04 — ABOUT THE STORE",
+                  "heading": "A small audio shop with a listening bar. Take your time — nobody will hover.",
+                  "body": "",
+                  "imageUrl": "/mock/templates/clean-mono/listening-bar.webp",
+                  "caption": "THE LISTENING BAR — FLOOR 2, SORYA CENTER",
+                  "stats": [
+                    {
+                      "value": "120+",
+                      "label": "products you can try before buying"
+                    },
+                    {
+                      "value": "1",
+                      "label": "listening bar, zero pressure"
+                    },
+                    {
+                      "value": "7",
+                      "label": "days a week, 10:00 – 20:00"
+                    }
+                  ],
+                  "align": "left",
+                  "spacing": "normal"
+                }
+              },
+              {
+                "type": "VisitUs",
+                "props": {
+                  "id": "clean-mono-visit-us",
+                  "eyebrow": "05 — VISIT US",
+                  "heading": "Come and listen",
+                  "align": "center",
+                  "spacing": "normal"
+                }
+              },
+              {
+                "type": "Footer",
+                "props": {
+                  "id": "clean-mono-footer",
+                  "tagline": "Sorya Center, floor 2 · Phnom Penh",
+                  "align": "left",
+                  "spacing": "normal"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "templateCode": "blank",
+      "name": "Blank site",
+      "version": "1.0.0",
+      "businessTypeCodes": [
+        "*"
+      ],
+      "componentCatalogVersion": "0.1.0",
+      "pages": [
+        {
+          "name": "Home",
+          "path": "/",
+          "sortOrder": 0,
+          "seoTitle": null,
+          "seoDescription": null,
+          "puckTree": {
+            "root": {
+              "props": {}
+            },
+            "content": []
+          }
+        }
+      ]
+    }
+  ]
+}

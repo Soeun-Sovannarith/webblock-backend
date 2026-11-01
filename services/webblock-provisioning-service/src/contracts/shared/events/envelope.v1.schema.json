@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://webblock.invalid/contracts/events/envelope.v1.schema.json",
+  "title": "Event envelope v1",
+  "description": "ACCEPTED (Notion \"Web Block architecture\" 4.1). The fields every event body carries, in snake_case. Each event schema repeats them, so one file validates one message. The AMQP type property equals message_type and the AMQP message_id equals the body's message_id.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "message_id", "message_type", "occurred_at", "correlation_id", "project_id"],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "message_id": { "type": "string", "format": "uuid", "minLength": 36, "maxLength": 36, "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", "not": {"enum": ["00000000-0000-0000-0000-000000000000"]} },
+    "message_type": { "type": "string", "minLength": 5, "maxLength": 100, "pattern": "^[a-z][a-z_]*\\.[a-z][a-z_]*\\.v[1-9][0-9]*$" },
+    "occurred_at": { "type": "string", "format": "date-time", "maxLength": 40 },
+    "correlation_id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[A-Za-z0-9._:-]{1,128}$" },
+    "project_id": { "type": "string", "format": "uuid", "minLength": 36, "maxLength": 36, "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", "not": {"enum": ["00000000-0000-0000-0000-000000000000"]} }
+  }
+}

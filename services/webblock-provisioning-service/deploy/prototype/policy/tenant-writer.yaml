@@ -1,0 +1,163 @@
+# Policy webblock-tenant-writer (decision 0014 section 21 ruling 1; TR-35). Installed by
+# deploy/kind/proto-policy.sh.
+#
+# Who may write in a tenant. webblock-bootstrap-scope limits what the bootstrap identity writes; this
+# policy is its other half and limits who else writes there:
+#   - Deployments, Services and HTTPRoutes in a tenant namespace (labelled
+#     websites.webblock.internal/tenant=true): only the release worker
+#     system:serviceaccount:webblock:provisioning-worker creates, updates or deletes them;
+#   - tenant Namespaces (named wb-* or labelled tenant=true, before or after the change), RoleBindings in
+#     a tenant namespace and the Secret catalog-runtime there: only the bootstrap identity
+#     system:serviceaccount:webblock:tenant-bootstrap;
+#   - other Secrets in a tenant namespace: only bootstrap or cert-manager's controller
+#     (system:serviceaccount:cert-manager:cert-manager writes the certificates' Secrets).
+#   - the catalog-secret mark of a tenant Namespace (annotation websites.webblock.internal/catalog-secret,
+#     task F2B; decision 0016 section 8 ruling 4): only the bootstrap identity sets, changes or removes
+#     it. The rule before it already keeps every other identity out of tenant namespaces; this one
+#     names the mark, so it holds even if that rule is widened, and its refusal says what it protects.
+#     webblock-bootstrap-scope limits the bootstrap's own moves of it.
+#   - the sub-domain label of a tenant Namespace (websites.webblock.internal/subdomain, decision 0023
+#     G18a): only the bootstrap identity sets, changes or removes it. webblock-site-route-shape trusts
+#     it as the project's own host (the hostname-takeover guard), so it is named here like the mark
+#     (Task 12 security review S6). webblock-bootstrap-scope limits the bootstrap to setting it once.
+#
+# Not matched (matchConditions), and why:
+#   - groups system:masters and kubeadm:cluster-admins (Kind's admin kubeconfig): break-glass, and the
+#     tests' scaffolding. An administrator can delete this policy anyway; the API server audits it;
+#   - ServiceAccounts in kube-system and system:kube-controller-manager: the Kubernetes controllers. The
+#     Deployment controller updates a Deployment's revision annotation, the garbage collector removes
+#     finalizers, and the namespace controller deletes a tenant's objects when its namespace goes;
+#   - subresources (status) are not matched by the rules below at all: the Gateway, cert-manager and
+#     the controllers write status.
+# The content of the worker's writes is checked by webblock-site-binding, -fence, -image, -route-shape
+# and -routed-release, which match the worker only; together with this policy nobody but an
+# administrator can write a per-site object those checks did not see.
+#
+# An ACME HTTP-01 solver would create Services, Pods and HTTPRoutes in the tenant namespace as
+# cert-manager: refused here. The platform uses DNS-01 (decision 0014 section 21 ruling 5) when ACME
+# comes back from hold.
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicy
+metadata:
+  name: webblock-tenant-writer
+  labels:
+    app.kubernetes.io/part-of: webblock-provisioning
+spec:
+  failurePolicy: Fail
+  matchConstraints:
+    resourceRules:
+      - apiGroups: ["apps"]
+        apiVersions: ["*"]
+        operations: ["CREATE", "UPDATE", "DELETE"]
+        resources: ["deployments"]
+      - apiGroups: [""]
+        apiVersions: ["*"]
+        operations: ["CREATE", "UPDATE", "DELETE"]
+        resources: ["services", "secrets", "namespaces"]
+      - apiGroups: ["gateway.networking.k8s.io"]
+        apiVersions: ["*"]
+        operations: ["CREATE", "UPDATE", "DELETE"]
+        resources: ["httproutes"]
+      - apiGroups: ["rbac.authorization.k8s.io"]
+        apiVersions: ["*"]
+        operations: ["CREATE", "UPDATE", "DELETE"]
+        resources: ["rolebindings"]
+  matchConditions:
+    - name: not-break-glass
+      expression: >-
+        !has(request.userInfo.groups) ||
+        !request.userInfo.groups.exists(g, g in ['system:masters', 'kubeadm:cluster-admins'])
+    - name: not-a-kubernetes-controller
+      expression: >-
+        !request.userInfo.username.startsWith('system:serviceaccount:kube-system:') &&
+        request.userInfo.username != 'system:kube-controller-manager'
+  variables:
+    - name: user
+      expression: "request.userInfo.username"
+    - name: worker
+      expression: "'system:serviceaccount:webblock:provisioning-worker'"
+    - name: bootstrap
+      expression: "'system:serviceaccount:webblock:tenant-bootstrap'"
+    - name: isNamespace
+      expression: "request.resource.group == '' && request.resource.resource == 'namespaces'"
+    - name: isSiteObject
+      expression: >-
+        (request.resource.group == 'apps' && request.resource.resource == 'deployments') ||
+        (request.resource.group == '' && request.resource.resource == 'services') ||
+        (request.resource.group == 'gateway.networking.k8s.io' && request.resource.resource == 'httproutes')
+    - name: isSecret
+      expression: "request.resource.group == '' && request.resource.resource == 'secrets'"
+    - name: newIsTenant
+      expression: >-
+        object != null && has(object.metadata.labels) &&
+        'websites.webblock.internal/tenant' in object.metadata.labels
+    - name: oldIsTenant
+      expression: >-
+        oldObject != null && has(oldObject.metadata.labels) &&
+        'websites.webblock.internal/tenant' in oldObject.metadata.labels
+    - name: markKey
+      expression: "'websites.webblock.internal/catalog-secret'"
+    - name: newMark
+      expression: >-
+        variables.isNamespace && object != null && has(object.metadata.annotations) &&
+        variables.markKey in object.metadata.annotations
+        ? object.metadata.annotations[variables.markKey] : '<none>'
+    - name: oldMark
+      expression: >-
+        variables.isNamespace && oldObject != null && has(oldObject.metadata.annotations) &&
+        variables.markKey in oldObject.metadata.annotations
+        ? oldObject.metadata.annotations[variables.markKey] : '<none>'
+    - name: subdomainKey
+      expression: "'websites.webblock.internal/subdomain'"
+    - name: newSubdomain
+      expression: >-
+        variables.isNamespace && object != null && has(object.metadata.labels) &&
+        variables.subdomainKey in object.metadata.labels
+        ? object.metadata.labels[variables.subdomainKey] : '<none>'
+    - name: oldSubdomain
+      expression: >-
+        variables.isNamespace && oldObject != null && has(oldObject.metadata.labels) &&
+        variables.subdomainKey in oldObject.metadata.labels
+        ? oldObject.metadata.labels[variables.subdomainKey] : '<none>'
+    - name: inTenant
+      expression: >-
+        variables.isNamespace
+        ? (request.name.startsWith('wb-') || variables.newIsTenant || variables.oldIsTenant)
+        : (namespaceObject != null && has(namespaceObject.metadata.labels) &&
+           'websites.webblock.internal/tenant' in namespaceObject.metadata.labels &&
+           namespaceObject.metadata.labels['websites.webblock.internal/tenant'] == 'true')
+  validations:
+    - expression: "!variables.inTenant || !variables.isSiteObject || variables.user == variables.worker"
+      reason: Forbidden
+      message: "webblock-tenant-writer: only the release worker writes Deployments, Services and HTTPRoutes in a tenant namespace"
+    - expression: >-
+        !variables.inTenant || !variables.isNamespace || request.operation == 'DELETE' ||
+        variables.newMark == variables.oldMark || variables.user == variables.bootstrap
+      reason: Forbidden
+      message: "webblock-tenant-writer: only the tenant bootstrap identity sets or changes a tenant namespace's catalog-secret mark"
+    - expression: >-
+        !variables.inTenant || !variables.isNamespace || request.operation == 'DELETE' ||
+        variables.newSubdomain == variables.oldSubdomain || variables.user == variables.bootstrap
+      reason: Forbidden
+      message: "webblock-tenant-writer: only the tenant bootstrap identity sets or changes a tenant namespace's sub-domain label"
+    - expression: >-
+        !variables.inTenant || variables.isSiteObject || variables.isSecret ||
+        variables.user == variables.bootstrap
+      reason: Forbidden
+      message: "webblock-tenant-writer: only the tenant bootstrap identity writes tenant namespaces and their RoleBindings"
+    - expression: >-
+        !variables.inTenant || !variables.isSecret || variables.user == variables.bootstrap ||
+        (request.name != 'catalog-runtime' &&
+         variables.user == 'system:serviceaccount:cert-manager:cert-manager')
+      reason: Forbidden
+      message: "webblock-tenant-writer: only the tenant bootstrap identity writes catalog-runtime, and only it or cert-manager other Secrets in a tenant namespace"
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicyBinding
+metadata:
+  name: webblock-tenant-writer
+  labels:
+    app.kubernetes.io/part-of: webblock-provisioning
+spec:
+  policyName: webblock-tenant-writer
+  validationActions: ["Deny"]

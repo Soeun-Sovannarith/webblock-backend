@@ -1,0 +1,16 @@
+{{- /* One ConfigMap of non-secret settings per process (values <process>.env), read whole through envFrom.
+The keys are the loader's (src/provisioning/infrastructure/config); a missing or refused key stops the
+process with exit 2, naming the key and never the value. */}}
+{{- range $component, $values := dict "api" .Values.api "worker" .Values.worker "build-worker" .Values.buildWorker "bootstrap" .Values.bootstrap }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: provisioning-{{ $component }}-env
+  labels:
+    {{- include "provisioning.labels" (dict "root" $ "component" $component) | trim | nindent 4 }}
+data:
+  {{- range $key, $value := $values.env }}
+  {{ $key }}: {{ $value | quote }}
+  {{- end }}
+{{- end }}

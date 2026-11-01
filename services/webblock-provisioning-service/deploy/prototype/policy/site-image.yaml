@@ -1,0 +1,75 @@
+# Policy webblock-site-image (decision 0014 section 21 ruling 1; TR-35; TR-46). Installed
+# by deploy/kind/proto-policy.sh.
+#
+# A Deployment the worker writes in a tenant namespace runs only its own project's built image, pinned by
+# digest: every container and init container image is exactly
+#   <imageRepositoryPrefix><projectId>@sha256:<64 lowercase hex>
+# where the prefix comes from the ConfigMap webblock/webblock-site-policy (site-params.yaml.tmpl;
+# webblock-proto-registry.test:5000/webblock/sites/ on Kind, <Gitea registry>/webblock/sites/ in production) and the
+# project ID from the namespace's label (trusted, see webblock-site-binding). A tag, another registry,
+# another project's repository or a second unchecked container is refused. Pods are not matched: only
+# the ReplicaSet controller creates them, from the template checked here.
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicy
+metadata:
+  name: webblock-site-image
+  labels:
+    app.kubernetes.io/part-of: webblock-provisioning
+spec:
+  failurePolicy: Fail
+  paramKind:
+    apiVersion: v1
+    kind: ConfigMap
+  matchConstraints:
+    namespaceSelector:
+      matchLabels:
+        websites.webblock.internal/tenant: "true"
+    resourceRules:
+      - apiGroups: ["apps"]
+        apiVersions: ["*"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["deployments"]
+  matchConditions:
+    - name: release-worker
+      expression: "request.userInfo.username == 'system:serviceaccount:webblock:provisioning-worker'"
+  variables:
+    - name: prefix
+      expression: >-
+        has(params.data) && 'imageRepositoryPrefix' in params.data ? params.data.imageRepositoryPrefix : ''
+    - name: project
+      expression: >-
+        has(namespaceObject.metadata.labels) &&
+        'websites.webblock.internal/project-id' in namespaceObject.metadata.labels
+        ? namespaceObject.metadata.labels['websites.webblock.internal/project-id'] : ''
+    - name: repository
+      expression: "variables.prefix + variables.project + '@sha256:'"
+    - name: images
+      expression: >-
+        object.spec.template.spec.containers.map(c, has(c.image) ? c.image : '') +
+        (has(object.spec.template.spec.initContainers)
+         ? object.spec.template.spec.initContainers.map(c, has(c.image) ? c.image : '') : [])
+  validations:
+    - expression: "variables.prefix != '' && variables.project != ''"
+      reason: Forbidden
+      message: "webblock-site-image: the image policy has no registry prefix or the namespace no project"
+    - expression: >-
+        variables.images.all(i,
+          i.startsWith(variables.repository) &&
+          size(i) == size(variables.repository) + 64 &&
+          i.matches('@sha256:[0-9a-f]{64}$'))
+      reason: Forbidden
+      message: "webblock-site-image: every container image must be <registry prefix><projectId>@sha256:<digest> of this project"
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicyBinding
+metadata:
+  name: webblock-site-image
+  labels:
+    app.kubernetes.io/part-of: webblock-provisioning
+spec:
+  policyName: webblock-site-image
+  validationActions: ["Deny"]
+  paramRef:
+    name: webblock-site-policy
+    namespace: webblock
+    parameterNotFoundAction: Deny

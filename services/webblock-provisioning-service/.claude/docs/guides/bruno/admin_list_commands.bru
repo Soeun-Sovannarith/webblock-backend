@@ -1,0 +1,69 @@
+meta {
+  name: admin_list_commands
+  type: http
+  seq: 14
+}
+
+get {
+  url: {{baseUrl}}/v1/admin/projects/:projectId/commands
+  body: none
+  auth: bearer
+}
+
+params:path {
+  projectId: 
+}
+
+params:query {
+  ~limit: 20
+  ~cursor: 
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  Admin list of the project's commands, newest first, each with requestedBySubject (absent for a command from an event). Contract: src/contracts/openapi.yaml, operation admin_list_commands.
+
+  Admin only: the token must hold the ADMIN role (in the prototype, the prototype-admin token). Any other token gets 403 ACCESS_DENIED. Query: limit (1 to 50, default 20) and cursor (meta.page.nextCursor of the previous page).
+
+  Example answer (200, application/json). Field names are camelCase; data is the result, meta describes the answer:
+
+  ```json
+  {
+    "success": true,
+    "data": [
+      {
+        "commandId": "0190a1b2-0000-7000-8000-00000000000c",
+        "projectId": "0190a1b2-0000-7000-8000-00000000000a",
+        "kind": "suspend_hosting",
+        "commandNumber": 7,
+        "status": "succeeded",
+        "createdAt": "2026-10-25T09:30:00.123456Z",
+        "updatedAt": "2026-10-25T09:30:04Z",
+        "requestedBySubject": "prototype-admin"
+      },
+      {
+        "commandId": "0190a1b2-0000-7000-8000-00000000000d",
+        "projectId": "0190a1b2-0000-7000-8000-00000000000a",
+        "kind": "suspend_hosting",
+        "commandNumber": 6,
+        "status": "succeeded",
+        "createdAt": "2026-10-08T12:00:00.123456Z",
+        "updatedAt": "2026-10-08T12:00:05Z"
+      }
+    ],
+    "meta": {
+      "requestId": "0199c3a2-7d10-7c1e-9b3a-5f0e2d4c6a81",
+      "timestamp": "2026-10-25T09:31:00.123Z",
+      "path": "/v1/admin/projects/0190a1b2-0000-7000-8000-00000000000a/commands",
+      "status": 200,
+      "page": {
+        "limit": 20,
+        "nextCursor": "YwAAAAAAAAAG"
+      }
+    }
+  }
+  ```
+}

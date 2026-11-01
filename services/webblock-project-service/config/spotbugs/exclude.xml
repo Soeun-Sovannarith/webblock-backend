@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  SpotBugs skips generated code (decision 0009). The build generates no source today: there is no annotation
+  processor and no Spring AOT step, so spotbugsMain reads only classes compiled from src/main/java. Spring AOT marks
+  the classes it writes with @org.springframework.aot.generate.Generated, kept at run time, so they stay out if AOT
+  is ever switched on. Never add a rule here to hide a finding in our own code.
+-->
+<FindBugsFilter xmlns="https://github.com/spotbugs/filter/4.10.0"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="https://github.com/spotbugs/filter/4.10.0
+                    https://raw.githubusercontent.com/spotbugs/spotbugs/4.10.0/spotbugs/etc/findbugsfilter.xsd">
+    <Match>
+        <Annotation name="org.springframework.aot.generate.Generated"/>
+    </Match>
+</FindBugsFilter>

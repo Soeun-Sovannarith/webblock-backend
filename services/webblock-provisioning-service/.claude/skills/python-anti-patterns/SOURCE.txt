@@ -1,0 +1,20 @@
+Vendored skill: python-anti-patterns
+
+Repository: https://github.com/wshobson/agents
+Path: plugins/python-development/skills/python-anti-patterns/
+Commit: 46891e7e60da0e52baf1050b7b6391b64e84c6d9 (committed 4 October 2026)
+Last upstream change to this path at that commit: b6a3da4 (26 March 2026)
+Licence: MIT, Copyright (c) 2024 Seth Hobson. LICENSE here is the repository LICENSE from the same commit.
+Copied from a clone in an empty scratch folder; every file was read before copying. The folder has no scripts.
+
+Files removed or changed:
+None. Every file of the folder is copied unchanged.
+
+Notes for this repo:
+- The examples use requests, httpx, tenacity and pydantic-settings. None is a dependency of this repo; requests
+  and httpx are banned by ruff (TID251). Use the checklist, not the libraries.
+- The skill names a python-design-patterns skill; it is not vendored here. Use the repo rules
+  (`.claude/rules/python-code.md`) and decision 0025 instead.
+- Repo rules win over the examples (`.claude/rules/python-code.md`).
+
+This copy does not update itself. Re-vendor on purpose, from a commit at least 14 days old.

@@ -1,0 +1,86 @@
+# Values of the Provisioning chart (task PK). The defaults fail closed: no image (values.schema.json
+# refuses the render), no setting (every process exits 2 naming its keys), no stand-in mount and no
+# network-policy destination (that traffic is refused).
+#
+# The chart creates no Secret, Namespace or cluster-scoped object, and never the ServiceAccounts
+# provisioning-worker and tenant-bootstrap, which belong to the platform layer with their RBAC and the
+# admission policies keyed to their usernames (deploy/prototype/rbac, deploy/prototype/policy). It reads,
+# by fixed names in its namespace:
+#   Secret provisioning-<component>-secret   the keys listed in <process>.secretEnv; for the Job, GOOSE_DBSTRING
+#   ConfigMap provisioning-gateway-ca        ca.crt, the Gateway's CA (the worker's promotion probe)
+#   ConfigMap provisioning-standins          access.json, entitlement.json, repositories.json (standins: true)
+#   Secret provisioning-dev-tokens           tokens.json, the API's development tokens (standins: true)
+
+# The one image of every process and of the migration Job: <registry>/<path>@sha256:<64 hex>.
+image: ""
+
+# Mount the prototype's stand-in files (.claude/docs/architecture/prototype-stand-ins.md). The
+# production profile refuses every stand-in key, so production leaves this false.
+standins: false
+
+# Where every pod runs (Kind: the control-plane node, so that the tenants keep the worker node).
+nodeSelector: {}
+tolerations: []
+
+# Each process: its non-secret settings (env, the loader's keys, into ConfigMap
+# provisioning-<component>-env), the names of its secret keys (secretEnv), and its memory (request and
+# limit) and CPU (request; no limit).
+# api.env may hold PROJECT_ACCESS_MODE=project-grpc with PROJECT_GRPC_TARGET (host:port, no scheme,
+# for example project.webblock.svc:9090); the values schema accepts both as plain env keys.
+# buildWorker.env may hold REPOSITORY_MODE=project-grpc with PROJECT_GRPC_TARGET (host:port) instead of the
+# repository file (prototype only: the proto is a draft, OD-01; production refuses both keys).
+# api.env and worker.env may hold ENTITLEMENT_MODE=payment-grpc with PAYMENT_GRPC_TARGET (host:port, no
+# scheme); worker.env may also hold HOSTING_ENTITLEMENT_MODE=payment-grpc (one target serves both). Prototype
+# only: the proto is a draft, OD-04; production refuses all three keys.
+# Tracing (decision 0022 E9) is off by default: OTEL_EXPORTER_OTLP_ENDPOINT=none. Set it to the
+# collector's OTLP/HTTP base URL (for example http://otel-collector.observability:4318) to turn it on;
+# OTEL_SERVICE_NAME names each process in the traces.
+api:
+  replicas: 1
+  service:
+    type: ClusterIP
+    annotations: {}
+  env:
+    OTEL_EXPORTER_OTLP_ENDPOINT: none
+    OTEL_SERVICE_NAME: provisioning-api
+  secretEnv: []
+  memory: 256Mi
+  cpu: 100m
+worker:
+  replicas: 1
+  env:
+    OTEL_EXPORTER_OTLP_ENDPOINT: none
+    OTEL_SERVICE_NAME: provisioning-worker
+  secretEnv: []
+  memory: 384Mi
+  cpu: 100m
+buildWorker:
+  replicas: 1
+  env:
+    OTEL_EXPORTER_OTLP_ENDPOINT: none
+    OTEL_SERVICE_NAME: provisioning-build-worker
+  secretEnv: []
+  memory: 256Mi
+  cpu: 100m
+# Always one replica, strategy Recreate (decision 0016 section 6 item 5). Memory 256Mi, not PK-design's
+# 192Mi: the owner's decision of 18 October 2026, an override of the PK plan's decision 18 (which
+# changes a number only after an OOM kill), because PK-V finding I-1 (ai/reviews/pk-validation.md)
+# saw the bootstrap peak at its 192Mi limit under the full e2e load, with direct reclaim.
+bootstrap:
+  env:
+    OTEL_EXPORTER_OTLP_ENDPOINT: none
+    OTEL_SERVICE_NAME: provisioning-bootstrap
+  secretEnv: []
+  memory: 256Mi
+  cpu: 100m
+# The pre-install and pre-upgrade migration Job (goose up as the provisioning_migrator login).
+migrate:
+  memory: 64Mi
+  cpu: 50m
+
+# Destinations outside the cluster, each <IPv4>/32; an empty one adds no rule.
+networkPolicy:
+  database: ""   # Provisioning's PostgreSQL, TCP 5432
+  broker: ""     # RabbitMQ, TCP 5672
+  jenkins: ""    # Jenkins, TCP 8080
+  catalog: ""    # the shared catalog PostgreSQL, TCP 5432

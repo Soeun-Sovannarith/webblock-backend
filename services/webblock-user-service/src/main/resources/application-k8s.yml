@@ -1,0 +1,18 @@
+# Kubernetes (uat / prod), activated with SPRING_PROFILES_ACTIVE=k8s.
+# No Eureka: the same service names used by @FeignClient resolve to Kubernetes Service DNS.
+eureka:
+  client:
+    enabled: false
+
+spring:
+  cloud:
+    discovery:
+      client:
+        simple:
+          instances:
+            project-service:
+              - uri: http://project-service:8082
+            payment-service:
+              - uri: http://payment-service:8083
+            notification-service:
+              - uri: http://notification-service:8084

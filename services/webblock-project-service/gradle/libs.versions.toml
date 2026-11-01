@@ -1,0 +1,56 @@
+[versions]
+spring-boot = "4.1.1"
+spring-dependency-management = "1.1.7"
+spring-modulith = "2.1.1"
+namastack-outbox = "1.7.3"
+kotlin = "2.4.10"
+spotless = "8.10.3"
+palantir-java-format = "2.100.0"
+errorprone-plugin = "5.1.1"
+errorprone-core = "2.50.0"
+guava-errorprone = "33.7.2-jre"
+archunit = "1.5.1"
+java-uuid-generator = "5.2.0"
+json-schema-validator = "3.0.8"
+wiremock = "3.13.2"
+json-canonicalization = "1.1"
+pmd = "7.28.0"
+slf4j-pmd = "1.7.36"
+spotbugs-core = "4.10.5"
+spotbugs-plugin = "6.5.13"
+# gRPC and protobuf: the versions web-block-commons pins, equal to the Spring Boot 4.1.1 BOM's (grpc-java.version,
+# protobuf-java.version). protoc and protoc-gen-grpc-java take the protobuf-java and grpc versions.
+grpc = "1.83.1"
+protobuf-java = "4.35.1"
+proto-google-common-protos = "2.78.0"
+protobuf-gradle-plugin = "0.10.0"
+guava-grpc = "33.7.2-android"
+# OpenAPI description and Swagger UI of /api/v1, prototype profile only (TR-40)
+springdoc = "3.1.1"
+
+[libraries]
+errorprone-core = { module = "com.google.errorprone:error_prone_core", version.ref = "errorprone-core" }
+archunit-junit5 = { module = "com.tngtech.archunit:archunit-junit5", version.ref = "archunit" }
+java-uuid-generator = { module = "com.fasterxml.uuid:java-uuid-generator", version.ref = "java-uuid-generator" }
+json-schema-validator = { module = "com.networknt:json-schema-validator", version.ref = "json-schema-validator" }
+json-canonicalization = { module = "io.github.erdtman:java-json-canonicalization", version.ref = "json-canonicalization" }
+wiremock-standalone = { module = "org.wiremock:wiremock-standalone", version.ref = "wiremock" }
+pmd-java = { module = "net.sourceforge.pmd:pmd-java", version.ref = "pmd" }
+pmd-ant = { module = "net.sourceforge.pmd:pmd-ant", version.ref = "pmd" }
+slf4j-simple-pmd = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j-pmd" }
+grpc-api = { module = "io.grpc:grpc-api", version.ref = "grpc" }
+grpc-stub = { module = "io.grpc:grpc-stub", version.ref = "grpc" }
+grpc-protobuf = { module = "io.grpc:grpc-protobuf", version.ref = "grpc" }
+grpc-netty-shaded = { module = "io.grpc:grpc-netty-shaded", version.ref = "grpc" }
+grpc-inprocess = { module = "io.grpc:grpc-inprocess", version.ref = "grpc" }
+protobuf-java = { module = "com.google.protobuf:protobuf-java", version.ref = "protobuf-java" }
+springdoc-openapi-starter-webmvc-ui = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref = "springdoc" }
+proto-google-common-protos = { module = "com.google.api.grpc:proto-google-common-protos", version.ref = "proto-google-common-protos" }
+
+[plugins]
+spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
+spring-dependency-management = { id = "io.spring.dependency-management", version.ref = "spring-dependency-management" }
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
+errorprone = { id = "net.ltgt.errorprone", version.ref = "errorprone-plugin" }
+spotbugs = { id = "com.github.spotbugs", version.ref = "spotbugs-plugin" }
+protobuf = { id = "com.google.protobuf", version.ref = "protobuf-gradle-plugin" }

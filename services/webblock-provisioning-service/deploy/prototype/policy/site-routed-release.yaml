@@ -1,0 +1,75 @@
+# Policy webblock-site-routed-release (decision 0014 section 21 rulings 1 and 8; TR-35). Installed by
+# deploy/kind/proto-policy.sh.
+#
+# The worker may delete superseded, rolled-back and failed releases (ruling 8), never the one the site's
+# route sends traffic to. A ValidatingAdmissionPolicy cannot look up an arbitrary object, but it can take
+# its parameters from objects of any kind: this policy's paramKind is HTTPRoute, and its binding's
+# paramRef names no namespace, so the API server evaluates it once against each HTTPRoute in the
+# namespace of the request (the route's own namespace, wb-<projectId>). A worker DELETE of a Deployment
+# or Service rel-<releaseId> is refused while route-<projectId> in that namespace has a backendRef to a
+# Service of that name. No route: nothing to protect (parameterNotFoundAction Allow). The preview and
+# redirect routes are not consulted: the preview route keeps naming the last candidate, which may be a
+# failed release that cleanup must remove.
+#
+# Limits (also in .claude/docs/runbooks/prototype-stack.md):
+#   - the API server reads the routes from its informer cache, which can lag a route change by a moment.
+#     Right after the route moves away from release A, a delete of A can still be refused (the worker
+#     retries); right after the route moves TO release B, a delete of B could be admitted. The worker
+#     never deletes the release it has just routed (the adapter checks the route first), so this guard is
+#     the second line, not the first;
+#   - it protects against the worker identity only. The namespace controller (tenant teardown), the
+#     garbage collector and cluster administrators are not matched;
+#   - the spec is what is checked, not what Envoy serves at that instant.
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicy
+metadata:
+  name: webblock-site-routed-release
+  labels:
+    app.kubernetes.io/part-of: webblock-provisioning
+spec:
+  failurePolicy: Fail
+  paramKind:
+    apiVersion: gateway.networking.k8s.io/v1
+    kind: HTTPRoute
+  matchConstraints:
+    namespaceSelector:
+      matchLabels:
+        websites.webblock.internal/tenant: "true"
+    resourceRules:
+      - apiGroups: ["apps"]
+        apiVersions: ["*"]
+        operations: ["DELETE"]
+        resources: ["deployments"]
+      - apiGroups: [""]
+        apiVersions: ["*"]
+        operations: ["DELETE"]
+        resources: ["services"]
+  matchConditions:
+    - name: release-worker
+      expression: "request.userInfo.username == 'system:serviceaccount:webblock:provisioning-worker'"
+  variables:
+    - name: isSiteRoute
+      expression: "params.metadata.name.startsWith('route-')"
+    - name: routed
+      expression: >-
+        has(params.spec.rules) && params.spec.rules.exists(r, has(r.backendRefs) &&
+          r.backendRefs.exists(b, b.name == request.name &&
+            (!has(b.kind) || b.kind == 'Service') && (!has(b.group) || b.group == '') &&
+            (!has(b.namespace) || b.namespace == request.namespace)))
+  validations:
+    - expression: "!(variables.isSiteRoute && variables.routed)"
+      reason: Forbidden
+      message: "webblock-site-routed-release: the worker may not delete the release the site's route sends traffic to"
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicyBinding
+metadata:
+  name: webblock-site-routed-release
+  labels:
+    app.kubernetes.io/part-of: webblock-provisioning
+spec:
+  policyName: webblock-site-routed-release
+  validationActions: ["Deny"]
+  paramRef:
+    selector: {}
+    parameterNotFoundAction: Allow

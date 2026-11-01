@@ -1,0 +1,3 @@
+# Makes this folder its own pnpm project, separate from any project around it.
+allowBuilds:
+  unrs-resolver: true

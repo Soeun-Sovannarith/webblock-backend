@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(make py-*)",
+      "Bash(make contracts-check)",
+      "Bash(make contracts-sync)",
+      "Bash(make chart-check)",
+      "Bash(.venv/bin/python -X dev -m pytest *)",
+      "Bash(python3 -I .claude/hooks/test_guard.py)",
+      "Bash(python3 -I .claude/hooks/test_hooks.py)",
+      "Bash(git status *)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(git show *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "mcp__claude_ai_Notion__notion-fetch",
+      "mcp__claude_ai_Notion__notion-search",
+      "Bash(cd *)",
+      "Bash(ls)",
+      "Bash(ls *)",
+      "Bash(pwd)",
+      "Bash(cat *)",
+      "Bash(head *)",
+      "Bash(tail *)",
+      "Bash(wc *)",
+      "Bash(grep *)",
+      "Bash(rg *)",
+      "Bash(find *)",
+      "Bash(sort *)",
+      "Bash(uniq *)",
+      "Bash(diff *)",
+      "Bash(echo *)",
+      "Bash(which *)",
+      "Bash(git branch *)",
+      "Bash(git rev-parse *)",
+      "Bash(git ls-files *)",
+      "Bash(git grep *)",
+      "Bash(git blame *)",
+      "Bash(make spec-check)",
+      "Bash(make qa-sweep)"
+    ],
+    "ask": [
+      "Bash(git commit --amend *)",
+      "Bash(make migrate-up *)",
+      "Bash(make image-scan *)"
+    ],
+    "deny": [
+      "Bash(git push)",
+      "Bash(git push *)",
+      "Bash(git reset --hard *)",
+      "Bash(git clean *)",
+      "Bash(git rebase *)",
+      "Bash(git filter-branch *)",
+      "Bash(git branch -D *)",
+      "Bash(git branch -d *)",
+      "Bash(sudo *)",
+      "Bash(docker system prune *)",
+      "Read(~/.kube/**)",
+      "Read(~/.ssh/**)",
+      "Read(~/.gnupg/**)",
+      "Read(~/.config/doctl/**)",
+      "Read(~/.config/gh/**)",
+      "Read(~/.config/glab-cli/**)",
+      "Read(~/.cloudflared/**)",
+      "Read(~/.docker/**)",
+      "Read(~/.netrc)",
+      "Read(~/.pgpass)",
+      "Read(~/.git-credentials)",
+      "Read(~/.claude/.credentials.json)",
+      "Read(~/Documents/web-block/cred/**)",
+      "Read(~/Documents/web-block/secure-key/**)",
+      "Read(~/Documents/web-block/ksga-kubernetes-cluster-kubeconfig.yaml)",
+      "Read(.env)",
+      "Read(.env.*)",
+      "Read(!.env.example)",
+      "Read(**/.envrc)",
+      "Read(**/*.pem)",
+      "Read(**/*.key)",
+      "Read(**/kubeconfig)",
+      "Read(**/*.kubeconfig)",
+      "Read(**/*-kubeconfig.yaml)"
+    ],
+    "disableBypassPermissionsMode": "disable"
+  },
+  "enabledPlugins": {
+    "superpowers@claude-plugins-official": true,
+    "static-analysis@trailofbits": true,
+    "sharp-edges@trailofbits": false
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "^(Bash|Monitor|Read|Edit|Write|MultiEdit|NotebookEdit|Grep|Glob|mcp__.*)$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -I \"${CLAUDE_PROJECT_DIR}/.claude/hooks/guard.py\"",
+            "timeout": 15,
+            "onFailure": "block"
+          }
+        ]
+      },
+      {
+        "matcher": "^(Bash|Monitor|Write|Edit|MultiEdit|NotebookEdit)$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -I \"${CLAUDE_PROJECT_DIR}/.claude/hooks/reviewer_writes.py\" --if-reviewer-agent",
+            "timeout": 15,
+            "onFailure": "block"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -I \"${CLAUDE_PROJECT_DIR}/.claude/hooks/session_start.py\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "^(Edit|Write|MultiEdit)$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -I \"${CLAUDE_PROJECT_DIR}/.claude/hooks/post_edit_check.py\"",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}

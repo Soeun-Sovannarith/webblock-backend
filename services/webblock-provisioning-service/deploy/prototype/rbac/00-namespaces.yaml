@@ -1,0 +1,23 @@
+# Prototype namespaces (decision 0014). webblock holds the two cluster identities of
+# Provisioning; webblock-offline holds the shared offline page that a tenant's HTTPRoute points at while
+# hosting is suspended or after a failed first publish (RouteTargetKind.OFFLINE).
+# The Crossplane-era admission policies and RBAC (deploy/policy, deploy/rbac) were never installed in
+# the prototype (0014 section 5) and are now only on branch go-reference; the prototype's own policies
+# are in deploy/prototype/policy (0014 sections 17 item 3, 21 and 23).
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: webblock
+  labels:
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/enforce-version: v1.36
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: webblock-offline
+  labels:
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/enforce-version: v1.36
+    pod-security.kubernetes.io/warn: restricted
+    pod-security.kubernetes.io/warn-version: v1.36

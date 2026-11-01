@@ -1,0 +1,23 @@
+# LoadBalancer addresses for Kind (decision 0009 section 1): Cilium LB-IPAM hands out an address from a
+# small range at the top of the Kind Docker network, and L2 announcements answer ARP for it on the
+# nodes' eth0, so the host reaches the Gateway directly. proto-up.sh replaces @LB_START@ and @LB_STOP@ with a
+# range inside the Kind network's IPv4 subnet, which Docker chooses when it creates the network.
+# Test infrastructure only: DOKS provisions a DigitalOcean load balancer instead.
+apiVersion: cilium.io/v2
+kind: CiliumLoadBalancerIPPool
+metadata:
+  name: webblock-kind-pool
+spec:
+  blocks:
+    - start: "@LB_START@"
+      stop: "@LB_STOP@"
+---
+apiVersion: cilium.io/v2alpha1
+kind: CiliumL2AnnouncementPolicy
+metadata:
+  name: webblock-kind-l2
+spec:
+  loadBalancerIPs: true
+  externalIPs: false
+  interfaces:
+    - ^eth0$

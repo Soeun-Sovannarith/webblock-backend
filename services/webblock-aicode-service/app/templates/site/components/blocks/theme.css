@@ -1,0 +1,151 @@
+/* Owned by the WebBlock harness and refreshed on every run: the site theme and per-section style props
+   (see theme.ts). Overrides blocks.css, so it keeps working when a project's blocks.css was customized. */
+.wb-site {
+  --wb-bg: #fbfaf7;
+  --wb-fg: #1f1d1a;
+  --wb-muted: #6b665e;
+  --wb-accent: #a4532b;
+  --wb-surface: #ffffff;
+  --wb-border: #e7e2d9;
+  --wb-hero: #f4ebe0;
+  --wb-font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  min-height: 100vh;
+  background: var(--wb-bg);
+  color: var(--wb-fg);
+  font-family: var(--wb-font);
+}
+
+.wb-site[data-theme="light"] {
+  --wb-bg: #ffffff;
+  --wb-fg: #111827;
+  --wb-muted: #4b5563;
+  --wb-accent: #2563eb;
+  --wb-surface: #f8fafc;
+  --wb-border: #e5e7eb;
+  --wb-hero: #eef2ff;
+}
+
+.wb-site[data-theme="dark"] {
+  --wb-bg: #0f1115;
+  --wb-fg: #f3f4f6;
+  --wb-muted: #a1a1aa;
+  --wb-accent: #f59e0b;
+  --wb-surface: #181b22;
+  --wb-border: #2a2f3a;
+  --wb-hero: #1c2130;
+  color-scheme: dark;
+}
+
+.wb-site[data-font="serif"] {
+  --wb-font: Georgia, "Times New Roman", serif;
+}
+
+.wb-site[data-font="mono"] {
+  --wb-font: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+
+.wb-site .wb-section,
+.wb-site .wb-footer {
+  font-family: var(--wb-font);
+}
+
+.wb-site .wb-hero {
+  background: linear-gradient(160deg, var(--wb-hero), var(--wb-bg));
+}
+
+/* Section tone: the wrapper paints the background, the section itself goes transparent. */
+.wb-block[data-tone] > * {
+  background: transparent;
+}
+
+.wb-block[data-tone="surface"] {
+  background: var(--wb-surface);
+}
+
+.wb-block[data-tone="accent"] {
+  background: var(--wb-accent);
+}
+
+.wb-block[data-tone="accent"] > * {
+  --wb-fg: #ffffff;
+  --wb-muted: rgba(255, 255, 255, 0.88);
+  --wb-accent: #ffffff;
+  --wb-surface: rgba(255, 255, 255, 0.12);
+  --wb-border: rgba(255, 255, 255, 0.3);
+}
+
+.wb-block[data-tone="contrast"] {
+  background: var(--wb-fg);
+}
+
+.wb-block[data-tone="contrast"] > * {
+  --wb-fg: var(--wb-bg);
+  --wb-muted: color-mix(in srgb, var(--wb-bg) 78%, transparent);
+  --wb-surface: color-mix(in srgb, var(--wb-bg) 10%, transparent);
+  --wb-border: color-mix(in srgb, var(--wb-bg) 25%, transparent);
+}
+
+.wb-block[data-align="left"] > * {
+  text-align: left;
+}
+
+.wb-block[data-align="center"] > * {
+  text-align: center;
+}
+
+.wb-block[data-align="center"] .wb-text p {
+  margin-inline: auto;
+}
+
+.wb-block[data-spacing="compact"] > * {
+  padding-block: 28px;
+}
+
+.wb-block[data-spacing="spacious"] > * {
+  padding-block: 104px;
+}
+
+/* Product detail pages (/products/<slug>), rendered by app/[[...slug]]/page.tsx from the database or puck-data.json. Kept here rather than in
+   blocks.css so sites generated before detail pages existed get the styles on their next update. */
+.wb-product-detail .wb-back {
+  display: inline-block;
+  margin-bottom: 24px;
+  color: var(--wb-accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.wb-product-detail .wb-product-image {
+  display: block;
+  width: 100%;
+  max-width: 560px;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  margin-bottom: 24px;
+  border-radius: 12px;
+  border: 1px solid var(--wb-border);
+}
+
+.wb-product-detail h1 {
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  line-height: 1.15;
+  margin: 0 0 8px;
+}
+
+.wb-product-detail .wb-price {
+  color: var(--wb-accent);
+  font-size: 1.35rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.wb-product-detail p {
+  font-size: 1.1rem;
+  max-width: 720px;
+  white-space: pre-line;
+}
+
+/* The Location text keeps its line breaks: address, contact line and opening hours (lib/business.ts locationText). */
+.wb-location p {
+  white-space: pre-line;
+}

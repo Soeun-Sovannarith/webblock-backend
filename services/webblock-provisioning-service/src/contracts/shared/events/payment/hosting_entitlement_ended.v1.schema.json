@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://webblock.invalid/contracts/events/payment/hosting_entitlement_ended.v1.schema.json",
+  "title": "Payment: hosting entitlement ended v1",
+  "description": "DRAFT, proposed by provisioning, waits for payment. Owner: payment. The project may no longer be hosted. event_key is Payment's unique key for this event; a consumer uses it to drop a repeat. Provisioning rechecks the entitlement before it acts.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "message_id", "message_type", "occurred_at", "correlation_id", "project_id", "event_key", "reason"],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "message_id": { "type": "string", "format": "uuid", "minLength": 36, "maxLength": 36, "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", "not": {"enum": ["00000000-0000-0000-0000-000000000000"]} },
+    "message_type": { "const": "payment.hosting_entitlement_ended.v1" },
+    "occurred_at": { "type": "string", "format": "date-time", "maxLength": 40 },
+    "correlation_id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[A-Za-z0-9._:-]{1,128}$" },
+    "project_id": { "type": "string", "format": "uuid", "minLength": 36, "maxLength": 36, "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", "not": {"enum": ["00000000-0000-0000-0000-000000000000"]} },
+    "event_key": { "type": "string", "minLength": 1, "maxLength": 255 },
+    "reason": { "type": "string", "enum": ["trial_ended", "grace_expired", "plan_canceled", "over_website_limit"] }
+  }
+}

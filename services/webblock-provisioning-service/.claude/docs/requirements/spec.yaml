@@ -1,0 +1,1444 @@
+# The spec register: every BR, PR, FR and TR of BRD.md, PRD.md, FRD.md and TRD.md in this folder.
+# Kept by hand next to the documents; the documents stay the source of each item's text.
+# Fields: id, title (short), status (current or removed), parents (BR for a PR, PR for an FR, FR for a TR),
+# priority and phase (a PR's from the PRD; an FR takes its strongest PR's priority and its first PR's
+# phase; a TR takes them from its FRs, and a TR serving all FRs has all_fr: true and is Must). An FR also
+# lists its acceptance rows and the test node IDs that carry its ID. no_test_yet: the current Must FRs
+# with no test so far. Checked by make spec-check (scripts/py/spec_check.py), which reads only a YAML
+# subset: keys, lists, double-quoted strings, flow lists of plain words, comment lines.
+version: 1
+items:
+  - id: BR-1
+    title: "A published change becomes a live site with no staff work"
+    status: current
+    parents: []
+  - id: BR-2
+    title: "A failed update never takes a working site down"
+    status: current
+    parents: []
+  - id: BR-3
+    title: "A site is offline exactly while a reason holds"
+    status: current
+    parents: []
+  - id: BR-4
+    title: "An owner acts only on their own sites and learns nothing of others"
+    status: current
+    parents: []
+  - id: BR-5
+    title: "Staff can act on any site, and each staff action names the admin"
+    status: current
+    parents: []
+  - id: BR-6
+    title: "Payment hears of each publish gone live, once"
+    status: current
+    parents: []
+  - id: BR-7
+    title: "Owners and staff see where a version is and why it failed"
+    status: current
+    parents: []
+  - id: BR-8
+    title: "One published commit is one version"
+    status: current
+    parents: []
+  - id: BR-9
+    title: "One action per site at a time"
+    status: current
+    parents: []
+  - id: BR-10
+    title: "Going offline never deletes code, content or the live version"
+    status: current
+    parents: []
+  - id: BR-11
+    title: "A deleted project never comes back online"
+    status: current
+    parents: []
+  - id: BR-12
+    title: "Follows the platform's sign-in, answer, event and library rules"
+    status: current
+    parents: []
+  - id: BR-13
+    title: "Shared cluster and data stores"
+    status: current
+    parents: []
+  - id: BR-14
+    title: "Jenkins builds site images into the Gitea registry"
+    status: current
+    parents: []
+  - id: BR-15
+    title: "Production refuses every change until Project's and Payment's contracts ..."
+    status: current
+    parents: []
+  - id: PR-1
+    title: "Each published change is built into a new version by itself"
+    status: current
+    parents: [BR-1, BR-8]
+    priority: Must
+    phase: Prototype
+  - id: PR-2
+    title: "Removed: the owner no longer starts deploy or go-live (GATE1 O2)"
+    status: removed
+    parents: [BR-1]
+    phase: Prototype
+  - id: PR-3
+    title: "A failed go-live brings the previous version back by itself"
+    status: current
+    parents: [BR-2]
+    priority: Must
+    phase: Prototype
+  - id: PR-4
+    title: "The owner sees versions, their steps, actions and whether the site is ..."
+    status: current
+    parents: [BR-7]
+    priority: Must
+    phase: Prototype
+  - id: PR-5
+    title: "Removed: only an admin rolls back (GATE1 O1)"
+    status: removed
+    parents: [BR-2, BR-9]
+    phase: Phase C
+  - id: PR-6
+    title: "The owner never sees or touches another owner's site"
+    status: current
+    parents: [BR-4]
+    priority: Must
+    phase: Prototype
+  - id: PR-7
+    title: "The owner retries a failed build attempt while attempts remain"
+    status: current
+    parents: [BR-1]
+    priority: Could*
+    phase: Prototype
+  - id: PR-8
+    title: "Every answer has the platform's shape (envelope, problem errors, paging)"
+    status: current
+    parents: [BR-12]
+    priority: Must
+    phase: Phase C
+  - id: PR-9
+    title: "Changes are refused while the plan does not cover the site or it is ..."
+    status: current
+    parents: [BR-3]
+    priority: Must
+    phase: Prototype
+  - id: PR-26
+    title: "Each built version starts privately and goes live by itself, with no ..."
+    status: current
+    parents: [BR-1, BR-2]
+    priority: Must
+    phase: Later
+  - id: PR-10
+    title: "Suspend one website"
+    status: current
+    parents: [BR-5, BR-3]
+    priority: Must
+    phase: Phase C
+  - id: PR-11
+    title: "Resume a website the admin suspended"
+    status: current
+    parents: [BR-5, BR-3]
+    priority: Must
+    phase: Phase C
+  - id: PR-12
+    title: "Restart a live site with the same image"
+    status: current
+    parents: [BR-5]
+    priority: Must
+    phase: Phase C
+  - id: PR-13
+    title: "Roll back any site's stuck route"
+    status: current
+    parents: [BR-5, BR-9]
+    priority: Must
+    phase: Prototype
+  - id: PR-14
+    title: "See a site's actions with who asked"
+    status: current
+    parents: [BR-5]
+    priority: Must
+    phase: Phase C
+  - id: PR-28
+    title: "Read any site's versions, actions and status"
+    status: current
+    parents: [BR-5]
+    priority: Must
+    phase: Later
+  - id: PR-15
+    title: "Project: each \"source published\" becomes exactly one release after ..."
+    status: current
+    parents: [BR-8]
+    priority: Must
+    phase: Prototype
+  - id: PR-16
+    title: "Project: a deleted project goes offline for good"
+    status: current
+    parents: [BR-11]
+    priority: Must
+    phase: Prototype
+  - id: PR-17
+    title: "Project: a suspended owner's sites go offline"
+    status: current
+    parents: [BR-3]
+    priority: Must
+    phase: Phase B
+  - id: PR-18
+    title: "Payment: an ended plan takes the site offline"
+    status: current
+    parents: [BR-3]
+    priority: Must
+    phase: Prototype
+  - id: PR-19
+    title: "Payment and Notification: one \"publish completed\" per release gone live"
+    status: current
+    parents: [BR-6]
+    priority: Must
+    phase: Prototype
+  - id: PR-20
+    title: "Visitors reach the live version at `<subdomain>.<site domain>`"
+    status: current
+    parents: [BR-1]
+    priority: Must
+    phase: Phase C
+  - id: PR-21
+    title: "A candidate is viewable at `<subdomain>-preview.<site domain>` before ..."
+    status: current
+    parents: [BR-2]
+    priority: Should*
+    phase: Phase C
+  - id: PR-22
+    title: "Visitors see an offline page while the site is offline"
+    status: current
+    parents: [BR-3, BR-10]
+    priority: Must
+    phase: Prototype
+  - id: PR-23
+    title: "Operators re-drive failed source events and parked messages"
+    status: current
+    parents: [BR-1]
+    priority: Should*
+    phase: Prototype
+  - id: PR-24
+    title: "Team agents use the same actions through MCP with the same checks"
+    status: current
+    parents: [BR-4, BR-5]
+    priority: Should*
+    phase: Prototype
+  - id: PR-25
+    title: "Operators follow one request across services by its request ID and trace"
+    status: current
+    parents: [BR-7]
+    priority: Must
+    phase: Phase B
+  - id: PR-27
+    title: "Production stays read-only until the contracts are agreed"
+    status: current
+    parents: [BR-15]
+    priority: Must
+    phase: Production
+  - id: PR-29
+    title: "Only the owner opens a candidate's preview host, later behind the ..."
+    status: current
+    parents: [BR-2, BR-4]
+    priority: Should
+    phase: Later
+  - id: FR-1
+    title: "Checks signature (RS256), `iss`, own audience `provisioning`, `typ` ..."
+    status: current
+    parents: [PR-6]
+    priority: Must
+    phase: Prototype
+    rows: [FR-1.1, FR-1.2, FR-1.3]
+    tests:
+      - tests/unit/hosts/api/test_main.py::test_production_starts_with_jwt_and_answers_503_while_the_issuer_is_down
+      - tests/unit/infrastructure/identity/test_jwt.py::test_fr1_1_an_audience_list_holding_provisioning_is_accepted
+      - tests/unit/infrastructure/identity/test_jwt.py::test_fr1_2_rs256_only_and_a_signature_of_a_published_key
+      - tests/unit/infrastructure/identity/test_jwt.py::test_fr1_2_the_library_refuses_each_bad_claim
+      - tests/unit/infrastructure/identity/test_jwt.py::test_fr1_2_the_skew_is_30_seconds
+      - tests/unit/infrastructure/identity/test_jwt.py::test_fr1_3_a_key_set_that_cannot_be_had_is_unavailable_not_unauthenticated
+      - tests/unit/infrastructure/identity/test_jwt.py::test_fr1_3_a_transport_failure_logs_its_cause_without_the_class_name
+      - tests/unit/infrastructure/identity/test_jwt.py::test_fr1_3_construction_fetches_nothing
+      - tests/unit/infrastructure/identity/test_jwt.py::test_tr26_a_ca_named_by_the_environment_is_not_trusted_by_the_key_set_fetch
+      - tests/unit/infrastructure/identity/test_jwt_transport.py::test_a_refused_token_is_401_on_both_transports
+      - tests/unit/infrastructure/identity/test_jwt_transport.py::test_a_valid_token_with_the_scope_is_served_on_both_transports
+      - tests/unit/infrastructure/identity/test_jwt_transport.py::test_keys_that_cannot_be_had_are_503_on_both_transports
+  - id: FR-2
+    title: "Refused before any store or Project call"
+    status: current
+    parents: [PR-6]
+    priority: Must
+    phase: Prototype
+    rows: [FR-2.1, FR-2.2]
+    tests:
+      - tests/unit/infrastructure/identity/test_jwt.py::test_fr2_1_a_valid_token_names_its_subject_roles_and_user
+      - tests/unit/infrastructure/identity/test_jwt.py::test_fr2_2_a_refused_token_is_refused_before_its_user_is_looked_at
+      - tests/unit/infrastructure/identity/test_jwt.py::test_fr2_2_a_token_without_a_valid_user_id_is_access_denied
+      - tests/unit/infrastructure/identity/test_jwt_transport.py::test_fr2_1_a_token_with_a_user_id_reads_a_release
+      - tests/unit/infrastructure/identity/test_jwt_transport.py::test_fr2_2_a_refused_token_without_a_user_id_is_still_401
+      - tests/unit/infrastructure/identity/test_jwt_transport.py::test_fr2_2_a_token_without_a_user_id_is_403_on_every_route_and_mcp
+  - id: FR-3
+    title: "Asks Project `CheckAccess`"
+    status: current
+    parents: [PR-6]
+    priority: Must
+    phase: Prototype
+    rows: [FR-3.1, FR-3.2]
+    tests:
+      - tests/unit/infrastructure/project/test_access.py::test_fr3_a_denial_logs_the_project_action_and_reason_only
+      - tests/unit/infrastructure/project/test_access.py::test_fr3_a_principal_without_a_user_id_logs_a_denial_with_fixed_fields
+      - tests/unit/infrastructure/project/test_grpc_access.py::test_fr3_a_denial_logs_the_project_action_and_reason_only
+      - tests/unit/infrastructure/project/test_grpc_access.py::test_fr3_a_principal_without_a_user_id_logs_a_denial_with_fixed_fields
+  - id: FR-4
+    title: "Admin actions need `ADMIN` (top-level `roles`, exact case)"
+    status: current
+    parents: [PR-10]
+    priority: Must
+    phase: Phase C
+    rows: [FR-4.1, FR-4.2]
+    tests:
+      - tests/unit/core/application/operations/test_gate.py::test_a_caller_without_admin_is_denied_an_admin_only_action
+      - tests/unit/core/application/operations/test_gate.py::test_an_admin_passes_an_admin_only_action_without_a_project_access_call
+  - id: FR-5
+    title: "`CheckAccess` with 2 s deadline, retry only `UNAVAILABLE` twice"
+    status: current
+    parents: [PR-6]
+    priority: Must
+    phase: Prototype
+    rows: [FR-5.1, FR-5.2]
+    tests:
+      - tests/unit/infrastructure/project/test_access.py::test_fr5_an_internal_failure_logs_the_error_class_only
+      - tests/unit/infrastructure/project/test_grpc_access.py::test_fr5_an_internal_failure_logs_the_error_class_only
+  - id: FR-6
+    title: "Every change refused until Project's and Payment's gRPC calls pass on ..."
+    status: current
+    parents: [PR-27]
+    priority: Must
+    phase: Production
+    rows: [FR-6.1, FR-6.2]
+    tests:
+      - tests/unit/core/application/shared/test_profile.py::test_a_production_mutation_is_refused_before_anything_is_asked
+      - tests/unit/hosts/api/test_project_access.py::test_production_builds_the_adapter_and_sends_no_token
+      - tests/unit/hosts/api/test_project_access.py::test_production_still_refuses_an_admins_rollback
+  - id: FR-7
+    title: "Bad input answers a Problem with `errors[]`"
+    status: current
+    parents: [PR-8]
+    priority: Must
+    phase: Phase C
+    rows: [FR-7.1, FR-7.2, FR-7.3, FR-7.4]
+    tests:
+      - tests/unit/core/application/shared/test_strict_json.py::test_tr2_strict_json_decodes_nested_values_and_white_space
+      - tests/unit/core/application/shared/test_strict_json.py::test_tr2_strict_json_refuses_bad_utf8_constants_and_trailing_data
+      - tests/unit/core/application/shared/test_strict_json.py::test_tr2_strict_json_refuses_duplicate_keys_at_any_depth
+      - tests/unit/core/application/shared/test_strict_json.py::test_tr2_strict_json_refuses_too_deep_nesting
+  - id: FR-8
+    title: "Sends `x-user-id` (when a user), `x-request-id`, `traceparent`"
+    status: current
+    parents: [PR-6]
+    priority: Must
+    phase: Prototype
+    rows: [FR-8.1, FR-8.2]
+    tests:
+      - tests/unit/hosts/api/test_project_access.py::test_no_header_of_the_caller_reaches_the_project_service
+      - tests/unit/infrastructure/jenkins/test_jenkins_build_system.py::test_fr8_2_a_jenkins_call_carries_no_user_request_or_trace_header
+      - tests/unit/infrastructure/project/test_access.py::test_fr8_1_the_http_access_check_sends_the_principals_user_never_an_outer_one
+      - tests/unit/infrastructure/project/test_access.py::test_fr8_1_the_http_access_check_sends_the_user_request_and_trace_ids
+      - tests/unit/infrastructure/project/test_grpc_access.py::test_fr8_1_check_access_never_sends_the_user_of_an_outer_context
+      - tests/unit/infrastructure/project/test_grpc_access.py::test_fr8_1_check_access_sends_the_user_id_and_request_id_never_a_token
+      - tests/unit/infrastructure/project/test_grpc_repository.py::test_fr8_1_get_repository_sends_the_request_id_and_no_user_id
+  - id: FR-9
+    title: "Inbox row `pending`"
+    status: current
+    parents: [PR-15, PR-1]
+    priority: Must
+    phase: Prototype
+    rows: [FR-9.1, FR-9.2, FR-9.3, FR-9.4]
+    tests:
+      - tests/integration/test_store_intake.py::test_take_accept_and_redelivered_event
+      - tests/unit/core/application/intake/background/test_release_intake.py::test_process_batch_decide_matrix
+  - id: FR-10
+    title: "Same source: ignored"
+    status: current
+    parents: [PR-15]
+    priority: Must
+    phase: Prototype
+    rows: [FR-10.1, FR-10.2]
+    tests:
+      - tests/integration/test_store_intake.py::test_intake_stores_then_duplicate_then_mismatched_repeat
+      - tests/integration/test_store_intake.py::test_take_accept_and_redelivered_event
+      - tests/unit/presentation/messaging/consumers/test_inbox.py::test_a_duplicate_event_is_a_no_op
+      - tests/unit/presentation/messaging/consumers/test_inbox.py::test_a_repeat_with_another_source_is_acknowledged_and_logged_by_key_only
+  - id: FR-11
+    title: "Jenkins builds the pinned commit"
+    status: current
+    parents: [PR-1]
+    priority: Must
+    phase: Prototype
+    rows: [FR-11.1, FR-11.2, FR-11.3, FR-11.4, FR-11.5]
+    tests:
+      - tests/integration/test_store_build.py::test_apply_a_successful_result
+      - tests/unit/core/application/builds/background/test_build_dispatch.py::test_poll_accepts_a_matching_success_after_a_restart
+      - tests/unit/core/application/builds/background/test_build_dispatch.py::test_poll_fails_the_attempt_on_a_result_that_does_not_match
+      - tests/unit/core/application/builds/background/test_build_dispatch.py::test_poll_fails_the_attempt_with_the_build_systems_code
+  - id: FR-12
+    title: "New attempt until `BUILD_MAX_ATTEMPTS` (1 to 10)"
+    status: current
+    parents: [PR-1]
+    priority: Must
+    phase: Prototype
+    rows: [FR-12.1, FR-12.2, FR-12.3]
+    tests:
+      - tests/integration/test_store_build.py::test_failed_results_queue_the_next_attempt_then_exhaust
+      - tests/integration/test_store_build.py::test_the_sweeper_fails_an_overdue_step
+      - tests/unit/core/application/builds/background/test_build_dispatch.py::test_poll_fails_the_release_when_its_last_attempt_fails
+      - tests/unit/core/domain/rules/test_build.py::test_fail_build_attempt_matrix
+  - id: FR-13
+    title: "Asks the build worker to start the pending attempt now"
+    status: current
+    parents: [PR-7]
+    priority: Could*
+    phase: Prototype
+    rows: [FR-13.1, FR-13.2, FR-13.3]
+    tests: []
+  - id: FR-14
+    title: "Command and dispatch row stored in one transaction with the next ..."
+    status: current
+    parents: [PR-26, PR-10]
+    priority: Must
+    phase: Later
+    rows: [FR-14.1, FR-14.2, FR-14.3, FR-14.4, FR-14.5, FR-14.6, FR-14.7]
+    tests:
+      - tests/integration/test_store_acceptance.py::test_a_second_command_in_flight_is_refused_as_busy
+      - tests/integration/test_store_acceptance.py::test_accept_inserts_command_dispatch_row_and_advances_the_counter
+      - tests/integration/test_store_acceptance.py::test_same_key_and_request_replays_the_original
+      - tests/integration/test_store_acceptance.py::test_same_key_with_another_request_is_a_conflict
+      - tests/unit/core/application/jobs/test_ports.py::test_insert_decision_refuses_at_the_maximum_command_number
+      - tests/unit/core/domain/rules/test_command_preconditions.py::test_command_preconditions_matrix
+      - tests/unit/core/domain/rules/test_command_preconditions.py::test_redeploy_needs_the_live_release_online_and_stable
+  - id: FR-15
+    title: "Published to RabbitMQ until claimed"
+    status: current
+    parents: [PR-26]
+    priority: Must
+    phase: Later
+    rows: [FR-15.1, FR-15.2]
+    tests:
+      - tests/integration/test_store_jobs.py::test_a_live_claim_is_not_published
+      - tests/integration/test_store_jobs.py::test_claim_extend_and_held
+      - tests/integration/test_store_jobs.py::test_fail_unclaimed_command_after_its_deadline
+      - tests/unit/core/application/jobs/background/test_dispatcher.py::test_an_unclaimed_command_past_its_deadline_is_failed_not_published
+      - tests/unit/core/application/jobs/background/test_dispatcher.py::test_poll_publishes_each_due_row_and_records_the_broker_ack
+  - id: FR-16
+    title: "Removed: the owner no longer starts deploy (GATE1 O2)"
+    status: removed
+    parents: [PR-2]
+    phase: Prototype
+    rows: []
+    tests: []
+  - id: FR-17
+    title: "Applies `rel-<releaseId>` in `wb-<projectId>`"
+    status: current
+    parents: [PR-26]
+    priority: Must
+    phase: Later
+    rows: [FR-17.1, FR-17.2, FR-17.3, FR-17.4]
+    tests:
+      - tests/unit/infrastructure/kubernetes/test_client.py::test_tr34_fr17_a_context_that_is_not_kind_or_k3d_webblock_is_refused
+      - tests/unit/infrastructure/kubernetes/test_client.py::test_tr34_fr17_a_k3d_context_whose_server_is_not_127_0_0_1_is_refused
+      - tests/unit/infrastructure/kubernetes/test_client.py::test_tr34_fr17_a_k3d_webblock_context_on_127_0_0_1_connects
+      - tests/unit/scripts/test_local_engine.py::test_tr34_fr17_a_stack_without_an_engine_record_is_kind
+      - tests/unit/scripts/test_local_engine.py::test_tr34_fr17_an_unknown_engine_record_fails_the_harness
+      - tests/unit/scripts/test_local_engine.py::test_tr34_fr17_the_harness_expects_the_context_of_the_recorded_engine
+      - tests/unit/scripts/test_local_engine.py::test_tr34_fr17_the_scripts_accept_the_local_context_of_the_recorded_engine
+      - tests/unit/scripts/test_local_engine.py::test_tr34_fr17_the_scripts_refuse_a_kubeconfig_that_is_not_private
+      - tests/unit/scripts/test_local_engine.py::test_tr34_fr17_the_scripts_refuse_any_other_context_or_server
+      - tests/integration/test_deploy_store.py::test_a_ready_candidate_makes_the_release_candidate_ready
+      - tests/integration/test_deploy_store.py::test_a_refused_candidate_fails_the_release
+      - tests/integration/test_deploy_store.py::test_a_replaced_candidate_returns_to_built
+      - tests/unit/core/application/deploys/background/test_deploy.py::test_a_never_ready_candidate_fails_at_the_deadline_and_is_deleted
+      - tests/unit/core/application/deploys/background/test_deploy.py::test_a_refused_candidate_fails_the_release
+      - tests/unit/core/application/deploys/background/test_deploy.py::test_an_older_candidate_is_returned_to_built_and_deleted_before_the_apply
+      - tests/unit/core/application/deploys/background/test_deploy.py::test_ready_on_the_first_poll
+  - id: FR-18
+    title: "Removed: the owner no longer starts go-live (GATE1 O2)"
+    status: removed
+    parents: [PR-2]
+    phase: Prototype
+    rows: []
+    tests: []
+  - id: FR-19
+    title: "Routing `changing`"
+    status: current
+    parents: [PR-26, PR-20]
+    priority: Must
+    phase: Later
+    rows: [FR-19.1, FR-19.2, FR-19.3]
+    tests:
+      - tests/e2e/test_flows.py::test_4b_a_candidate_failing_after_the_switch_is_restored_and_rolled_back
+      - tests/integration/kubernetes/test_routing_live.py::test_promote_restore_suspend_and_resume_on_kind
+      - tests/integration/test_routing_store.py::test_a_promotion_writes_the_old_live_superseded_and_the_candidate_live
+      - tests/integration/test_routing_store.py::test_confirm_live_writes_one_pending_usage_event_in_its_transaction
+      - tests/unit/core/application/routing/background/test_routing.py::test_a_probe_that_fails_restores_the_route_to_the_live_release
+      - tests/unit/core/application/routing/background/test_routing.py::test_a_route_never_accepted_is_restored_without_probing
+      - tests/unit/core/application/routing/background/test_routing.py::test_fr19_2_a_preview_never_confirmed_is_a_failed_try_with_route_not_accepted
+      - tests/unit/core/application/routing/background/test_routing.py::test_fr19_2_a_switch_not_accepted_on_try_1_points_back_to_l_and_waits_30_s
+      - tests/unit/core/application/routing/background/test_routing.py::test_fr19_3_a_site_not_answering_on_try_1_points_back_to_l_and_waits_30_s
+      - tests/unit/core/application/routing/background/test_routing.py::test_fr19_a_refused_preview_is_a_failed_try_with_route_refused
+      - tests/unit/core/application/routing/background/test_routing.py::test_fr19_each_failed_step_gives_its_try_code
+      - tests/unit/core/application/routing/background/test_routing.py::test_fr21_6_on_a_fresh_start_the_intent_is_stored_before_apply_preview
+      - tests/unit/core/application/routing/background/test_routing.py::test_promote_supersedes_the_old_live_release_before_the_candidate_goes_live
+  - id: FR-20
+    title: "The candidate also answers on `<subdomain>-preview.<site domain>`, one ..."
+    status: current
+    parents: [PR-21]
+    priority: Should*
+    phase: Phase C
+    rows: [FR-20.1]
+    tests:
+      - tests/unit/deploy/test_gateway_variants.py::test_fr20_tr45_both_gateways_serve_the_preview_host_with_the_one_wildcard
+      - tests/integration/kubernetes/test_kubernetes_live.py::test_both_routes_name_their_backend_and_the_preview_is_fenced
+      - tests/unit/core/application/routing/background/test_routing.py::test_fr20_1_the_preview_hostname_is_the_subdomain_dash_preview_under_the_site_domain
+      - tests/unit/core/application/routing/background/test_routing.py::test_fr20_a_55_character_subdomain_gives_a_valid_preview_host
+      - tests/unit/core/application/routing/background/test_routing.py::test_fr20_the_older_preview_hosts_are_never_built
+      - tests/unit/core/domain/values/test_preview_label.py::test_fr20_1_the_preview_label_is_the_subdomain_and_dash_preview
+      - tests/unit/core/domain/values/test_preview_label.py::test_fr20_a_55_character_subdomain_gives_a_one_label_preview_host
+      - tests/unit/deploy/test_route_shape_policy.py::test_fr20_the_one_wildcard_certificate_covers_the_preview_host
+      - tests/unit/deploy/test_route_shape_policy.py::test_fr20_the_preview_host_is_the_subdomain_dash_preview_and_the_old_forms_are_gone
+      - tests/unit/infrastructure/kubernetes/test_render.py::test_fr20_s3_a_preview_route_names_only_its_projects_preview_host
+      - tests/unit/infrastructure/kubernetes/test_render.py::test_the_preview_route_is_fenced_on_the_gateway_with_its_one_hostname
+  - id: FR-21
+    title: "Try 3 failed: route back to `live_release_id`, checked"
+    status: current
+    parents: [PR-3]
+    priority: Must
+    phase: Prototype
+    rows: [FR-21.1, FR-21.2, FR-21.3, FR-21.4, FR-21.5, FR-21.6]
+    tests:
+      - tests/e2e/faults/test_qa_worker_killed.py::test_fr21_5_a_worker_killed_after_the_switch_leaves_a_consistent_project
+      - tests/e2e/faults/test_recovery_stuck_project.py::test_a_promotion_stuck_while_changing_ends_stable_and_new_commands_are_accepted
+      - tests/e2e/test_flows.py::test_4_a_candidate_failing_its_preview_never_receives_the_sites_traffic
+      - tests/e2e/test_flows.py::test_4b_a_candidate_failing_after_the_switch_is_restored_and_rolled_back
+      - tests/e2e/test_scenarios_promote.py::test_fr21_2_and_fr21_4_the_gaps_between_tries_are_30_s_and_60_s
+      - tests/e2e/test_scenarios_promote.py::test_the_live_release_keeps_serving_while_a_promotion_fails
+      - tests/integration/kubernetes/test_routing_live.py::test_promote_restore_suspend_and_resume_on_kind
+      - tests/integration/test_go_live_tries.py::test_fr21_1_three_failed_tries_roll_back_with_try_3s_code
+      - tests/integration/test_go_live_tries.py::test_fr21_2_after_try_1_the_row_waits_30_s_and_the_release_stays_promoting
+      - tests/integration/test_go_live_tries.py::test_fr21_3_claim_2_passing_goes_live_with_one_usage_row
+      - tests/integration/test_go_live_tries.py::test_fr21_4_after_try_2_the_row_waits_60_s
+      - tests/integration/test_go_live_tries.py::test_fr21_5_a_lapsed_claim_is_try_2_and_its_writes_are_refused
+      - tests/integration/test_go_live_tries.py::test_fr21_6_a_preview_failure_leaves_the_release_promoting
+      - tests/integration/test_routing_store.py::test_promote_with_restore_runs_on_the_store
+      - tests/integration/test_store_jobs.py::test_fr21_2_a_claim_before_retry_after_is_backoff_and_counts_no_try
+      - tests/integration/test_store_jobs.py::test_fr21_5_a_claim_reads_the_last_failure_code_of_its_row
+      - tests/unit/core/application/reconcile/background/test_reconcile.py::test_a_project_that_is_not_idle_is_skipped_without_any_cluster_call
+      - tests/unit/core/application/routing/background/test_recovery.py::test_tr57_a_promote_abandoned_after_a_failed_try_ends_with_that_try_code
+      - tests/unit/core/application/routing/background/test_routing.py::test_a_candidate_answering_503_fails_with_dependency_unavailable
+      - tests/unit/core/application/routing/background/test_routing.py::test_a_claim_resumed_before_the_switch_landed_switches_again
+      - tests/unit/core/application/routing/background/test_routing.py::test_a_claim_resumed_during_a_restore_finishes_the_restore
+      - tests/unit/core/application/routing/background/test_routing.py::test_a_probe_that_fails_restores_the_route_to_the_live_release
+      - tests/unit/core/application/routing/background/test_routing.py::test_a_refused_switch_is_restored_at_once
+      - tests/unit/core/application/routing/background/test_routing.py::test_a_resumed_claim_whose_preview_answers_503_restores_with_the_outage
+      - tests/unit/core/application/routing/background/test_routing.py::test_a_resumed_claim_whose_preview_fails_restores_the_route
+      - tests/unit/core/application/routing/background/test_routing.py::test_a_route_never_accepted_is_restored_without_probing
+      - tests/unit/core/application/routing/background/test_routing.py::test_a_site_answering_503_after_the_switch_keeps_site_not_answering
+      - tests/unit/core/application/routing/background/test_routing.py::test_fr19_2_a_preview_never_confirmed_is_a_failed_try_with_route_not_accepted
+      - tests/unit/core/application/routing/background/test_routing.py::test_fr19_2_a_switch_not_accepted_on_try_1_points_back_to_l_and_waits_30_s
+      - tests/unit/core/application/routing/background/test_routing.py::test_fr19_3_a_site_not_answering_on_try_1_points_back_to_l_and_waits_30_s
+      - tests/unit/core/application/routing/background/test_routing.py::test_fr19_a_refused_preview_is_a_failed_try_with_route_refused
+      - tests/unit/core/application/routing/background/test_routing.py::test_fr19_each_failed_step_gives_its_try_code
+      - tests/unit/core/application/routing/background/test_routing.py::test_fr21_1_payment_unreachable_on_try_3_is_attempts_exhausted
+      - tests/unit/core/application/routing/background/test_routing.py::test_fr21_1_try_3_failing_restores_l_and_rolls_back_with_its_code
+      - tests/unit/core/application/routing/background/test_routing.py::test_fr21_2_a_failed_try_1_writes_nothing_after_the_intent_and_waits_30_s
+      - tests/unit/core/application/routing/background/test_routing.py::test_fr21_2_a_restore_after_try_1_not_confirmed_is_route_uncertain_without_retry_later
+      - tests/unit/core/application/routing/background/test_routing.py::test_fr21_2_payment_unreachable_on_try_1_waits_30_s_and_touches_nothing
+      - tests/unit/core/application/routing/background/test_routing.py::test_fr21_3_claim_2_passing_reads_the_route_once_and_goes_live
+      - tests/unit/core/application/routing/background/test_routing.py::test_fr21_4_a_failed_try_2_waits_60_s
+      - tests/unit/core/application/routing/background/test_routing.py::test_fr21_4_payment_unreachable_on_try_2_waits_60_s
+      - tests/unit/core/application/routing/background/test_routing.py::test_fr21_5_a_resumed_claim_whose_restore_first_is_not_confirmed_is_route_uncertain
+      - tests/unit/core/application/routing/background/test_routing.py::test_fr21_5_an_unreadable_route_is_pointed_back_before_the_try
+      - tests/unit/core/application/routing/background/test_routing.py::test_fr21_5_claim_2_after_a_lapse_points_the_route_back_before_its_preview
+      - tests/unit/core/application/routing/background/test_routing.py::test_fr21_5_claim_4_on_a_changing_route_ends_promotion_interrupted
+      - tests/unit/core/application/routing/background/test_routing.py::test_fr21_5_claim_4_on_a_stable_route_is_attempts_exhausted
+      - tests/unit/core/application/routing/background/test_routing.py::test_fr21_6_a_fresh_start_preview_failure_never_moves_the_route
+      - tests/unit/core/application/routing/background/test_routing.py::test_fr21_6_on_a_fresh_start_the_intent_is_stored_before_apply_preview
+      - tests/unit/core/application/routing/background/test_routing.py::test_fr21_6_try_3_preview_failure_ends_as_fr21_1
+      - tests/unit/core/application/routing/background/test_routing.py::test_transient_errors_during_the_restore_are_retried_within_the_deadline
+      - tests/unit/core/application/routing/background/test_routing_recovery.py::test_a_verified_restore_deletes_the_rolled_back_candidate
+      - tests/unit/core/application/routing/background/test_routing_recovery.py::test_qa08_a_site_that_flaps_after_the_switch_is_restored
+      - tests/unit/core/domain/rules/test_go_live.py::test_fr21_2_the_wait_after_try_1_is_30_s
+      - tests/unit/core/domain/rules/test_go_live.py::test_fr21_4_the_wait_after_try_2_is_60_s
+      - tests/unit/core/domain/rules/test_go_live.py::test_tr57_a_try_number_below_1_is_refused
+      - tests/unit/core/domain/rules/test_go_live.py::test_tr57_every_try_but_the_last_has_a_wait_and_the_waits_are_the_frs
+      - tests/unit/core/domain/rules/test_go_live.py::test_tr57_no_wait_after_the_last_try
+      - tests/unit/core/domain/rules/test_go_live.py::test_tr57_the_try_codes_are_five_release_and_command_codes
+      - tests/unit/core/domain/rules/test_go_live.py::test_tr57_the_try_codes_keep_their_values
+      - tests/unit/core/domain/rules/test_go_live.py::test_tr57_three_tries
+      - tests/unit/presentation/messaging/consumers/test_consumer.py::test_tr57_a_retry_later_with_a_wait_releases_the_claim_for_exactly_that_wait
+  - id: FR-22
+    title: "Try 3 failed: route to the offline page"
+    status: current
+    parents: [PR-3, PR-22]
+    priority: Must
+    phase: Prototype
+    rows: [FR-22.1, FR-22.2]
+    tests:
+      - tests/e2e/test_scenarios_promote.py::test_a_failed_first_publish_removes_the_route_and_the_site_stays_offline
+      - tests/integration/test_go_live_tries.py::test_fr22_1_three_failed_tries_of_a_first_deployment_fail_the_release
+      - tests/integration/test_go_live_tries.py::test_fr22_2_between_tries_of_a_first_deployment_the_release_stays_promoting
+      - tests/unit/core/application/routing/background/test_recovery.py::test_tr57_a_first_publish_abandoned_after_a_failed_try_fails_with_that_try_code
+      - tests/unit/core/application/routing/background/test_routing.py::test_a_first_publish_that_fails_points_the_route_offline_and_fails_the_release
+      - tests/unit/core/application/routing/background/test_routing.py::test_fr22_1_no_live_release_try_3_failing_goes_offline_and_fails_with_its_code
+      - tests/unit/core/application/routing/background/test_routing.py::test_fr22_2_no_live_release_try_1_failing_points_an_absent_route_offline
+      - tests/unit/core/application/routing/background/test_routing_recovery.py::test_a_first_publish_that_goes_offline_deletes_its_failed_release
+  - id: FR-23
+    title: "Routing `uncertain`"
+    status: current
+    parents: [PR-3]
+    priority: Must
+    phase: Prototype
+    rows: [FR-23.1, FR-23.2, FR-23.3]
+    tests:
+      - tests/e2e/faults/test_recovery_stuck_project.py::test_a_promotion_stuck_while_changing_ends_stable_and_new_commands_are_accepted
+      - tests/integration/test_routing_store.py::test_a_restore_that_fails_leaves_the_route_uncertain
+      - tests/integration/test_routing_store.py::test_a_suspend_whose_route_is_unconfirmed_leaves_it_uncertain_on_the_store
+      - tests/unit/core/application/hosting/background/test_hosting_job.py::test_a_suspend_whose_route_is_never_confirmed_leaves_the_route_uncertain
+      - tests/unit/core/application/routing/background/test_recovery.py::test_tr57_an_unconfirmed_abandon_keeps_the_consumer_code
+      - tests/unit/core/application/routing/background/test_routing.py::test_a_restore_that_fails_leaves_the_route_uncertain_until_an_operator_rollback
+      - tests/unit/core/application/routing/background/test_routing.py::test_fr21_2_a_restore_after_try_1_not_confirmed_is_route_uncertain_without_retry_later
+      - tests/unit/core/application/routing/background/test_routing.py::test_fr21_5_a_resumed_claim_whose_restore_first_is_not_confirmed_is_route_uncertain
+      - tests/unit/core/domain/rules/test_command_preconditions.py::test_command_preconditions_matrix
+      - tests/unit/core/domain/rules/test_command_preconditions.py::test_redeploy_needs_the_live_release_online_and_stable
+  - id: FR-24
+    title: "Removed: only an admin rolls back (GATE1 O1)"
+    status: removed
+    parents: [PR-5]
+    phase: Phase C
+    rows: []
+    tests: []
+  - id: FR-25
+    title: "A write whose command or claim number is out of date changes nothing"
+    status: current
+    parents: [PR-3]
+    priority: Must
+    phase: Prototype
+    rows: [FR-25.1]
+    tests:
+      - tests/integration/test_claim_race.py::test_a_stale_renewal_racing_a_takeover_is_refused_as_a_lost_claim
+      - tests/integration/test_deploy_store.py::test_a_lost_claim_is_refused_and_nothing_is_written
+      - tests/integration/test_deploy_store.py::test_a_stale_fence_is_refused_and_nothing_is_written
+      - tests/integration/test_go_live_tries.py::test_fr21_5_a_lapsed_claim_is_try_2_and_its_writes_are_refused
+      - tests/integration/test_store_jobs.py::test_a_stale_fence_is_refused
+      - tests/integration/test_store_jobs.py::test_an_expired_claim_is_taken_over_and_the_old_claim_cannot_write
+  - id: FR-26
+    title: "`suspend_hosting`, reason `billing`, key = event key"
+    status: current
+    parents: [PR-18]
+    priority: Must
+    phase: Prototype
+    rows: [FR-26.1, FR-26.2]
+    tests:
+      - tests/unit/core/application/hosting/background/test_hosting_job.py::test_a_payment_event_becomes_a_hosting_command_keyed_by_the_event
+      - tests/unit/core/application/hosting/background/test_hosting_job.py::test_a_suspend_is_skipped_when_entitlement_came_back
+      - tests/unit/core/application/hosting/background/test_hosting_job.py::test_suspend_points_the_route_offline_and_keeps_the_live_release
+  - id: FR-27
+    title: "`resume_hosting`, removes `billing`"
+    status: current
+    parents: [PR-18]
+    priority: Must
+    phase: Prototype
+    rows: [FR-27.1, FR-27.2, FR-27.3]
+    tests:
+      - tests/unit/core/application/hosting/background/test_hosting_job.py::test_a_resume_is_skipped_when_entitlement_ended_again
+      - tests/unit/core/application/hosting/background/test_hosting_job.py::test_billing_resume_keeps_site_offline_while_user_suspended
+      - tests/unit/core/application/hosting/background/test_hosting_job.py::test_resume_points_the_route_back_at_the_live_release
+  - id: FR-28
+    title: "`suspend_hosting`, reason `project_deleted`, key `project-deleted`"
+    status: current
+    parents: [PR-16]
+    priority: Must
+    phase: Prototype
+    rows: [FR-28.1]
+    tests:
+      - tests/integration/test_routing_store.py::test_a_resume_after_deletion_ends_skipped_on_the_store
+      - tests/unit/core/application/hosting/background/test_hosting_job.py::test_deletion_suspend_after_billing_adds_project_deleted
+      - tests/unit/presentation/messaging/consumers/test_payment_events.py::test_a_deletion_becomes_a_suspend_with_the_fixed_key
+  - id: FR-29
+    title: "Suspend or resume `user_suspended`, key `owner-status:<version>`"
+    status: current
+    parents: [PR-17]
+    priority: Must
+    phase: Phase B
+    rows: [FR-29.1, FR-29.2, FR-29.3]
+    tests:
+      - tests/integration/test_owner_status_store.py::test_no_hosting_row_inserts_one_and_no_command
+      - tests/unit/core/application/hosting/commands/test_accept_owner_status.py::test_no_hosting_row_inserts_one_and_no_command
+      - tests/unit/core/application/hosting/commands/test_accept_owner_status.py::test_older_owner_status_changes_nothing
+      - tests/unit/core/application/hosting/commands/test_accept_owner_status.py::test_same_version_other_status_is_stale
+      - tests/unit/core/application/hosting/commands/test_accept_owner_status.py::test_suspended_owner_creates_a_user_suspended_suspend
+      - tests/unit/presentation/messaging/consumers/test_owner_status_events.py::test_stale_replayed_and_a_first_row_are_acked
+  - id: FR-30
+    title: "Acked and logged"
+    status: current
+    parents: [PR-18]
+    priority: Must
+    phase: Prototype
+    rows: [FR-30.1]
+    tests:
+      - tests/unit/presentation/messaging/consumers/test_payment_events.py::test_payment_event_for_a_never_deployed_project_is_acked_and_logged
+  - id: FR-31
+    title: "Reason already there (suspend) or absent (resume): `skipped`"
+    status: current
+    parents: [PR-18]
+    priority: Must
+    phase: Prototype
+    rows: [FR-31.1, FR-31.2, FR-31.3]
+    tests:
+      - tests/unit/core/application/hosting/background/test_hosting_job.py::test_resume_with_its_reason_absent_is_skipped
+      - tests/unit/core/application/hosting/background/test_hosting_job.py::test_suspend_with_its_reason_present_is_skipped
+      - tests/unit/core/application/hosting/background/test_hosting_qa03.py::test_a_suspend_that_failed_is_not_forgotten_when_the_event_repeats_and_the_route_recovers
+  - id: FR-32
+    title: "A failing message returns to its queue up to 5 times, every failure ..."
+    status: current
+    parents: [PR-15, PR-18]
+    priority: Must
+    phase: Prototype
+    rows: [FR-32.1]
+    tests:
+      - tests/messaging/test_topology_v1.py::test_a_database_outage_parks_the_message_after_five
+      - tests/messaging/test_topology_v1.py::test_a_message_that_always_fails_lands_in_its_dlq_after_five_failures
+      - tests/unit/presentation/messaging/consumers/test_inbox.py::test_a_database_outage_counts_toward_the_bound
+      - tests/unit/presentation/messaging/consumers/test_inbox.py::test_an_event_whose_inbox_write_keeps_failing_is_dead_lettered_at_the_fifth
+      - tests/unit/presentation/messaging/consumers/test_owner_status_events.py::test_a_store_error_is_requeued_and_dead_lettered_at_the_fifth_failure
+      - tests/unit/presentation/messaging/consumers/test_payment_events.py::test_a_database_outage_counts_toward_the_bound
+      - tests/unit/presentation/messaging/consumers/test_payment_events.py::test_an_event_whose_intake_keeps_failing_is_dead_lettered_at_the_fifth_failure
+  - id: FR-33
+    title: "`suspend_hosting`, reason `admin_suspended`, key `admin:<key>` ..."
+    status: current
+    parents: [PR-10]
+    priority: Must
+    phase: Phase C
+    rows: [FR-33.1, FR-33.2]
+    tests:
+      - tests/integration/kubernetes/test_routing_live.py::test_promote_restore_suspend_and_resume_on_kind
+      - tests/integration/test_admin_commands.py::test_admin_suspend_stores_admin_key_reason_and_subject
+      - tests/unit/core/application/operations/test_admin.py::test_suspend_stores_the_admin_key_reason_and_subject
+  - id: FR-34
+    title: "`resume_hosting` removes only `admin_suspended`"
+    status: current
+    parents: [PR-11]
+    priority: Must
+    phase: Phase C
+    rows: [FR-34.1, FR-34.2]
+    tests:
+      - tests/integration/kubernetes/test_routing_live.py::test_promote_restore_suspend_and_resume_on_kind
+      - tests/integration/test_admin_commands.py::test_admin_suspend_stores_admin_key_reason_and_subject
+      - tests/unit/core/application/operations/test_admin.py::test_resume_stores_the_admin_key_and_names_only_admin_suspended
+  - id: FR-35
+    title: "Needs a live release and `online`"
+    status: current
+    parents: [PR-12]
+    priority: Must
+    phase: Phase C
+    rows: [FR-35.1, FR-35.2, FR-35.3, FR-35.4]
+    tests:
+      - tests/integration/test_admin_commands.py::test_redeploy_needs_a_live_release_and_online
+      - tests/unit/core/application/deploys/background/test_redeploy_executor.py::test_redeploy_applies_the_restart_annotation_with_the_fence
+      - tests/unit/core/application/deploys/background/test_redeploy_executor.py::test_redeploy_fails_unready_at_the_deadline
+      - tests/unit/core/application/deploys/background/test_redeploy_executor.py::test_redeploy_refuses_a_release_no_longer_live
+      - tests/unit/core/application/deploys/background/test_redeploy_executor.py::test_redeploy_writes_no_route_no_release_no_usage
+      - tests/unit/core/application/operations/test_admin.py::test_redeploy_names_the_live_release_and_the_subject
+      - tests/unit/core/application/operations/test_admin.py::test_redeploy_needs_a_live_release_online
+      - tests/unit/core/domain/rules/test_command_preconditions.py::test_redeploy_needs_the_live_release_online_and_stable
+  - id: FR-36
+    title: "The site's commands with `requestedBySubject`, paged"
+    status: current
+    parents: [PR-14]
+    priority: Must
+    phase: Phase C
+    rows: [FR-36.1]
+    tests:
+      - tests/integration/test_admin_commands.py::test_admin_read_returns_the_subject_and_client_read_never_does
+      - tests/unit/core/application/operations/test_admin.py::test_the_admin_read_returns_the_subject_and_pages_newest_first
+  - id: FR-37
+    title: "The release with status, failure code, safe summary and its steps"
+    status: current
+    parents: [PR-4]
+    priority: Must
+    phase: Prototype
+    rows: [FR-37.1, FR-37.2, FR-37.3]
+    tests:
+      - tests/e2e/test_scenarios_promote.py::test_fr21_2_and_fr21_4_the_gaps_between_tries_are_30_s_and_60_s
+      - tests/e2e/test_scenarios_promote.py::test_the_live_release_keeps_serving_while_a_promotion_fails
+      - tests/integration/test_go_live_tries.py::test_fr21_1_three_failed_tries_roll_back_with_try_3s_code
+      - tests/integration/test_go_live_tries.py::test_fr21_2_after_try_1_the_row_waits_30_s_and_the_release_stays_promoting
+      - tests/unit/core/application/operations/test_reads.py::test_get_release_returns_the_stored_release
+      - tests/unit/core/application/routing/background/test_recovery.py::test_tr57_a_promote_abandoned_after_a_failed_try_ends_with_that_try_code
+      - tests/unit/presentation/operations/test_operations.py::test_not_found_codes_name_what_the_operation_reads
+  - id: FR-38
+    title: "The project's releases, or commands, newest first, paged"
+    status: current
+    parents: [PR-4, PR-8]
+    priority: Must
+    phase: Prototype
+    rows: [FR-38.1]
+    tests:
+      - tests/integration/test_read_history.py::test_list_releases_pages_newest_first_within_the_project
+      - tests/unit/core/application/operations/test_bus_surface.py::test_list_commands_pages_newest_first
+      - tests/unit/core/application/operations/test_bus_surface.py::test_list_releases_pages_newest_first_and_stops
+      - tests/unit/presentation/http/test_listings_and_audit.py::test_the_listings_page_through_the_real_service
+  - id: FR-39
+    title: "The command"
+    status: current
+    parents: [PR-4]
+    priority: Must
+    phase: Prototype
+    rows: [FR-39.1, FR-39.2]
+    tests:
+      - tests/integration/test_admin_commands.py::test_admin_read_returns_the_subject_and_client_read_never_does
+      - tests/unit/core/application/operations/test_reads.py::test_get_command_returns_the_stored_command
+      - tests/unit/core/application/operations/test_views.py::test_results_never_expose_key_hash_or_requester
+      - tests/unit/presentation/operations/test_operations.py::test_not_found_codes_name_what_the_operation_reads
+  - id: FR-40
+    title: "Live release, routing, hosting, offline reasons"
+    status: current
+    parents: [PR-4]
+    priority: Must
+    phase: Prototype
+    rows: [FR-40.1, FR-40.2]
+    tests:
+      - tests/unit/core/application/operations/test_reads.py::test_get_deployment_returns_the_stored_state
+      - tests/unit/presentation/operations/test_operations.py::test_not_found_codes_name_what_the_operation_reads
+  - id: FR-41
+    title: "Bounded, redacted diagnostics of the release"
+    status: current
+    parents: [PR-4]
+    priority: Must
+    phase: Prototype
+    rows: [FR-41.1, FR-41.2]
+    tests:
+      - tests/integration/test_read_history.py::test_diagnostics_are_bounded_scoped_and_carry_the_event_outcome
+      - tests/unit/core/application/operations/test_bus_surface.py::test_diagnostics_are_bounded
+      - tests/unit/core/application/operations/test_bus_surface.py::test_diagnostics_are_redacted
+      - tests/unit/presentation/operations/test_operations.py::test_not_found_codes_name_what_the_operation_reads
+  - id: FR-42
+    title: "Publishes `publish_completed.v1`, key `publish-completed-<release_id>`"
+    status: current
+    parents: [PR-19]
+    priority: Must
+    phase: Prototype
+    rows: [FR-42.1, FR-42.2]
+    tests:
+      - tests/messaging/test_usage_events.py::test_a_broker_outage_holds_the_events_until_the_broker_returns
+      - tests/messaging/test_usage_events.py::test_each_usage_event_reaches_the_queue_under_the_schema
+      - tests/unit/core/application/usage/background/test_usage_publisher.py::test_an_unconfirmed_publish_is_a_failure_after_the_confirm_timeout
+      - tests/unit/core/application/usage/background/test_usage_publisher.py::test_each_due_event_is_published_then_marked_sent
+  - id: FR-43
+    title: "Messages carry `traceparent` and `x-request-id`"
+    status: current
+    parents: [PR-25]
+    priority: Must
+    phase: Phase B
+    rows: [FR-43.1, FR-43.2]
+    tests:
+      - tests/messaging/test_trace_propagation.py::test_a_command_job_published_in_a_span_is_consumed_in_the_same_trace
+      - tests/unit/infrastructure/telemetry/test_tracing.py::test_log_lines_carry_the_trace_id_of_the_current_span
+      - tests/unit/infrastructure/telemetry/test_tracing.py::test_the_request_span_and_the_publish_span_share_a_trace
+  - id: FR-44
+    title: "A `failed` source event goes back to `pending` with more attempts"
+    status: current
+    parents: [PR-23]
+    priority: Should*
+    phase: Prototype
+    rows: [FR-44.1, FR-44.2]
+    tests: []
+  - id: FR-45
+    title: "Lists a `.dlq` and moves messages back"
+    status: current
+    parents: [PR-23]
+    priority: Should*
+    phase: Prototype
+    rows: [FR-45.1, FR-45.2]
+    tests: []
+  - id: FR-46
+    title: "Same operations and checks as REST"
+    status: current
+    parents: [PR-24]
+    priority: Should*
+    phase: Prototype
+    rows: [FR-46.1, FR-46.2]
+    tests: []
+  - id: FR-47
+    title: "Stores a `deploy` command, no requester, when hosting `online`, plan ..."
+    status: current
+    parents: [PR-26, PR-9]
+    priority: Must
+    phase: Later
+    rows: [FR-47.1]
+    tests: []
+  - id: FR-48
+    title: "Stores a `promote` command with the same checks"
+    status: current
+    parents: [PR-26, PR-3]
+    priority: Must
+    phase: Later
+    rows: [FR-48.1, FR-48.2, FR-48.3, FR-48.4]
+    tests: []
+  - id: FR-49
+    title: "Another command in flight: tries again when it ends"
+    status: current
+    parents: [PR-26, PR-9]
+    priority: Must
+    phase: Later
+    rows: [FR-49.1, FR-49.2, FR-49.3, FR-49.4]
+    tests: []
+  - id: FR-50
+    title: "Rollback only while `uncertain`: route to live release, or offline page ..."
+    status: current
+    parents: [PR-13]
+    priority: Must
+    phase: Prototype
+    rows: [FR-50.1, FR-50.2, FR-50.3, FR-50.4, FR-50.5]
+    tests:
+      - tests/unit/core/application/operations/test_bus_surface.py::test_an_admins_rollback_through_an_agent_is_audited_as_an_operator
+      - tests/unit/core/application/operations/test_gate.py::test_an_admin_rolls_back_a_project_they_do_not_own_without_project_access
+      - tests/unit/core/application/operations/test_gate.py::test_fr50_2_a_caller_without_admin_is_denied_a_rollback
+      - tests/unit/core/application/operations/test_gate.py::test_fr50_the_admin_only_actions_are_rollback_and_the_four_of_g10
+      - tests/unit/core/application/shared/test_action.py::test_fr50_rollback_is_admin_only_in_code
+      - tests/unit/hosts/api/test_project_access.py::test_a_lower_case_admin_role_does_not_count
+      - tests/unit/hosts/api/test_project_access.py::test_a_user_role_may_not_roll_back_with_the_role_scopes
+      - tests/unit/hosts/api/test_project_access.py::test_an_admin_rolls_back_a_project_they_do_not_own_without_asking
+      - tests/unit/hosts/api/test_project_access.py::test_an_operators_rollback_is_decided_without_asking_the_project_service
+      - tests/unit/hosts/api/test_project_access.py::test_fr50_2_a_token_without_admin_may_not_roll_back
+      - tests/unit/infrastructure/config/test_identity.py::test_fr50_production_maps_rollback_to_admin
+      - tests/unit/infrastructure/config/test_identity.py::test_fr50_production_names_every_admin_only_action_not_mapped_to_admin
+      - tests/unit/infrastructure/config/test_identity.py::test_fr50_production_refuses_an_admin_only_action_mapped_to_another_scope
+      - tests/unit/infrastructure/config/test_identity.py::test_fr50_the_prototype_may_map_rollback_to_another_scope
+      - tests/unit/presentation/operations/test_operations.py::test_the_admin_operations_are_under_the_admin_prefix
+      - tests/unit/scripts/test_run_provisioning.py::test_fr50_the_api_scopes_name_every_action_and_rollback_needs_admin
+  - id: FR-51
+    title: "The same reads for any project, with no `CheckAccess`"
+    status: current
+    parents: [PR-28]
+    priority: Must
+    phase: Later
+    rows: [FR-51.1]
+    tests: []
+  - id: FR-52
+    title: "Reaches the candidate only with the project's preview token, removed ..."
+    status: current
+    parents: [PR-29]
+    priority: Should
+    phase: Later
+    rows: [FR-52.1, FR-52.2]
+    tests:
+      - tests/integration/kubernetes/test_kubernetes_live.py::test_both_routes_name_their_backend_and_the_preview_is_fenced
+      - tests/unit/core/application/routing/background/test_routing.py::test_fr52_1_only_the_preview_probe_names_the_projects_subdomain
+      - tests/unit/deploy/test_route_shape_policy.py::test_fr52_1_a_preview_route_sets_only_its_release_header_and_no_store
+      - tests/unit/deploy/test_route_shape_policy.py::test_fr52_1_every_preview_rule_must_carry_the_no_store_header
+      - tests/unit/infrastructure/kubernetes/test_render.py::test_every_rule_sets_the_release_header_to_its_backend
+      - tests/unit/infrastructure/kubernetes/test_render.py::test_fr52_1_only_the_preview_answers_private_no_store
+      - tests/unit/infrastructure/kubernetes/test_render.py::test_s1_two_projects_preview_routes_match_different_values
+      - tests/unit/infrastructure/kubernetes/test_render.py::test_the_preview_route_is_fenced_on_the_gateway_with_its_one_hostname
+      - tests/unit/infrastructure/kubernetes/test_site_cluster.py::test_fr52_1_a_preview_probe_of_any_other_host_is_refused_before_any_request
+      - tests/unit/infrastructure/kubernetes/test_site_cluster.py::test_fr52_1_a_preview_route_without_the_no_store_header_is_not_confirmed
+      - tests/unit/infrastructure/kubernetes/test_site_cluster.py::test_fr52_1_the_probe_sends_the_token_only_to_the_projects_own_preview_host
+  - id: FR-53
+    title: "Creates and keeps a pull Secret for the private site images in each ..."
+    status: current
+    parents: [PR-26, PR-12]
+    priority: Must
+    phase: Later
+    rows: [FR-53.1, FR-53.2, FR-53.3, FR-53.4]
+    tests: []
+  - id: FR-54
+    title: "Held by another project: owner-status stores nothing, dead-letters"
+    status: current
+    parents: [PR-20]
+    priority: Must
+    phase: Phase C
+    rows: [FR-54.1, FR-54.2, FR-54.3, FR-54.4, FR-54.5]
+    tests:
+      - tests/integration/test_owner_status_consumer.py::test_s2_a_taken_subdomain_is_dead_lettered_at_once_and_writes_nothing
+      - tests/integration/test_owner_status_store.py::test_fr54_a_release_row_with_a_taken_subdomain_gets_no_tenant
+      - tests/integration/test_owner_status_store.py::test_fr54_a_subdomain_another_project_holds_is_subdomain_taken_and_writes_nothing
+      - tests/integration/test_owner_status_store.py::test_fr54_an_owner_status_event_after_a_release_row_is_subdomain_taken
+      - tests/integration/test_owner_status_store.py::test_fr54_concurrent_first_inserts_of_one_project_are_never_subdomain_taken
+      - tests/integration/test_owner_status_store.py::test_fr54_concurrent_first_inserts_of_two_projects_leave_one_holder
+      - tests/integration/test_owner_status_store.py::test_fr54_no_unique_index_holds_the_subdomain
+      - tests/integration/test_tenant_projects.py::test_fr54_projects_whose_subdomain_another_row_holds_are_marked_taken
+      - tests/messaging/test_owner_status_consumer.py::test_s2_a_taken_subdomain_goes_to_the_dlq_on_its_first_delivery
+      - tests/unit/core/application/intake/background/test_inbox_processor.py::test_l2_a_taken_subdomain_that_spent_the_budget_is_logged_at_error
+      - tests/unit/core/application/intake/background/test_release_intake.py::test_fr54_a_bug_in_the_answer_check_is_not_an_invalid_answer
+      - tests/unit/core/application/intake/background/test_release_intake.py::test_l2_a_taken_subdomain_with_the_budget_spent_fails_the_row
+      - tests/unit/core/application/intake/background/test_release_intake.py::test_l2_a_taken_subdomain_within_the_budget_is_an_error_row
+      - tests/unit/core/application/tenants/background/test_subdomain_taken.py::test_fr54_a_taken_subdomain_gets_no_tenant_and_is_logged_at_error_without_it
+      - tests/unit/core/application/tenants/background/test_subdomain_taken.py::test_fr54_a_taken_subdomain_is_never_remembered_as_ready
+      - tests/unit/infrastructure/postgres/test_hosting_insert.py::test_fr54_class_and_key_fit_the_two_integer_lock
+      - tests/unit/infrastructure/postgres/test_hosting_insert.py::test_fr54_other_subdomains_take_other_keys
+      - tests/unit/infrastructure/postgres/test_hosting_insert.py::test_fr54_the_lock_key_is_a_stable_hash_of_the_subdomain
+      - tests/unit/infrastructure/postgres/test_tenant_projects_statement.py::test_fr54_the_taken_check_reads_another_hosting_row_by_granted_columns_only
+      - tests/unit/presentation/messaging/consumers/test_owner_status_events.py::test_s2_a_taken_subdomain_is_dead_lettered_at_once_and_logged
+  - id: FR-55
+    title: "A sub-domain ending in `-preview` is another project's preview host ..."
+    status: current
+    parents: [PR-20, PR-21]
+    priority: Must
+    phase: Phase C
+    rows: [FR-55.1, FR-55.2, FR-55.3, FR-55.4]
+    tests:
+      - tests/unit/core/application/routing/background/test_routing.py::test_fr55_a_preview_host_is_never_the_site_host_of_a_hosted_subdomain
+      - tests/unit/core/application/routing/background/test_routing.py::test_fr55_the_one_collision_is_a_subdomain_the_bootstrap_refuses
+      - tests/unit/core/application/tenants/background/test_preview_subdomain.py::test_fr55_1_preview_alone_or_not_at_the_end_gets_its_tenant
+      - tests/unit/core/application/tenants/background/test_preview_subdomain.py::test_fr55_2_a_dash_preview_subdomain_gets_no_tenant_and_one_error_without_it
+      - tests/unit/core/application/tenants/background/test_preview_subdomain.py::test_fr55_3_a_refused_subdomain_is_never_remembered_as_ready
+      - tests/unit/core/application/tenants/background/test_preview_subdomain.py::test_fr55_4_a_subdomain_of_56_to_63_characters_is_refused_and_55_is_not
+      - tests/unit/core/domain/values/test_preview_label.py::test_fr55_1_these_subdomains_are_hosted
+      - tests/unit/core/domain/values/test_preview_label.py::test_fr55_2_a_subdomain_ending_in_dash_preview_is_refused
+      - tests/unit/core/domain/values/test_preview_label.py::test_fr55_2_the_refused_form_is_exactly_another_projects_preview_label
+      - tests/unit/core/domain/values/test_preview_label.py::test_fr55_4_a_subdomain_of_56_to_63_characters_is_refused
+      - tests/unit/deploy/test_bootstrap_scope_policy.py::test_fr55_a_new_subdomain_label_never_ends_in_dash_preview_nor_passes_55_characters
+      - tests/unit/infrastructure/kubernetes/test_render.py::test_fr55_4_a_subdomain_over_55_characters_has_no_preview_route
+  - id: TR-1
+    title: "One package, processes `api`, `worker`, `build_worker`, `bootstrap` ..."
+    status: current
+    parents: []
+    all_fr: true
+    priority: Must
+  - id: TR-2
+    title: "Four layers plus `hosts`: domain imports nothing of ours, application ..."
+    status: current
+    parents: []
+    all_fr: true
+    priority: Must
+  - id: TR-3
+    title: "REST and MCP call the same use cases through one operation table"
+    status: current
+    parents: [FR-46]
+    priority: Should*
+    phase: Prototype
+  - id: TR-4
+    title: "PostgreSQL is the authority"
+    status: current
+    parents: [FR-14, FR-15]
+    priority: Must
+    phase: Later
+  - id: TR-5
+    title: "Every worker write checks the command number and the claim number"
+    status: current
+    parents: [FR-25]
+    priority: Must
+    phase: Prototype
+  - id: TR-6
+    title: "The worker applies site objects by server-side apply under one field ..."
+    status: current
+    parents: [FR-17, FR-19, FR-35]
+    priority: Must
+    phase: Later
+  - id: TR-7
+    title: "The build worker starts Jenkins jobs and polls them"
+    status: current
+    parents: [FR-11, FR-12, FR-13]
+    priority: Must
+    phase: Prototype
+  - id: TR-8
+    title: "Python 3.14, FastAPI, Pydantic v2, uvicorn, MCP SDK 2.x, SQLAlchemy ..."
+    status: current
+    parents: []
+    all_fr: true
+    priority: Must
+  - id: TR-9
+    title: "Each dependency at least 14 days old"
+    status: current
+    parents: []
+    all_fr: true
+    priority: Must
+  - id: TR-10
+    title: "Goose SQL migrations are the only schema source, run by the migrate Job"
+    status: current
+    parents:
+      - FR-9
+      - FR-10
+      - FR-11
+      - FR-12
+      - FR-13
+      - FR-14
+      - FR-15
+      - FR-17
+      - FR-19
+      - FR-20
+      - FR-21
+      - FR-22
+      - FR-23
+      - FR-25
+      - FR-26
+      - FR-27
+      - FR-28
+      - FR-29
+      - FR-30
+      - FR-31
+      - FR-32
+      - FR-33
+      - FR-34
+      - FR-35
+      - FR-36
+      - FR-37
+      - FR-38
+      - FR-39
+      - FR-40
+      - FR-41
+      - FR-42
+    priority: Must
+    phase: Prototype
+  - id: TR-11
+    title: "Database `provisioning` in the shared CloudNativePG cluster ..."
+    status: current
+    parents:
+      - FR-9
+      - FR-10
+      - FR-11
+      - FR-12
+      - FR-13
+      - FR-14
+      - FR-15
+      - FR-17
+      - FR-19
+      - FR-20
+      - FR-21
+      - FR-22
+      - FR-23
+      - FR-25
+      - FR-26
+      - FR-27
+      - FR-28
+      - FR-29
+      - FR-30
+      - FR-31
+      - FR-32
+      - FR-33
+      - FR-34
+      - FR-35
+      - FR-36
+      - FR-37
+      - FR-38
+      - FR-39
+      - FR-40
+      - FR-41
+      - FR-42
+    priority: Must
+    phase: Prototype
+  - id: TR-12
+    title: "The schema equals S1 exactly: tables, columns and order, types, enums ..."
+    status: current
+    parents:
+      - FR-9
+      - FR-10
+      - FR-11
+      - FR-12
+      - FR-13
+      - FR-14
+      - FR-15
+      - FR-17
+      - FR-19
+      - FR-20
+      - FR-21
+      - FR-22
+      - FR-23
+      - FR-25
+      - FR-26
+      - FR-27
+      - FR-28
+      - FR-29
+      - FR-30
+      - FR-31
+      - FR-32
+      - FR-33
+      - FR-34
+      - FR-35
+      - FR-36
+      - FR-37
+      - FR-38
+      - FR-39
+      - FR-40
+      - FR-41
+      - FR-42
+    priority: Must
+    phase: Prototype
+  - id: TR-13
+    title: "Roles as S1: `provisioning_api`, `provisioning_worker` ..."
+    status: current
+    parents: [FR-9, FR-14, FR-26, FR-44]
+    priority: Must
+    phase: Prototype
+  - id: TR-14
+    title: "Inbox keys: `(project_id, generation_request_id)` for source events"
+    status: current
+    parents: [FR-26, FR-27, FR-28, FR-29, FR-30, FR-9, FR-10]
+    priority: Must
+    phase: Prototype
+  - id: TR-15
+    title: "The usage row is written in the go-live transaction and marked `sent` ..."
+    status: current
+    parents: [FR-19, FR-42]
+    priority: Must
+    phase: Later
+  - id: TR-16
+    title: "Finished rows are kept"
+    status: current
+    parents: [FR-37, FR-38, FR-39, FR-40, FR-41]
+    priority: Must
+    phase: Prototype
+  - id: TR-17
+    title: "REST under `/v1`: success envelope, RFC 9457 Problem with fixed member ..."
+    status: current
+    parents: [FR-37, FR-38, FR-39, FR-40, FR-41, FR-7]
+    priority: Must
+    phase: Prototype
+  - id: TR-18
+    title: "Admin routes under `/v1/admin/projects/{projectId}`: `hosting/suspend` ..."
+    status: current
+    parents: [FR-33, FR-34, FR-35, FR-36]
+    priority: Must
+    phase: Phase C
+  - id: TR-19
+    title: "MCP over Streamable HTTP at `/mcp`"
+    status: current
+    parents: [FR-46]
+    priority: Should*
+    phase: Prototype
+  - id: TR-20
+    title: "gRPC clients from pinned `web-block-contracts`: Project `CheckAccess` ..."
+    status: current
+    parents: [FR-5, FR-9, FR-26, FR-47, FR-48]
+    priority: Must
+    phase: Prototype
+  - id: TR-21
+    title: "gRPC errors map by S2 table 2.3, reason kept as code"
+    status: current
+    parents: [FR-5]
+    priority: Must
+    phase: Prototype
+  - id: TR-22
+    title: "Consumes quorum queues `provisioning.<event>.v1` for ..."
+    status: current
+    parents: [FR-26, FR-27, FR-28, FR-29, FR-30, FR-31, FR-32, FR-9]
+    priority: Must
+    phase: Prototype
+  - id: TR-23
+    title: "Publishes `publish_completed.v1` on exchange `provisioning.events`"
+    status: current
+    parents: [FR-15, FR-42]
+    priority: Must
+    phase: Later
+  - id: TR-24
+    title: "Every event uses the v1 envelope and its schema"
+    status: current
+    parents: [FR-26, FR-27, FR-28, FR-29, FR-9, FR-42]
+    priority: Must
+    phase: Prototype
+  - id: TR-25
+    title: "Jenkins over HTTP with its own token"
+    status: current
+    parents: [FR-11]
+    priority: Must
+    phase: Prototype
+  - id: TR-26
+    title: "The API checks each token: Keycloak key set, RS256 only, exact `iss` ..."
+    status: current
+    parents: [FR-1]
+    priority: Must
+    phase: Prototype
+  - id: TR-27
+    title: "`user_id` (UUID) is the user"
+    status: current
+    parents: [FR-2, FR-4]
+    priority: Must
+    phase: Prototype
+  - id: TR-28
+    title: "Removed: owners no longer deploy, promote or roll back (GATE1 O1, O2)"
+    status: removed
+    parents: [FR-24]
+    phase: Phase C
+  - id: TR-29
+    title: "Not the owner and unknown project answer the same 404 byte for byte"
+    status: current
+    parents: [FR-3]
+    priority: Must
+    phase: Prototype
+  - id: TR-30
+    title: "Calls to our services carry `x-user-id` (when a user), `x-request-id` ..."
+    status: current
+    parents: [FR-8]
+    priority: Must
+    phase: Prototype
+  - id: TR-31
+    title: "Istio sidecars with STRICT mTLS"
+    status: current
+    parents: [FR-5, FR-9]
+    priority: Must
+    phase: Prototype
+  - id: TR-32
+    title: "`web-block-commons` (Python package) does the token check, the current ..."
+    status: current
+    parents: [FR-1, FR-2, FR-8, FR-43]
+    priority: Must
+    phase: Prototype
+  - id: TR-33
+    title: "Tokens, bodies and caller values never in logs, traces, Sentry or ..."
+    status: current
+    parents: [FR-1, FR-7, FR-43]
+    priority: Must
+    phase: Prototype
+  - id: TR-34
+    title: "API and build worker have no Kubernetes token"
+    status: current
+    parents: [FR-17, FR-19]
+    priority: Must
+    phase: Later
+  - id: TR-35
+    title: "Admission policies allow only labelled site objects, the site image ..."
+    status: current
+    parents: [FR-17, FR-19, FR-20]
+    priority: Must
+    phase: Later
+  - id: TR-36
+    title: "Site builds get no cluster token, Docker socket, Git write token or ..."
+    status: current
+    parents: [FR-11]
+    priority: Must
+    phase: Prototype
+  - id: TR-37
+    title: "Request size, in-flight limit, timeouts, deadlines and retry budgets ..."
+    status: current
+    parents: []
+    all_fr: true
+    priority: Must
+  - id: TR-38
+    title: "Publish-to-live time and API availability targets: 95% of publishes ..."
+    status: current
+    parents: [FR-19, FR-37, FR-47, FR-48]
+    priority: Must
+    phase: Later
+  - id: TR-39
+    title: "API, worker and build worker run safely as two or more replicas"
+    status: current
+    parents: [FR-14, FR-25]
+    priority: Must
+    phase: Later
+  - id: TR-40
+    title: "Metrics on `/metrics` (Prometheus), errors to Sentry, spans by ..."
+    status: current
+    parents: [FR-43]
+    priority: Must
+    phase: Phase B
+  - id: TR-41
+    title: "JSON logs on stdout with `trace_id`, `span_id`, `request_id`"
+    status: current
+    parents: [FR-43]
+    priority: Must
+    phase: Phase B
+  - id: TR-42
+    title: "Helm chart `deploy/helm/provisioning` in namespace `webblock`: four ..."
+    status: current
+    parents: []
+    all_fr: true
+    priority: Must
+  - id: TR-43
+    title: "Egress allowed only where needed: database, broker, Keycloak key set ..."
+    status: current
+    parents: [FR-1, FR-5, FR-43]
+    priority: Must
+    phase: Prototype
+  - id: TR-44
+    title: "Per site: namespace `wb-<projectId>`, Deployment and Service ..."
+    status: current
+    parents: [FR-17, FR-19, FR-20]
+    priority: Must
+    phase: Later
+  - id: TR-45
+    title: "The Gateway's wildcard certificate names `*.<site domain>` and ..."
+    status: current
+    parents: [FR-19, FR-20]
+    priority: Must
+    phase: Later
+  - id: TR-46
+    title: "Jenkins pushes site images to the Gitea container registry, one image ..."
+    status: current
+    parents: [FR-11, FR-17]
+    priority: Must
+    phase: Prototype
+  - id: TR-47
+    title: "Profile `production` refuses every change while contracts are open and ..."
+    status: current
+    parents: [FR-6]
+    priority: Must
+    phase: Production
+  - id: TR-48
+    title: "Owner reads and build retry need `USER` and Project `CheckAccess`"
+    status: current
+    parents: [FR-3, FR-4, FR-50, FR-51]
+    priority: Must
+    phase: Prototype
+  - id: TR-49
+    title: "Site images of the live release and of releases not yet ended are kept"
+    status: current
+    parents: [FR-11, FR-21]
+    priority: Must
+    phase: Prototype
+  - id: TR-50
+    title: "Removed: the owner made site images private, anonymous pulls cannot work"
+    status: removed
+    parents: [FR-11, FR-17]
+    priority: Must
+    phase: Prototype
+  - id: TR-51
+    title: "The automatic flow stores `deploy` and `promote` commands under the ..."
+    status: current
+    parents: [FR-47, FR-48, FR-49]
+    priority: Must
+    phase: Later
+  - id: TR-52
+    title: "Site images are private"
+    status: current
+    parents: [FR-53, FR-17, FR-35]
+    priority: Must
+    phase: Later
+  - id: TR-53
+    title: "A first hosting row insert takes `pg_advisory_xact_lock` on a stable ..."
+    status: current
+    parents: [FR-54]
+    priority: Must
+    phase: Phase C
+  - id: TR-54
+    title: "Every entry point a caller uses is a command or a query object sent ..."
+    status: current
+    parents: []
+    all_fr: true
+    priority: Must
+  - id: TR-55
+    title: "Worker jobs, loops and relays live in `<feature>/background/` and start ..."
+    status: current
+    parents: []
+    all_fr: true
+    priority: Must
+  - id: TR-56
+    title: "Agent guard and tooling: hooks, reviewer write limit, spec-check, QA tools"
+    status: current
+    parents: []
+    all_fr: true
+    priority: Must
+  - id: TR-57
+    title: "One `promote` command makes at most 3 tries; try n is its claim n"
+    status: current
+    parents: [FR-21, FR-22, FR-19, FR-37, FR-48]
+    priority: Must
+    phase: Prototype
+  - id: TR-58
+    title: "The worker refuses to start unless the deadline holds 3 tries and both waits"
+    status: current
+    parents: [FR-21, FR-22]
+    priority: Must
+    phase: Prototype
+no_test_yet:
+  - FR-47
+  - FR-48
+  - FR-49
+  - FR-51
+  - FR-53

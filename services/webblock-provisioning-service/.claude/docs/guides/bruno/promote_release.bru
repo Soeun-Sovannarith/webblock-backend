@@ -1,0 +1,52 @@
+meta {
+  name: promote_release
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/v1/projects/:projectId/releases/:releaseId/promote
+  body: none
+  auth: bearer
+}
+
+params:path {
+  projectId: 
+  releaseId: 
+}
+
+headers {
+  Idempotency-Key: promote-1
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  Accept route promotion. Contract: src/contracts/openapi.yaml, operation promote_release.
+
+  Current behaviour: a caller (the owner or an admin) requests go-live of a candidate_ready release. Automatic
+  go-live after a successful deploy is specified (FR-48) and not built yet; until then this request is how a release
+  goes live.
+
+  Example answer (202, application/json). Field names are camelCase; data is the result, meta describes the answer:
+
+  ```json
+  {
+    "success": true,
+    "data": {
+      "commandId": "0190a1b2-0000-7000-8000-00000000000c",
+      "status": "accepted",
+      "statusUrl": "/v1/projects/0190a1b2-0000-7000-8000-00000000000a/commands/0190a1b2-0000-7000-8000-00000000000c"
+    },
+    "meta": {
+      "requestId": "0199c3a2-7d10-7c1e-9b3a-5f0e2d4c6a81",
+      "timestamp": "2026-10-25T09:30:00.123Z",
+      "path": "/v1/projects/0190a1b2-0000-7000-8000-00000000000a/releases/0190a1b2-0000-7000-8000-00000000000b/promote",
+      "status": 202,
+      "page": null
+    }
+  }
+  ```
+}

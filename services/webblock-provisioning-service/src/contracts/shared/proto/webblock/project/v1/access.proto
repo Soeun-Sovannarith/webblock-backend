@@ -1,0 +1,20 @@
+// ACCEPTED (Notion "Web Block architecture" 3.2). Owner: project.
+syntax = "proto3";
+package webblock.project.v1;
+
+service AccessService {
+  // May this user act on this project? Unknown projects answer allowed = false, never NOT_FOUND.
+  rpc CheckAccess(CheckAccessRequest) returns (CheckAccessResponse);
+}
+
+message CheckAccessRequest {
+  string user_id = 1;     // from the user's token, sent by the caller
+  string project_id = 2;
+  string action = 3;      // "manage_site" (site portal), or a Provisioning action such as
+                          // "deploy_release", "promote_release", "rollback_release", "get_release"
+}
+
+message CheckAccessResponse {
+  bool allowed = 1;
+  string reason = 2;      // empty when allowed, else "NOT_MANAGER", "PROJECT_DELETED", ...
+}

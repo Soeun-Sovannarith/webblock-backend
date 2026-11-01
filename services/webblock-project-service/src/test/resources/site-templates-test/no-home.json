@@ -1,0 +1,7 @@
+{
+  "templates": [
+    { "templateCode": "no_home", "name": "No home", "version": "1.0.0", "businessTypeCodes": ["*"],
+      "componentCatalogVersion": "test-1",
+      "pages": [ { "name": "About", "path": "/about", "sortOrder": 0, "seoTitle": null, "seoDescription": null, "puckTree": { "root": { "props": {} }, "content": [] } } ] }
+  ]
+}

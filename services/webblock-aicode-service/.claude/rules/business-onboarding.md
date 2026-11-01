@@ -1,0 +1,21 @@
+---
+paths:
+  - "app/schemas/business.py"
+  - "app/services/business_layout.py"
+  - "app/services/seed_generator.py"
+  - "app/services/onboarding.py"
+  - "tests/test_seed_generator.py"
+  - "tests/test_business_onboarding.py"
+  - "tests/test_onboarding_routes.py"
+---
+
+# Business onboarding
+
+`POST /v1/onboardings` (creates the project) and `POST /v1/projects/{id}/onboardings` take a `BusinessOnboardingRequest`. Both call `onboarding.prepare_site_inputs`, which returns the shared catalog's Drizzle schema (`scaffold.catalog_schema()`, the template `db/schema.ts`, the same for every site; there is no schema generator), builds the starting products and the seed script (`seed_generator`), and a home-page Puck tree (`business_layout.generate_puck_layout`) whose `ProductCards` shows those same products. They pass these to `harness.enqueue_generation` as `drizzle_schema`/`seed`/`home_puck`, and from there the run is an ordinary generation request. The seed is frozen into the captured input as **data** (`seed_generator.build_seed`: the business profile fields and product rows, never SQL). `scaffold.render_seed_sql` re-validates it and renders `db/seed.sql` on every run, so a stored seed, or one sent by another service, cannot inject SQL. A seed of `None` keeps the baseline's, unless the request replaces the `drizzle_schema` (`harness.enqueue_generation`); the seed then falls back to the Puck products.
+
+- **Input (`app/schemas/business.py`).** `sanitize_text` strips control characters from `business_name`, `business_type`, `business_description` and `address`, and turns a lone `\r` into `\n`. Formats are checked by validators (email, `#rrggbb` accent, weekday names). Add a new free-text field to `sanitize_text`'s field list. The endpoints return a preview of the generated output, so they are public API: update `README.md` when you change the request or response.
+- **Seed (`seed_generator.py`).** GLM (`glm.request_seed_products`, only in `llm` mode and when configured) or the templates (`business_layout.sample_products`) only *propose rows*. `clean_products` caps and strips them, and `render_seed_sql` writes the SQL with `literal()`. Never let GLM or user text reach the script except through `literal()`, and keep user text out of SQL comments (a `\r` ends a `--` comment). The GLM call runs inside the onboarding request, bounded by `glm.SEED_TIMEOUT_SECONDS`. The `DEPLOY` step runs the script for the site's website inside one transaction (`site_catalog.prepare_site`, which sets `webblock.website_id` with `set_config(..., true)`), so the script has no `BEGIN`/`COMMIT` and only `SET LOCAL`. Write every insert `catalog.`-qualified and take `website_id` from `current_setting('webblock.website_id')`: the harness connects as the owner, which bypasses row-level security, so `current_website_id()` would be NULL. Keep the guards: the profile insert is `ON CONFLICT (website_id) DO NOTHING`, and the categories (by slug, `category_slug`, kept in step with `categorySlug` in `lib/products.ts`) and products are inserted only while the website has no products (`_NO_PRODUCTS`), so re-seeding never duplicates rows or overwrites what the owner changed in the portal. `price_value` reads USD only, because `catalog.products.price` is USD: another currency (`45,000 KHR`, `€5`) or a non-number becomes NULL, which hides the price. Leave an onboarding `logo_url` out of the seed: the catalog keeps only object-storage keys. `seed_business_type` gives the onboarding business type to `prepare_site`, which maps it to a `catalog.business_types` code. A GLM failure falls back to the templates (`seed_source: "template"`) and never fails onboarding.
+- **Puck layout (`business_layout.py`).** Emit only block types and props that `app/services/catalog.py` accepts, and keep the result valid under `validate_puck`. `generate_puck_layout(data, products)` puts the seeded products into `ProductCards` (only `name`/`price`/`description`, the catalog props). Sample offerings come from keyword matching in `_generate_sample_items`.
+- Tests assert on the generated text and tree without a DB. Route tests patch `enqueue_generation`/`store`.
+
+To add a business type, use the `add-business-type` skill.

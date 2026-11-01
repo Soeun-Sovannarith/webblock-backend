@@ -1,0 +1,15 @@
+{
+  "actions": [
+    { "name": "deploy_release", "write": true, "admin_allowed": false },
+    { "name": "promote_release", "write": true, "admin_allowed": false },
+    { "name": "rollback_release", "write": true, "admin_allowed": true },
+    { "name": "build_release", "write": true, "admin_allowed": false },
+    { "name": "manage_site", "write": true, "admin_allowed": false },
+    { "name": "get_release", "write": false, "admin_allowed": false },
+    { "name": "get_command", "write": false, "admin_allowed": false },
+    { "name": "get_deployment", "write": false, "admin_allowed": false },
+    { "name": "get_release_diagnostics", "write": false, "admin_allowed": false },
+    { "name": "list_releases", "write": false, "admin_allowed": false },
+    { "name": "list_commands", "write": false, "admin_allowed": false }
+  ]
+}

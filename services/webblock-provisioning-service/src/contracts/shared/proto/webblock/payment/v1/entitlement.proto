@@ -1,0 +1,45 @@
+// DRAFT, proposed by provisioning from Payment's HTTP contract section 2.4, waits for payment. Owner: payment.
+syntax = "proto3";
+package webblock.payment.v1;
+
+// Called by Provisioning's API and worker, and by Project. Deadline 2 s. Safe to retry on UNAVAILABLE.
+service EntitlementService {
+  // An unknown project answers HOSTING_ENDED with reason HOSTING_REASON_NOT_ADMITTED, never NOT_FOUND.
+  rpc GetEntitlement(GetEntitlementRequest) returns (GetEntitlementResponse);
+}
+
+message GetEntitlementRequest {
+  string project_id = 1;
+}
+
+enum Hosting {
+  HOSTING_UNSPECIFIED = 0;
+  HOSTING_ENTITLED = 1;
+  HOSTING_ENDED = 2;
+}
+
+enum Publish {
+  PUBLISH_UNSPECIFIED = 0;
+  PUBLISH_ALLOWED = 1;
+  PUBLISH_LIMIT_REACHED = 2;
+}
+
+enum HostingReason {
+  HOSTING_REASON_UNSPECIFIED = 0;
+  HOSTING_REASON_TRIAL_ENDED = 1;
+  HOSTING_REASON_GRACE_EXPIRED = 2;
+  HOSTING_REASON_PLAN_CANCELED = 3;
+  HOSTING_REASON_OVER_WEBSITE_LIMIT = 4;
+  HOSTING_REASON_NOT_ADMITTED = 5;
+}
+
+message GetEntitlementResponse {
+  string project_id = 1;
+  Hosting hosting = 2;
+  Publish publish = 3;
+  HostingReason reason = 4;     // UNSPECIFIED when hosting is ENTITLED
+  string plan_code = 5;
+  int64 publishes_used = 6;
+  int64 publishes_limit = 7;
+  string period_end = 8;        // RFC 3339 UTC
+}

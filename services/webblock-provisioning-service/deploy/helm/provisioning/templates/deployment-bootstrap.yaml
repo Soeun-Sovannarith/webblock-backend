@@ -1,0 +1,58 @@
+{{- /* The bootstrap: the projected token of ServiceAccount tenant-bootstrap; one replica, recreated,
+behind its session lock (decision 0016 section 6 item 5). */}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: provisioning-bootstrap
+  labels:
+    {{- include "provisioning.labels" (dict "root" $ "component" "bootstrap") | trim | nindent 4 }}
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      {{- include "provisioning.selector" (dict "root" $ "component" "bootstrap") | trim | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "provisioning.labels" (dict "root" $ "component" "bootstrap") | trim | nindent 8 }}
+      annotations:
+        checksum/env: {{ .Values.bootstrap.env | toJson | sha256sum }}
+    spec:
+      serviceAccountName: tenant-bootstrap
+      automountServiceAccountToken: false
+      enableServiceLinks: false
+      securityContext:
+        {{- include "provisioning.podSecurity" . | trim | nindent 8 }}
+      {{- include "provisioning.placement" . | trim | nindent 6 }}
+      containers:
+        - name: bootstrap
+          image: {{ .Values.image | quote }}
+          command: ["/opt/venv/bin/python", "-m", "provisioning.hosts.bootstrap"]
+          envFrom:
+            - configMapRef:
+                name: provisioning-bootstrap-env
+          env:
+            {{- include "provisioning.secretEnv" (dict "component" "bootstrap" "keys" .Values.bootstrap.secretEnv) | trim | nindent 12 }}
+          ports:
+            - name: ops
+              containerPort: 9090
+          {{- include "provisioning.probes" (dict "ready" "/healthz") | trim | nindent 10 }}
+          resources:
+            requests:
+              memory: {{ .Values.bootstrap.memory | quote }}
+              cpu: {{ .Values.bootstrap.cpu | quote }}
+            limits:
+              memory: {{ .Values.bootstrap.memory | quote }}
+          securityContext:
+            {{- include "provisioning.containerSecurity" . | trim | nindent 12 }}
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+            - name: kube
+              mountPath: /var/run/secrets/webblock/kube
+              readOnly: true
+      volumes:
+        {{- include "provisioning.tmpVolume" . | trim | nindent 8 }}
+        {{- include "provisioning.kubeVolume" . | trim | nindent 8 }}

@@ -1,0 +1,65 @@
+# What the release worker may do inside ONE tenant namespace wb-<projectId>. Nothing binds this
+# ClusterRole cluster-wide: tenant-bootstrap binds it with a RoleBinding in each tenant namespace, last,
+# after the namespace, its quota and limits exist. So the worker has no access before bootstrap and
+# none outside tenant namespaces.
+#   Deployments and Services rel-<releaseId>: written by server-side apply (create + patch), deleted
+#     when a candidate is discarded and when cleanup removes superseded, rolled-back and failed releases
+#     (decision 0014 section 21 ruling 8). The admission policy webblock-site-routed-release refuses
+#     the delete of the release the site's route sends traffic to.
+#   HTTPRoute route-<projectId> (and preview-, redirect-): server-side apply only; never deleted (ruling
+#     K9: a failed first publish points the route at the offline page instead).
+#   EndpointSlices and Pods: read-only, for readiness (ready endpoints behind the Service) and failure
+#     reasons (image pull failure, crash loop).
+# No ListenerSets and no Certificates: the platform provides no custom domains (decision 0014 section
+# 23; task T's grants were removed by task W6-K). No Secrets at all: a release's Deployment names the
+# Secret catalog-runtime in envFrom and the kubelet reads it.
+# The content of every write is checked by the admission policies in deploy/prototype/policy
+# (webblock-site-binding, -fence, -image, -route-shape, -routed-release), and webblock-tenant-writer
+# lets nobody else write these objects in a tenant namespace.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: webblock-tenant-worker
+rules:
+  - apiGroups: ["apps"]
+    resources: ["deployments"]
+    verbs: ["get", "list", "watch", "create", "patch", "delete"]
+  - apiGroups: [""]
+    resources: ["services"]
+    verbs: ["get", "list", "watch", "create", "patch", "delete"]
+  - apiGroups: ["gateway.networking.k8s.io"]
+    resources: ["httproutes"]
+    verbs: ["get", "list", "watch", "create", "patch"]
+  - apiGroups: ["discovery.k8s.io"]
+    resources: ["endpointslices"]
+    verbs: ["get", "list"]
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "list"]
+---
+# The reconciler's view of the tenants (decision 0014 section 21 ruling 9; ruling 8 of task W6-K's
+# brief): list namespaces, cluster-wide, to find the wb-<projectId> namespaces and compare them with the
+# projects it knows. RBAC cannot narrow a list by label or name prefix, so this is every namespace's
+# metadata (names and labels, among them the tenant's project ID); no get, watch, or write, and nothing
+# inside the namespaces. This is the worker's only cluster-wide grant.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: webblock-worker-namespaces
+rules:
+  - apiGroups: [""]
+    resources: ["namespaces"]
+    verbs: ["list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: webblock-worker-namespaces
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: webblock-worker-namespaces
+subjects:
+  - kind: ServiceAccount
+    name: provisioning-worker
+    namespace: webblock

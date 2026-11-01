@@ -1,0 +1,483 @@
+{
+  "format_version": 1,
+  "business_type": "clothing_shop",
+  "business_profile": {
+    "business_name": "Juniper & Thread",
+    "description": "Everyday clothing made to last: natural fibres, honest prices and small-batch designs from our studio in Portland.",
+    "phone": "+1 503 555 0142",
+    "email": "hello@juniperandthread.example",
+    "address": "1120 SE Alder Street, Portland, OR 97214",
+    "timezone": "America/Los_Angeles",
+    "opening_hours": [
+      {
+        "from_day": "monday",
+        "to_day": "friday",
+        "opens_at": "10:00",
+        "closes_at": "19:00",
+        "closes_next_day": false
+      },
+      {
+        "from_day": "saturday",
+        "to_day": "saturday",
+        "opens_at": "10:00",
+        "closes_at": "18:00",
+        "closes_next_day": false
+      },
+      {
+        "from_day": "sunday",
+        "to_day": "sunday",
+        "opens_at": "11:00",
+        "closes_at": "17:00",
+        "closes_next_day": false
+      }
+    ]
+  },
+  "categories": [
+    {
+      "slug": "tops",
+      "name": "Tops",
+      "sort_order": 1
+    },
+    {
+      "slug": "outerwear",
+      "name": "Outerwear",
+      "sort_order": 2
+    },
+    {
+      "slug": "trousers",
+      "name": "Trousers",
+      "sort_order": 3
+    },
+    {
+      "slug": "accessories",
+      "name": "Accessories",
+      "sort_order": 4
+    }
+  ],
+  "products": [
+    {
+      "product_type": "top",
+      "category_slug": "tops",
+      "name": "Organic Cotton Crew Tee",
+      "description": "A heavyweight everyday tee in 220 g/m² organic cotton jersey. Garment-washed for a soft hand, with a ribbed crew neck that keeps its shape wash after wash.",
+      "price": "28.00",
+      "attributes": {
+        "size": [
+          "XS",
+          "S",
+          "M",
+          "L",
+          "XL"
+        ],
+        "color": [
+          "Off-white",
+          "Black"
+        ],
+        "material": "100% organic cotton",
+        "fit": "regular",
+        "care": "Machine wash cold, tumble dry low"
+      },
+      "status": "published",
+      "sort_order": 10,
+      "images": [
+        {
+          "file": "products/crew-tee-white.svg",
+          "byte_size": 1844,
+          "alt_text": "Off-white crew-neck T-shirt laid flat",
+          "sort_order": 0
+        },
+        {
+          "file": "products/crew-tee-black.svg",
+          "byte_size": 1839,
+          "alt_text": "The same crew-neck T-shirt in black",
+          "sort_order": 1
+        }
+      ]
+    },
+    {
+      "product_type": "top",
+      "category_slug": "tops",
+      "name": "Oxford Button-Down Shirt",
+      "description": "Our take on the classic Oxford: a soft, breathable basket weave, a button-down collar with a natural roll, and a single chest pocket. Dress it up or wear it open over a tee.",
+      "price": "68.00",
+      "attributes": {
+        "size": [
+          "XS",
+          "S",
+          "M",
+          "L",
+          "XL"
+        ],
+        "color": [
+          "Light blue"
+        ],
+        "material": "100% cotton Oxford cloth",
+        "fit": "regular",
+        "care": "Machine wash warm, hang dry"
+      },
+      "status": "published",
+      "sort_order": 20,
+      "images": [
+        {
+          "file": "products/oxford-shirt-blue.svg",
+          "byte_size": 2576,
+          "alt_text": "Light blue Oxford button-down shirt with a chest pocket",
+          "sort_order": 0
+        }
+      ]
+    },
+    {
+      "product_type": "top",
+      "category_slug": "tops",
+      "name": "Merino Crewneck Sweater",
+      "description": "Fine-gauge extra-fine merino that is warm without bulk and naturally odour-resistant. Ribbed cuffs and hem, and a neat crew neck for layering over a collar.",
+      "price": "98.00",
+      "attributes": {
+        "size": [
+          "XS",
+          "S",
+          "M",
+          "L",
+          "XL"
+        ],
+        "color": [
+          "Oatmeal"
+        ],
+        "material": "100% extra-fine merino wool",
+        "fit": "regular",
+        "care": "Hand wash cold, dry flat"
+      },
+      "status": "published",
+      "sort_order": 30,
+      "images": [
+        {
+          "file": "products/merino-sweater-oatmeal.svg",
+          "byte_size": 14005,
+          "alt_text": "Oatmeal merino crew-neck sweater with ribbed cuffs and hem",
+          "sort_order": 0
+        }
+      ]
+    },
+    {
+      "product_type": "outerwear",
+      "category_slug": "outerwear",
+      "name": "Selvedge Denim Jacket",
+      "description": "A trucker jacket cut from 13.5 oz Japanese selvedge denim with copper-tone contrast stitching. Two flap chest pockets, adjustable waist tabs, and it only gets better with wear.",
+      "price": "128.00",
+      "attributes": {
+        "size": [
+          "XS",
+          "S",
+          "M",
+          "L",
+          "XL"
+        ],
+        "color": [
+          "Indigo"
+        ],
+        "material": "100% cotton selvedge denim",
+        "fit": "regular",
+        "care": "Wash rarely, inside out, cold"
+      },
+      "status": "published",
+      "sort_order": 40,
+      "images": [
+        {
+          "file": "products/denim-jacket-indigo.svg",
+          "byte_size": 3320,
+          "alt_text": "Indigo denim jacket with flap chest pockets and orange contrast stitching",
+          "sort_order": 0
+        }
+      ]
+    },
+    {
+      "product_type": "outerwear",
+      "category_slug": "outerwear",
+      "name": "Wool-Blend Overcoat",
+      "description": "A double-breasted overcoat with notch lapels and a clean, knee-length line. The dense wool blend cuts the wind, and the half lining keeps it light enough for autumn.",
+      "price": "245.00",
+      "attributes": {
+        "size": [
+          "S",
+          "M",
+          "L",
+          "XL"
+        ],
+        "color": [
+          "Camel"
+        ],
+        "material": "70% wool, 30% recycled polyamide",
+        "fit": "regular",
+        "care": "Dry clean only"
+      },
+      "status": "published",
+      "sort_order": 50,
+      "images": [
+        {
+          "file": "products/overcoat-camel.svg",
+          "byte_size": 2704,
+          "alt_text": "Camel double-breasted overcoat with notch lapels",
+          "sort_order": 0
+        }
+      ]
+    },
+    {
+      "product_type": "outerwear",
+      "category_slug": "outerwear",
+      "name": "Packable Rain Shell",
+      "description": "A fully seam-sealed, 2.5-layer waterproof shell that packs into its own pocket. Adjustable hood, zipped hand pockets and a drawcord hem for stormy commutes.",
+      "price": "115.00",
+      "attributes": {
+        "size": [
+          "XS",
+          "S",
+          "M",
+          "L",
+          "XL"
+        ],
+        "color": [
+          "Yellow",
+          "Olive"
+        ],
+        "material": "100% recycled nylon, PFC-free water-repellent finish",
+        "fit": "relaxed",
+        "care": "Machine wash cold, line dry"
+      },
+      "status": "published",
+      "sort_order": 60,
+      "images": [
+        {
+          "file": "products/rain-shell-yellow.svg",
+          "byte_size": 2344,
+          "alt_text": "Yellow hooded rain shell with a centre zip",
+          "sort_order": 0
+        },
+        {
+          "file": "products/rain-shell-olive.svg",
+          "byte_size": 2344,
+          "alt_text": "The same hooded rain shell in olive",
+          "sort_order": 1
+        }
+      ]
+    },
+    {
+      "product_type": "trousers",
+      "category_slug": "trousers",
+      "name": "Relaxed Chinos",
+      "description": "Easy-going chinos in a brushed cotton twill with a touch of stretch. A relaxed seat and thigh, tapering to a clean ankle.",
+      "price": "78.00",
+      "attributes": {
+        "size": [
+          "28",
+          "30",
+          "32",
+          "34",
+          "36",
+          "38"
+        ],
+        "color": [
+          "Khaki",
+          "Navy"
+        ],
+        "material": "98% cotton, 2% elastane",
+        "fit": "relaxed",
+        "care": "Machine wash cold, tumble dry low"
+      },
+      "status": "published",
+      "sort_order": 70,
+      "images": [
+        {
+          "file": "products/chinos-khaki.svg",
+          "byte_size": 2069,
+          "alt_text": "Khaki relaxed-fit chinos",
+          "sort_order": 0
+        },
+        {
+          "file": "products/chinos-navy.svg",
+          "byte_size": 2068,
+          "alt_text": "The same relaxed-fit chinos in navy",
+          "sort_order": 1
+        }
+      ]
+    },
+    {
+      "product_type": "trousers",
+      "category_slug": "trousers",
+      "name": "Straight-Leg Jeans",
+      "description": "Five-pocket jeans in rigid 12 oz denim, rinsed once for a deep indigo. A mid rise and a straight leg that sits right over boots or sneakers.",
+      "price": "88.00",
+      "attributes": {
+        "size": [
+          "28",
+          "30",
+          "32",
+          "34",
+          "36",
+          "38"
+        ],
+        "color": [
+          "Dark indigo"
+        ],
+        "material": "100% cotton denim",
+        "fit": "regular",
+        "care": "Wash rarely, inside out, cold"
+      },
+      "status": "published",
+      "sort_order": 80,
+      "images": [
+        {
+          "file": "products/jeans-indigo.svg",
+          "byte_size": 2547,
+          "alt_text": "Dark indigo straight-leg jeans with contrast stitching",
+          "sort_order": 0
+        }
+      ]
+    },
+    {
+      "product_type": "trousers",
+      "category_slug": "trousers",
+      "name": "Pleated Wide-Leg Trousers",
+      "description": "Double-pleated trousers with a high rise and a generous wide leg, in a fluid wool-touch fabric that drapes beautifully and resists creasing.",
+      "price": "92.00",
+      "attributes": {
+        "size": [
+          "28",
+          "30",
+          "32",
+          "34",
+          "36",
+          "38"
+        ],
+        "color": [
+          "Charcoal"
+        ],
+        "material": "64% recycled polyester, 32% viscose, 4% elastane",
+        "fit": "relaxed",
+        "care": "Machine wash cold, hang dry"
+      },
+      "status": "published",
+      "sort_order": 90,
+      "images": [
+        {
+          "file": "products/wide-leg-trousers-charcoal.svg",
+          "byte_size": 2125,
+          "alt_text": "Charcoal pleated wide-leg trousers",
+          "sort_order": 0
+        }
+      ]
+    },
+    {
+      "product_type": "accessory",
+      "category_slug": "accessories",
+      "name": "Ribbed Beanie",
+      "description": "A chunky rib-knit beanie with a deep turn-up cuff and a small woven label. Soft, warm and itch-free.",
+      "price": "32.00",
+      "attributes": {
+        "size": [
+          "One size"
+        ],
+        "color": [
+          "Rust",
+          "Charcoal"
+        ],
+        "material": "50% merino wool, 50% recycled acrylic",
+        "care": "Hand wash cold, dry flat"
+      },
+      "status": "published",
+      "sort_order": 100,
+      "images": [
+        {
+          "file": "products/beanie-rust.svg",
+          "byte_size": 3797,
+          "alt_text": "Rust ribbed beanie with a turn-up cuff",
+          "sort_order": 0
+        },
+        {
+          "file": "products/beanie-charcoal.svg",
+          "byte_size": 3801,
+          "alt_text": "The same ribbed beanie in charcoal",
+          "sort_order": 1
+        }
+      ]
+    },
+    {
+      "product_type": "accessory",
+      "category_slug": "accessories",
+      "name": "Canvas Tote Bag",
+      "description": "A sturdy 14 oz cotton canvas tote with long webbing handles, an inside slip pocket and our juniper sprig printed by hand.",
+      "price": "38.00",
+      "attributes": {
+        "size": [
+          "One size"
+        ],
+        "color": [
+          "Natural"
+        ],
+        "material": "100% cotton canvas",
+        "care": "Spot clean"
+      },
+      "status": "published",
+      "sort_order": 110,
+      "images": [
+        {
+          "file": "products/tote-natural.svg",
+          "byte_size": 1944,
+          "alt_text": "Natural canvas tote bag printed with a green juniper sprig",
+          "sort_order": 0
+        }
+      ]
+    },
+    {
+      "product_type": "accessory",
+      "category_slug": "accessories",
+      "name": "Lambswool Check Scarf",
+      "description": "A generous scarf woven from brushed lambswool in a red and navy check, finished with a hand-twisted fringe.",
+      "price": "58.00",
+      "attributes": {
+        "size": [
+          "One size"
+        ],
+        "color": [
+          "Red check"
+        ],
+        "material": "100% lambswool",
+        "care": "Hand wash cold, dry flat"
+      },
+      "status": "published",
+      "sort_order": 120,
+      "images": [
+        {
+          "file": "products/scarf-check.svg",
+          "byte_size": 2854,
+          "alt_text": "Red and navy check lambswool scarf with fringed ends",
+          "sort_order": 0
+        }
+      ]
+    },
+    {
+      "product_type": "outerwear",
+      "category_slug": "outerwear",
+      "name": "Quilted Liner Vest",
+      "description": "Coming soon: a lightweight quilted vest to wear under a shell or on its own. Not yet published, so the shop does not show it.",
+      "price": "85.00",
+      "attributes": {
+        "size": [
+          "XS",
+          "S",
+          "M",
+          "L",
+          "XL"
+        ],
+        "color": [
+          "Olive"
+        ],
+        "material": "100% recycled nylon, recycled polyester fill",
+        "fit": "regular",
+        "care": "Machine wash cold"
+      },
+      "status": "draft",
+      "sort_order": 130,
+      "images": []
+    }
+  ]
+}

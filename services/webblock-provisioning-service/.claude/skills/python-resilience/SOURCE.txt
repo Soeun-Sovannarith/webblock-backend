@@ -1,0 +1,17 @@
+Vendored skill: python-resilience
+
+Repository: https://github.com/wshobson/agents
+Path: plugins/python-development/skills/python-resilience/
+Commit: 46891e7e60da0e52baf1050b7b6391b64e84c6d9 (committed 4 October 2026)
+Last upstream change to this path at that commit: be57c0b (22 May 2026)
+Licence: MIT, Copyright (c) 2024 Seth Hobson. LICENSE here is the repository LICENSE from the same commit.
+Date copied: 27 October 2026 (cloned into an empty scratch folder, every file read before copying)
+
+Files removed or changed:
+None. Every file of the folder is copied unchanged.
+
+Notes for this repo:
+- The examples use tenacity, httpx and structlog. They are not dependencies of this repo; httpx and
+  requests are banned by ruff (TID251). Use the patterns, not the libraries, unless a decision adds them.
+
+This copy does not update itself. Re-vendor on purpose, from a commit at least 14 days old.

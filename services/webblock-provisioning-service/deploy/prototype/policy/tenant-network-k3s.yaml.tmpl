@@ -1,0 +1,72 @@
+# NetworkPolicy webblock-tenant-network for one tenant namespace on the k3d engine (spike design
+# .claude/docs/designs/k3s-site-cluster-spike.md G8): the kube-router form of tenant-network.yaml.tmpl.
+# kube-router enforces only Kubernetes NetworkPolicy, which is namespaced, so there is one per
+# wb-<projectId> namespace instead of one cluster-wide policy. No FR asks for tenant network isolation
+# yet (design section 11, Q1), so nothing in Provisioning writes it: the live test
+# tests/integration/stack/test_tenant_network_k3s_live.py applies it to its own test tenants only.
+# Placeholders: @NAMESPACE@ (the tenant namespace) and @CATALOG_IP@ (the address of the container
+# webblock-catalog-db on the kind Docker network).
+#
+# A pod selected by a policy of both types is default-deny in both directions, so the rules below are
+# the whole of what a site may do:
+#   ingress  only from Traefik (the Gateway, app.kubernetes.io/name=traefik in kube-system); kubelet
+#            probes rely on kube-router admitting traffic from the pod's own node;
+#   egress   to the catalog PostgreSQL on TCP 5432, to the cluster DNS (k8s-app=kube-dns in
+#            kube-system) on port 53 UDP and TCP, and through the Gateway to any site, as any client
+#            could: to Traefik's pods on its entry point ports 8000 and 8443 (the Service's 80 and 443
+#            after translation).
+# Unlike the Cilium policy there is no egressDeny: the metadata address 169.254.169.254 is refused
+# because nothing allows it. Everything else is refused too: other tenants' pods (also by their own
+# ingress rule), the Kubernetes API server, the image registry and the other containers on the kind
+# network.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: webblock-tenant-network
+  namespace: @NAMESPACE@
+  labels:
+    app.kubernetes.io/part-of: webblock-provisioning
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: traefik
+  egress:
+    - to:
+        - ipBlock:
+            cidr: @CATALOG_IP@/32
+      ports:
+        - protocol: TCP
+          port: 5432
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+          podSelector:
+            matchLabels:
+              k8s-app: kube-dns
+      ports:
+        - protocol: UDP
+          port: 53
+        - protocol: TCP
+          port: 53
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: traefik
+      ports:
+        - protocol: TCP
+          port: 8000
+        - protocol: TCP
+          port: 8443

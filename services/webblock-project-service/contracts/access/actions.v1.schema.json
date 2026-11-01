@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://webblock.invalid/contracts/access/actions.v1.schema.json",
+  "title": "Access: CheckAccess actions v1",
+  "description": "DRAFT, proposed by project, waits for provisioning. Owner: project. Every action AccessService/CheckAccess accepts. write true: the action changes state, and Project refuses it on a deleted or suspended project (PROJECT_DELETED, PROJECT_SUSPENDED). write false: a get or list action, allowed there. admin_allowed: a caller may let an admin through without asking Project. Names are unique.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["actions"],
+  "properties": {
+    "actions": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "write", "admin_allowed"],
+        "properties": {
+          "name": { "type": "string", "pattern": "^[a-z][a-z_]{0,62}[a-z]$" },
+          "write": { "type": "boolean" },
+          "admin_allowed": { "type": "boolean" }
+        }
+      }
+    }
+  }
+}

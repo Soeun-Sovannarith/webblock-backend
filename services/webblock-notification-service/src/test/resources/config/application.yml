@@ -1,0 +1,8 @@
+# Test-only defaults (loaded on top of src/main/resources/application.yml, only on the test classpath).
+# Safety net: whatever a test forgets to switch off, a test context that tries to reach RabbitMQ goes to port 1, where nothing
+# listens, and never to a broker that happens to run on localhost:5672 (the developer's real queues live there).
+# The opt-in tests that need a real broker (LocalBroker*Test) set host, port and vhost explicitly, which wins over this file.
+spring:
+  rabbitmq:
+    host: localhost
+    port: 1

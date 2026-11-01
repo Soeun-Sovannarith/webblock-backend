@@ -1,0 +1,53 @@
+# Gradle and build output (the wrapper jar under gradle/wrapper/ stays tracked)
+.gradle/
+build/
+out/
+.kotlin/
+
+# Project-local tool binaries (scripts/osv-scan.sh downloads osv-scanner here)
+/bin/
+
+# IDE state
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.classpath
+.project
+.settings/
+.factorypath
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+src/main/resources/application-local.yml
+src/main/resources/application-local.properties
+
+# Kubeconfigs and private keys never belong in the repository
+kubeconfig
+*.kubeconfig
+*-kubeconfig.yaml
+*.pem
+*.key
+*.p12
+*.jks
+
+# Runtime output: logs, heap dumps and JVM crash files can hold secrets and customer content
+*.log
+*.hprof
+hs_err_pid*
+replay_pid*
+
+# Agent workspaces and machine-local Claude Code settings
+.superpowers/
+.claude/settings.local.json
+.claude/worktrees/
+
+# Editor and OS clutter
+*.swp
+*~
+.DS_Store
+Thumbs.db
+.env

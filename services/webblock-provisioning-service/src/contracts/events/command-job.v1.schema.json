@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://webblock.invalid/provisioning/events/command-job.v1.schema.json",
+  "title": "Provisioning command job v1 (draft)",
+  "description": "Notification that an accepted command of any of the seven kinds is ready for the release worker. Carries identifiers only; the database row is the authority and the worker must compare these identifiers with it. command_id and fencing_generation, optional in the shared envelope, are required here. release_id is present exactly when the kind names a release: a suspend_hosting, resume_hosting or sync_domains job names no release, and every other job names one.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "message_id", "message_type", "occurred_at", "correlation_id", "project_id", "command_id", "fencing_generation", "kind"],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "message_id": { "type": "string", "format": "uuid", "minLength": 36, "maxLength": 36, "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", "not": { "enum": ["00000000-0000-0000-0000-000000000000"] } },
+    "message_type": { "const": "provisioning.command_job" },
+    "occurred_at": { "type": "string", "format": "date-time", "maxLength": 40 },
+    "correlation_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "project_id": { "type": "string", "format": "uuid", "minLength": 36, "maxLength": 36, "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", "not": { "enum": ["00000000-0000-0000-0000-000000000000"] } },
+    "release_id": { "type": "string", "format": "uuid", "minLength": 36, "maxLength": 36, "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", "not": { "enum": ["00000000-0000-0000-0000-000000000000"] } },
+    "command_id": { "type": "string", "format": "uuid", "minLength": 36, "maxLength": 36, "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", "not": { "enum": ["00000000-0000-0000-0000-000000000000"] } },
+    "fencing_generation": { "type": "integer", "format": "int64", "minimum": 1, "maximum": 9007199254740991 },
+    "kind": { "type": "string", "enum": ["deploy", "promote", "rollback", "suspend_hosting", "resume_hosting", "redeploy", "sync_domains"] }
+  },
+  "if": { "required": ["kind"], "properties": { "kind": { "enum": ["suspend_hosting", "resume_hosting", "sync_domains"] } } },
+  "then": { "not": { "required": ["release_id"] } },
+  "else": { "required": ["release_id"] }
+}

@@ -1,0 +1,45 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: webblock
+      POSTGRES_PASSWORD: webblock
+      POSTGRES_DB: webblock
+    ports:
+      # 5433 on the host so it doesn't clash with a locally installed Postgres on 5432.
+      - "${POSTGRES_HOST_PORT:-5433}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U webblock -d webblock"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+
+  # Brings the database up to date with Alembic (alembic.ini, migrations/): it runs the sql/*.sql files this database
+  # hasn't applied yet, in order, and records them in public.alembic_version. Only the files Alembic needs are mounted
+  # (no .env), so it always targets this compose database.
+  migrate:
+    image: python:3.13-slim
+    depends_on:
+      db:
+        condition: service_healthy
+    working_dir: /work
+    environment:
+      DATABASE_URL: postgresql+psycopg://webblock:webblock@db:5432/webblock
+      USER_NAME: ""
+      DB_PASSWORD: ""
+      DB_MIGRATION_ROLE: ""
+      PYTHONDONTWRITEBYTECODE: "1"
+      PIP_DISABLE_PIP_VERSION_CHECK: "1"
+    volumes:
+      - ./alembic.ini:/work/alembic.ini:ro
+      - ./migrations:/work/migrations:ro
+      - ./sql:/work/sql:ro
+      - ./app/__init__.py:/work/app/__init__.py:ro
+      - ./app/core:/work/app/core:ro
+    entrypoint: ["sh", "-c", "pip install -q --root-user-action=ignore 'alembic>=1.13,<2' 'sqlalchemy>=2,<3' 'psycopg[binary]>=3.2,<4' 'pydantic-settings>=2.4,<3' && alembic upgrade head"]
+    restart: "no"
+
+volumes:
+  pgdata:

@@ -1,0 +1,63 @@
+# Helm values for cert-manager v1.21.2 on the prototype Kind stack (task T1; decision 0014 section 16;
+# review-k8s-nocp.md H4). Installed by deploy/kind/proto-certs.sh into the namespace of namespace.yaml.
+# Kind test infrastructure only: on DOKS cert-manager is the platform's, and its issuer is the
+# production ACME CA with DNS-01 held by infrastructure (OD-58, K4).
+#
+# Every image comes from the local registry by digest; proto-up mirrors them first (PROTO_MIRROR_IMAGES
+# in deploy/prototype/versions.sh) and proto-certs.sh renders this chart and refuses to install unless
+# the rendered images are exactly those pins with the localhost:5001 prefix. Small requests for a
+# shared laptop, and no CPU limits (throttling slows issuance and the webhook).
+
+crds:
+  enabled: true
+
+imageRegistry: localhost:5001
+imageNamespace: jetstack
+
+image:
+  tag: v1.21.2
+  digest: sha256:70f532fd9cfde0b09d55687200942399d89838bc2d5d5b45152eb799a15912b8
+resources:
+  requests:
+    cpu: 20m
+    memory: 64Mi
+  limits:
+    memory: 256Mi
+
+webhook:
+  image:
+    tag: v1.21.2
+    digest: sha256:a60e2dac46dbb8a7f3df95c54ce941012f54c2fe022f0ee55aaa1ab40ed957ae
+  resources:
+    requests:
+      cpu: 10m
+      memory: 32Mi
+    limits:
+      memory: 128Mi
+
+cainjector:
+  image:
+    tag: v1.21.2
+    digest: sha256:c85268c64f2e0e76684bf5fe8906caff34b82523561c6affe0fae3546bd87562
+  resources:
+    requests:
+      cpu: 10m
+      memory: 64Mi
+    limits:
+      memory: 256Mi
+
+# Only named in the controller's --acme-http01-solver-image flag; never started, because the only
+# issuer is the local CA (no ACME issuer exists on the stack), so it is not mirrored.
+acmesolver:
+  image:
+    tag: v1.21.2
+    digest: sha256:699b40d622211ab7accad8a21b04c5fbaa1841ef7a12621e8de492dbe27b2503
+
+# The post-install API check is a Job with its own image; proto-certs.sh proves the same thing (the
+# webhook admits a cert-manager object, and the ClusterIssuer becomes Ready) without it.
+startupapicheck:
+  enabled: false
+
+# cert-manager's Gateway API support (the gateway-shim) is off: nothing on the stack needs it. The only
+# certificate is the Gateway's wildcard (deploy/prototype/gateway/10-wildcard-certificate.yaml), an
+# ordinary Certificate; the per-domain Certificates went with custom domains (decision 0014 section 23).

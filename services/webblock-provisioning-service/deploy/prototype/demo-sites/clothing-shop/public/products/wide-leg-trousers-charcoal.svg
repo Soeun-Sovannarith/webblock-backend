@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000" role="img" aria-labelledby="t">
+<title id="t">Illustration of charcoal pleated wide-leg trousers</title>
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f1ede8"/><stop offset="1" stop-color="#e9e4dc"/></linearGradient>
+<filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur in="SourceAlpha" stdDeviation="14"/><feOffset dy="18" result="b"/><feComponentTransfer><feFuncA type="linear" slope="0.18"/></feComponentTransfer><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<rect width="800" height="1000" fill="url(#bg)"/>
+<g filter="url(#shadow)" stroke-linejoin="round" stroke-linecap="round">
+<path d="M262 205 L198 900 L388 900 L400 370 L412 900 L602 900 L538 205 Z" fill="#4a4a4f" stroke="#343437" stroke-width="5"/>
+<path d="M258 165 L542 165 L540 210 L260 210 Z" fill="#444449" stroke="#343437" stroke-width="5"/>
+<rect x="284" y="166" width="12" height="44" rx="3" fill="#434347" stroke="#343437" stroke-width="3"/><rect x="354" y="166" width="12" height="44" rx="3" fill="#434347" stroke="#343437" stroke-width="3"/><rect x="434" y="166" width="12" height="44" rx="3" fill="#434347" stroke="#343437" stroke-width="3"/><rect x="504" y="166" width="12" height="44" rx="3" fill="#434347" stroke="#343437" stroke-width="3"/>
+<path d="M400 210 L400 330 Q404 352 428 352 L430 210" fill="none" stroke="#343437" stroke-width="3" stroke-dasharray="7 6"/>
+<path d="M272 210 L300 300 M528 210 L500 300" stroke="#343437" stroke-width="4"/>
+<circle cx="400" cy="188" r="8" fill="#2c2c2f"/>
+<path d="M320 205 L326 330 M345 205 L350 300 M480 205 L474 330 M455 205 L450 300" stroke="#343437" stroke-width="3" opacity="0.55" fill="none"/><path d="M204 880 L384 880 M416 880 L596 880" stroke="#343437" stroke-width="3" opacity="0.5"/>
+<path d="M262 205 L400 360 L538 205" fill="none" stroke="#343437" stroke-width="2" opacity="0.15"/>
+<path d="M280 330 Q285 600 270 860" stroke="#ffffff" stroke-width="12" opacity="0.15" fill="none"/>
+</g>
+</svg>

@@ -1,0 +1,17 @@
+# containerd's registry settings on the k3d nodes (spike design G2 and G5), the k3s form of the Kind
+# nodes' /etc/containerd/certs.d/<host>/hosts.toml that proto-up writes for Kind. proto-up fills the
+# placeholders from deploy/kind/proto-lib.sh and passes the file to k3d cluster create --registry-config;
+# the registry's CA certificate is mounted into every node at /etc/webblock/registry-ca.crt.
+# localhost:5001 (the offline page and the mirrored images) and webblock-proto-registry.test:5000 (images
+# Jenkins pushes) both go to the registry container over HTTPS, verified against the project-local CA.
+mirrors:
+  "@REGISTRY_LOCAL@":
+    endpoint:
+      - "https://@REGISTRY_IN_CLUSTER@"
+  "@REGISTRY_IN_CLUSTER@":
+    endpoint:
+      - "https://@REGISTRY_IN_CLUSTER@"
+configs:
+  "@REGISTRY_IN_CLUSTER@":
+    tls:
+      ca_file: /etc/webblock/registry-ca.crt

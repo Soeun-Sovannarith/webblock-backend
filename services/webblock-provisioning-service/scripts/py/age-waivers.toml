@@ -1,0 +1,11 @@
+# Waivers of the 14-day version-age rule, read by make py-age (scripts/py/age.py; task H1).
+#
+# Each waiver names one pin exactly and says why it is accepted, who approved it and until when
+# (expires: an unquoted date, valid through that day). An expired waiver fails the gate whether or
+# not a pin still needs it; a current waiver whose pin has aged past 14 days is reported for
+# removal. kind is "pypi" for a uv.lock pin or "tool" for a pin of scripts/py/versions.sh or
+# deploy/kind/versions.sh.
+#
+# No waiver is in force. The prototype waivers of task H1 (pins locked with exclude-newer =
+# 2026-10-05 under decision 0014 section 5) all expired on 2026-10-19, when every one of their pins
+# had aged past 14 days; they were removed on 24 October 2026 (Phase B task 2), as this file says.

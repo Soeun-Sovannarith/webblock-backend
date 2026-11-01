@@ -1,0 +1,71 @@
+# CiliumClusterwideNetworkPolicy webblock-tenant-network (decision 0014 section 21 ruling 1).
+# Installed by deploy/kind/proto-policy.sh after the catalog database exists: the one
+# placeholder, @CATALOG_IP@, is the address of the container webblock-catalog-db on the kind Docker
+# network (production: the in-cluster CloudNativePG cluster of decision 0016, selected by its labels
+# instead of an address).
+#
+# One cluster-wide policy selects every pod in a namespace labelled websites.webblock.internal/tenant=true,
+# so no per-tenant object and no per-tenant writer is needed. A pod selected by a policy with ingress and
+# egress rules is default-deny in both directions (enableDefaultDeny), so the rules below are the whole
+# of what a site may do:
+#   ingress  from the Gateway's Envoy (Cilium's reserved identity "ingress"), and from the node's host
+#            (the kubelet's readiness probes); nothing from other pods, other tenants included;
+#   egress   to the catalog PostgreSQL on TCP 5432, and to the cluster DNS (kube-dns in kube-system) on
+#            port 53 UDP and TCP; and through the Gateway to a site (its own, or any public one), as any
+#            client could: to the Gateway's Envoy (reserved identity "ingress"), and to site pods on
+#            TCP 8080. The second is needed because Cilium's Envoy checks the CLIENT's egress policy
+#            towards the final backend pod (measured on Kind, Cilium 1.20.2: without it Envoy answers
+#            403). It does not open direct pod-to-pod traffic: the destination's ingress rules above
+#            admit only the Gateway and the kubelet, so a direct connection to another tenant's pod
+#            (or to the site's own pod) is still dropped, at the destination.
+# Everything else is refused, among it: other tenants' pods, the Kubernetes API server (Service address
+# and the control-plane node), the metadata address 169.254.169.254, the image registry and the other
+# containers on the kind network (Jenkins, BuildKit, Git server). The metadata address is also in
+# egressDeny, which wins over any allow rule, as the Phase 4 policy webblock-tenant-deny-metadata did.
+apiVersion: cilium.io/v2
+kind: CiliumClusterwideNetworkPolicy
+metadata:
+  name: webblock-tenant-network
+  labels:
+    app.kubernetes.io/part-of: webblock-provisioning
+spec:
+  description: "WebBlock site pods: in from the Gateway and the kubelet; out to the catalog and DNS only."
+  endpointSelector:
+    matchLabels:
+      k8s:io.cilium.k8s.namespace.labels.websites.webblock.internal/tenant: "true"
+  enableDefaultDeny:
+    ingress: true
+    egress: true
+  ingress:
+    - fromEntities:
+        - ingress
+        - host
+  egress:
+    - toCIDR:
+        - @CATALOG_IP@/32
+      toPorts:
+        - ports:
+            - port: "5432"
+              protocol: TCP
+    - toEndpoints:
+        - matchLabels:
+            k8s:io.kubernetes.pod.namespace: kube-system
+            k8s:k8s-app: kube-dns
+      toPorts:
+        - ports:
+            - port: "53"
+              protocol: UDP
+            - port: "53"
+              protocol: TCP
+    - toEntities:
+        - ingress
+    - toEndpoints:
+        - matchLabels:
+            k8s:io.cilium.k8s.namespace.labels.websites.webblock.internal/tenant: "true"
+      toPorts:
+        - ports:
+            - port: "8080"
+              protocol: TCP
+  egressDeny:
+    - toCIDR:
+        - 169.254.169.254/32

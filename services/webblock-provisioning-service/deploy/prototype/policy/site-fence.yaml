@@ -1,0 +1,61 @@
+# Policy webblock-site-fence (decision 0014 section 21 ruling 1; TR-35; decision 0001 fencing). Installed by
+# deploy/kind/proto-policy.sh.
+#
+# Every worker write of a Deployment, Service or HTTPRoute in a tenant namespace carries the fence the
+# renderer writes: the annotation websites.webblock.internal/command-number with the command's number,
+# a decimal integer from 1 to 2^53-1 without a sign or leading zero (render._check_command_number).
+# A server-side apply is checked on its result, so an apply that drops the annotation is refused too.
+#
+# What it does not check: that the number is the one of the command in flight, or that it does not go
+# down. The worker reads the object and compares the number before it writes (the adapter's fence);
+# an admission check of "never lower" would also refuse the reconciler's re-apply of an older
+# command's intent, which ruling 9 allows. Proposed for later in the W6-K report.
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicy
+metadata:
+  name: webblock-site-fence
+  labels:
+    app.kubernetes.io/part-of: webblock-provisioning
+spec:
+  failurePolicy: Fail
+  matchConstraints:
+    namespaceSelector:
+      matchLabels:
+        websites.webblock.internal/tenant: "true"
+    resourceRules:
+      - apiGroups: ["apps"]
+        apiVersions: ["*"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["deployments"]
+      - apiGroups: [""]
+        apiVersions: ["*"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["services"]
+      - apiGroups: ["gateway.networking.k8s.io"]
+        apiVersions: ["*"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["httproutes"]
+  matchConditions:
+    - name: release-worker
+      expression: "request.userInfo.username == 'system:serviceaccount:webblock:provisioning-worker'"
+  variables:
+    - name: fence
+      expression: >-
+        has(object.metadata.annotations) &&
+        'websites.webblock.internal/command-number' in object.metadata.annotations
+        ? object.metadata.annotations['websites.webblock.internal/command-number'] : ''
+  validations:
+    - expression: >-
+        variables.fence.matches('^[1-9][0-9]{0,15}$') && int(variables.fence) <= 9007199254740991
+      reason: Forbidden
+      message: "webblock-site-fence: the worker's write must carry websites.webblock.internal/command-number, an integer from 1 to 2^53-1"
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicyBinding
+metadata:
+  name: webblock-site-fence
+  labels:
+    app.kubernetes.io/part-of: webblock-provisioning
+spec:
+  policyName: webblock-site-fence
+  validationActions: ["Deny"]

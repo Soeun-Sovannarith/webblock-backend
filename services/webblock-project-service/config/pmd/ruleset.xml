@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="project-service"
+         xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+    <description>
+        Rules that point at real problems: unused code, complexity, swallowed errors, resource and thread mistakes.
+        No naming, layout or brace rules: Spotless (palantir-java-format) owns the layout. Decision 0009.
+    </description>
+
+    <!-- Unused code -->
+    <rule ref="category/java/bestpractices.xml/UnusedPrivateField"/>
+    <rule ref="category/java/bestpractices.xml/UnusedPrivateMethod"/>
+    <rule ref="category/java/bestpractices.xml/UnusedFormalParameter"/>
+    <rule ref="category/java/bestpractices.xml/UnusedLocalVariable"/>
+    <rule ref="category/java/bestpractices.xml/UnusedAssignment"/>
+    <rule ref="category/java/design.xml/SingularField"/>
+
+    <!-- Complexity -->
+    <rule ref="category/java/design.xml/CognitiveComplexity"/>
+    <rule ref="category/java/design.xml/NPathComplexity"/>
+
+    <!-- Errors lost or hidden -->
+    <rule ref="category/java/errorprone.xml/EmptyCatchBlock">
+        <properties>
+            <property name="allowCommentedBlocks" value="true"/>
+        </properties>
+    </rule>
+    <rule ref="category/java/bestpractices.xml/PreserveStackTrace"/>
+    <rule ref="category/java/bestpractices.xml/AvoidPrintStackTrace"/>
+    <rule ref="category/java/errorprone.xml/AvoidCatchingGenericException">
+        <properties>
+            <!-- Catching Exception or RuntimeException at a job or listener edge is allowed here. -->
+            <property name="typesThatShouldNotBeCaught">
+                <value>java.lang.Throwable,java.lang.Error,java.lang.NullPointerException</value>
+            </property>
+        </properties>
+    </rule>
+    <rule ref="category/java/errorprone.xml/ReturnFromFinallyBlock"/>
+    <rule ref="category/java/errorprone.xml/DoNotThrowExceptionInFinally"/>
+    <rule ref="category/java/design.xml/AvoidThrowingNullPointerException"/>
+
+    <!-- Wrong results -->
+    <rule ref="category/java/errorprone.xml/CompareObjectsWithEquals"/>
+    <rule ref="category/java/errorprone.xml/EqualsNull"/>
+    <rule ref="category/java/errorprone.xml/ImplicitSwitchFallThrough"/>
+    <rule ref="category/java/errorprone.xml/AssignmentInOperand"/>
+    <rule ref="category/java/errorprone.xml/UseLocaleWithCaseConversions"/>
+    <rule ref="category/java/errorprone.xml/AvoidBranchingStatementAsLastInLoop"/>
+
+    <!-- Resources and threads -->
+    <rule ref="category/java/errorprone.xml/CloseResource"/>
+    <rule ref="category/java/multithreading.xml/DoubleCheckedLocking"/>
+    <rule ref="category/java/multithreading.xml/UnsynchronizedStaticFormatter"/>
+
+    <!-- Security -->
+    <rule ref="category/java/security.xml/HardCodedCryptoKey"/>
+    <rule ref="category/java/security.xml/InsecureCryptoIv"/>
+</ruleset>

@@ -1,0 +1,58 @@
+# The shared public Gateway of the prototype stack (decision 0009 section 2, OD-35; task T1). It
+# replaces the Phase 4 stack's deploy/kind/manifests/gateway.yaml (now only on branch go-reference),
+# whose Gateway API v1.4.1 standard CRDs had no allowedListeners.
+#
+# Listeners, both for the TEST suffix *.sites.webblock.test only (the production hostname rule is
+# OD-36 and stays open):
+#   http-sites   HTTP on port 80, as before;
+#   https-sites  HTTPS on port 443, terminating TLS with the wildcard certificate sites-wildcard-tls
+#                (10-wildcard-certificate.yaml, from ClusterIssuer webblock-local-ca).
+# *.sites.webblock.test also covers the preview hosts <subdomain>-preview.sites.webblock.test (FR-20),
+# one label under the site domain like the sites, so the one wildcard certificate serves both.
+# Routes attach only from namespaces labelled websites.webblock.internal/tenant=true. A route whose
+# parentRef names this Gateway without a sectionName attaches to both listeners.
+#
+# No custom domains (decision 0014 section 23): the Gateway sets no allowedListeners, so it accepts no
+# ListenerSet from any namespace (the field's default is from: None), and every site is served on its
+# platform subdomain through the two listeners below. Task T1's ListenerSet support was removed by task
+# W6-K; commit c5796ec has it if custom domains return. The worker never writes this Gateway.
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: webblock-public
+  namespace: webblock-gateway
+spec:
+  gatewayClassName: cilium
+  listeners:
+    - name: http-sites
+      protocol: HTTP
+      port: 80
+      hostname: "*.sites.webblock.test"
+      allowedRoutes:
+        kinds:
+          - group: gateway.networking.k8s.io
+            kind: HTTPRoute
+        namespaces:
+          from: Selector
+          selector:
+            matchLabels:
+              websites.webblock.internal/tenant: "true"
+    - name: https-sites
+      protocol: HTTPS
+      port: 443
+      hostname: "*.sites.webblock.test"
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - group: ""
+            kind: Secret
+            name: sites-wildcard-tls
+      allowedRoutes:
+        kinds:
+          - group: gateway.networking.k8s.io
+            kind: HTTPRoute
+        namespaces:
+          from: Selector
+          selector:
+            matchLabels:
+              websites.webblock.internal/tenant: "true"
