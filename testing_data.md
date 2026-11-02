@@ -390,7 +390,8 @@ echo "Using PROJECT_ID: $PROJECT_ID"
 curl -X PUT "http://localhost:8088/api/v1/projects/$PROJECT_ID" \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
-  -d '{
+  -d '
+  {
     "templateId": "warm_bold",
     "name": "Artisan Coffee Roasters",
     "businessType": "food_shop",
@@ -414,7 +415,7 @@ curl -X PUT "http://localhost:8088/api/v1/projects/$PROJECT_ID" \
         { "day": "SUNDAY", "open": false, "opensAt": null, "closesAt": null }
       ]
     }
-  }'
+  }
 ```
 **Expected Response:** `201 Created`
 ```json
